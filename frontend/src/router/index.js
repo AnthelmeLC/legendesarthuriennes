@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Home from '../views/Home.vue';
+import Preface from '../views/Preface.vue'
 import Story from '../views/Story.vue';
 import Bibliography from '../views/Bibliography.vue';
 import About from '../views/About.vue';
@@ -13,6 +14,11 @@ const routes = [
         path : '/',
         name : 'Home',
         component : Home
+    },
+    {
+        path : '/preface',
+        name : 'Preface',
+        component : Preface
     },
     {
         path : '/story',

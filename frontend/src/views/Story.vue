@@ -1,16 +1,16 @@
 <template>
-    <div class="home">
-        <p>Page des histoires</p>
-    </div>
+    <section class="container">
+        <Wip msg="les résumés d'histoires des légendes arthuriennes."></Wip>
+    </section>
 </template>
 
 <script>
-//import HelloWorld from '@/components/HelloWorld.vue'
+import Wip from '../components/wip'
 
 export default {
-    name: 'Story'//,
-    //components: {
-    //  HelloWorld
-    //}
+    name: 'Story',
+    components: {
+      Wip
+    }
 }
 </script>

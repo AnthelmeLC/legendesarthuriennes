@@ -1,16 +1,16 @@
 <template>
-    <div class="home">
-        <p>Page A propos</p>
-    </div>
+    <section class="container">
+        <Wip msg='une page A propos :D'></Wip>
+    </section>
 </template>
 
 <script>
-//import HelloWorld from '@/components/HelloWorld.vue'
+import Wip from '../components/wip'
 
 export default {
-    name: 'About'//,
-    //components: {
-    //  HelloWorld
-    //}
+    name: 'About',
+    components: {
+      Wip
+    }
 }
 </script>

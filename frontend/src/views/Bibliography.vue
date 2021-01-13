@@ -1,16 +1,16 @@
 <template>
-    <div class="home">
-        <p>Page de bibliographie</p>
-    </div>
+    <section class="container">
+        <Wip msg='les lectures qui ont inspiré les recherches des auteurs du site.'></Wip>
+    </section>
 </template>
 
 <script>
-//import HelloWorld from '@/components/HelloWorld.vue'
+import Wip from '../components/wip'
 
 export default {
-    name: 'Bibliography'//,
-    //components: {
-    //  HelloWorld
-    //}
+    name: 'Bibliography',
+    components: {
+      Wip
+    }
 }
 </script>
