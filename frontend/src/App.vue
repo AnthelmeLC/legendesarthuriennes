@@ -2,31 +2,32 @@
     <div id="app">
       <div id="nav">
         <router-link to="/">Home</router-link> <!--à modifier avec le logo du site ou un logo temporaire-->
+        <router-link to="/preface">Préface</router-link>
         <a class="expand">
             Personnages
             <div class="hidden">
-                <div>Merlin l'enchanteur</div>
+                <a>Merlin l'enchanteur</a>
             </div>
         </a>
         <a class="expand">
             Lieux
             <div class="hidden">
-                <div>test</div>
-                <div>test encore</div>
+                <a>test</a>
+                <a>test encore</a>
             </div>
         </a>
         <a class="expand">
             Objets
             <div class="hidden">
-                <div>test</div>
-                <div>test encore</div>
+                <a>test</a>
+                <a>test encore</a>
             </div>
         </a>
         <a class="expand">
             Évènements
             <div class="hidden">
-                <div>test</div>
-                <div>test encore</div>
+                <a>test</a>
+                <a>test encore</a>
             </div>
         </a>
         <router-link to="/bibliography">Bibliograhie</router-link>
@@ -38,30 +39,76 @@
 </template>
 
 <style>
-html, body{
-    margin: 0;
-    padding: 0;
+/*STYLES ET CLASSES GENERAUX*/
+@font-face{
+    font-family: "Mirella Script";
+    src:url(./assets/mirellascript.ttf) format("truetype");
+}
+
+@font-face{
+    font-family: "KingthingsCalligraphicaLight";
+    src:url(./assets/kingthingscalligraphicalight.ttf) format("truetype");
+}
+
+@font-face{
+    font-family: "GothicUltra";
+    src:url(./assets/gothicultra.ttf) format("truetype");
 }
 
 *{
     box-sizing: border-box;
 }
 
+html, body{
+    margin: 0;
+    padding: 0;
+    background-color: #cc9a46;
+}
+
+h1{
+    font-family: Mirella Script;
+    font-size: 3em;
+    text-decoration: underline;
+    text-align: center;
+}
+
+p{
+    font-size: x-large;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 5%;
+}
+
+.container{
+    max-width: 1000px;
+    min-height: 100vh;
+    margin-right: auto;
+    margin-left: auto;
+    padding-top: 1px;
+    padding-bottom: 20px;
+    background-color: #efefef;
+}
+
+.hidden{
+    display: none;
+}
+
+/*STYLES APP ET NAV*/
 #app{
-    font-family: Avenir, Helvetica, Arial, sans-serif;
+    font-family: KingthingsCalligraphicaLight, Times New Roman, Avenir, Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    text-align: center;
     color: black;
     position: relative;
 }
 
 #nav{
-    width: 15%;
+    font-family: GothicUltra;
+    width: 10%;
     position: fixed;
     top: 0;
     left: 0;
-    font-weight: bold;
     font-size: 2em;
     background-color: #efefef;
 }
@@ -73,6 +120,7 @@ html, body{
     margin: 0% auto 5% auto;
     padding-top: 5%;
     position: relative;
+    padding-left: 10px;
 }
 
 #nav a::after{
@@ -82,7 +130,7 @@ html, body{
     bottom: 0;
     transform: scaleX(0);
     transform-origin: left;
-    width: 100%;
+    width: 95%;
     height: 2px;
     background-color: red;
     transition: transform 400ms ease-out;
@@ -109,8 +157,7 @@ html, body{
     cursor: pointer;
 }
 
-.hidden{
-    display: none;
+#nav .hidden{
     position: absolute;
     left: 100%;
     top: 0%;
@@ -118,27 +165,14 @@ html, body{
     width: 100%;
 }
 
-.hidden div{
+#nav .hidden div{
     margin: 0% auto 5% auto;
     padding-top: 5%;
-}
-
-.inline{
-    display: flex;
-}
-
-.container{
-    max-width: 1000px;
-    margin-right: auto;
-    margin-left: auto;
-    background-color: #efefef;
-    padding-top: 1px;
-    padding-bottom: 1px;
 }
 </style>
 
 <script>
 export default {
-
+    name: 'App'
 }
 </script>
