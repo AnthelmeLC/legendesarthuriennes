@@ -1,14 +1,28 @@
-const mongoose = require("mongoose");
-const uniqueValidator = require("mongoose-unique-validator");
+const {Sequelize, DataTypes} = require("sequelize");
+const sequelize = require("../DBinstance");
 
-const userSchema = mongoose.Schema({
-    pseudo : {type : String, required : true, unique : true},
-    email : {type : String, required : true, unique : true},
-    password : {type : String, required : true},
-    moderator : {type : Boolean, required : true},
-    admin : {type : Boolean, required : true}
+const User = sequelize.define("User", {
+    id : {
+        type : DataTypes.NUMBER,
+        primaryKey : true,
+        autoIncrement : true
+    },
+    pseudo : {
+        type : DataTypes.STRING,
+        allowNull : false,
+        unique : true
+    },
+    password : {
+        type : DataTypes.STRING?
+        allowNull : false
+    },
+    admin : {
+        type : DataTypes.BOOLEAN,
+        defaultValue : false,
+        allowNull : false
+    }
+},{
+    timestamps : false
 });
 
-userSchema.plugin(uniqueValidator);
-
-module.exports = mongoose.model("User", userSchema);
+module.exports = sequelize.models.User;
