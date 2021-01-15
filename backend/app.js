@@ -4,7 +4,8 @@ const {Sequelize} = require("sequelize");
 const DBinstance = require("./DBinstance");
 
 const userRoutes = require("./routes/user");
-//routes des textes
+const storyTypeRoutes = require("./routes/stroryType");
+const storyRoutes = require("./routes/story");
 
 const app = express();
 
@@ -22,6 +23,7 @@ app.use((req, res, next) => {
 app.use(bodyParser.json());
 
 app.use("/api/auth", userRoutes);
-//app.use routes des textes
+app.use("/api/storyTypes", storyTypeRoutes);
+app.use("/api/stories", storyRoutes);
 
 module.exports = app;
