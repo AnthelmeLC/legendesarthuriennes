@@ -1,28 +1,30 @@
 const {Sequelize, DataTypes} = require("sequelize");
 const sequelize = require("../DBinstance");
 
-const User = sequelize.define("User", {
+const Story = sequelize.define("Story", {
     id : {
         type : DataTypes.NUMBER,
         primaryKey : true,
         autoIncrement : true
     },
-    pseudo : {
-        type : DataTypes.STRING,
-        allowNull : false,
-        unique : true
+    userId : {
+        type : DataTypes.NUMBER,
+        allowNull : false
     },
-    password : {
+    typeId : {
+        type : DataTypes.NUMBER,
+        allowNull : false
+    },
+    title : {
         type : DataTypes.STRING,
         allowNull : false
     },
-    admin : {
-        type : DataTypes.BOOLEAN,
-        defaultValue : false,
+    Story : {
+        type : DataTypes.STRING,
         allowNull : false
     }
 },{
     timestamps : false
 });
 
-module.exports = sequelize.models.User;
+module.exports = sequelize.models.Story;

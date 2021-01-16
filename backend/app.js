@@ -1,19 +1,18 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const mongoose = require("mongoose");
-const path = require("path");
+const {Sequelize} = require("sequelize");
+const DBinstance = require("./DBinstance");
 
 const userRoutes = require("./routes/user");
-//routes des textes
+const storyTypeRoutes = require("./routes/stroryType");
+const storyRoutes = require("./routes/story");
+const bibliographyRoutes = require("./routes/bibliography");
 
 const app = express();
-mongoose.connect(/* lien contenant mdp et code db ,*/
-{
-    useNewUrlParser : true,
-    useUnifiedTopology : true
-})
-.then(() => console.log("Connexion à MongoDB réussie!"))
-.catch(() => console.log("Connexion à MongoDB échouée!"));
+
+DBinstance.authenticate()
+.then(() => console.log("Connexion à la base de données réussie."))
+.catch(() => console.log("Connexion à la base de données échouée."));
 
 app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
@@ -24,9 +23,9 @@ app.use((req, res, next) => {
 
 app.use(bodyParser.json());
 
-app.use("/images", express.static(path.join(__dirname, "images")));
-
 app.use("/api/auth", userRoutes);
-//app.use routes des textes
+app.use("/api/storyTypes", storyTypeRoutes);
+app.use("/api/stories", storyRoutes);
+app.use("api/bibliography", bibliographyRoutes);
 
 module.exports = app;
