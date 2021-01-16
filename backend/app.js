@@ -6,6 +6,7 @@ const DBinstance = require("./DBinstance");
 const userRoutes = require("./routes/user");
 const storyTypeRoutes = require("./routes/stroryType");
 const storyRoutes = require("./routes/story");
+const bibliographyRoutes = require("./routes/bibliography");
 
 const app = express();
 
@@ -25,5 +26,6 @@ app.use(bodyParser.json());
 app.use("/api/auth", userRoutes);
 app.use("/api/storyTypes", storyTypeRoutes);
 app.use("/api/stories", storyRoutes);
+app.use("api/bibliography", bibliographyRoutes);
 
 module.exports = app;
