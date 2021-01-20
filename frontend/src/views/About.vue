@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import Wip from '../components/wip'
+import Wip from '../components/wip';
 
 export default {
     name: 'About',
