@@ -49,23 +49,10 @@
     textarea{
         max-width: 85%;
     }
-
-    button{
-        width: 100px;
-        height: 50px;
-        border-radius: 25%;
-        border: none;
-        font-family: KingthingsCalligraphicaLight;
-        font-size: 1.5em;
-        position: absolute;
-        right: 0;
-        background-color: #2d6ca2;
-        color: white;
-    }
 </style>
 
 <script>
-export default {
-    name: 'Contact'
-}
+    export default {
+        name: 'Contact'
+    }
 </script>
