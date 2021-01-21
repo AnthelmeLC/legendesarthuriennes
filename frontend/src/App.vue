@@ -98,6 +98,14 @@
         display: none;
     }
 
+    .invalid{
+        border: red solid 3px;
+    }
+
+    .valid{
+        border: green solid 3px;
+    }
+
     #app{
         font-family: KingthingsCalligraphicaLight, Times New Roman, Avenir, Helvetica, Arial, sans-serif;
         -webkit-font-smoothing: antialiased;
