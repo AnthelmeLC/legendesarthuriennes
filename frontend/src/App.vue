@@ -132,6 +132,17 @@
         background-color: #1F496E;
         transition: all 400ms ease-in-out;
     }
+
+    p img{
+        display: inline-block;
+        margin-left: 15px;
+        cursor: pointer;
+    }
+
+    p img:hover{
+        scale: 0.9;
+        transition: scale() ease-in-out 200ms;
+    }
 </style>
 
 <style scoped>
@@ -232,7 +243,12 @@
                 e.preventDefault();
                 //suppression du token d'authentification, tu userId et admin
                 localStorage.clear();
-                window.location.reload();
+                if(window.location.pathname === "/user"){
+                    window.location = window.location.origin + "/"
+                }
+                else{
+                    window.location.reload();
+                }
                 return false
             })
         }

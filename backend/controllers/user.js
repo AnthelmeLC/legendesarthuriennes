@@ -10,7 +10,7 @@ exports.signup = (req, res, next) => {
     .then(passwordHashed => {
         //création du nouvel utilisateur
         User.create({
-            pseudo : req.body.user.pseudo,
+            pseudo : req.body.pseudo,
             password : passwordHashed
         })
         .then(() => res.status(201).json({message : "Utilisateur créé."}))
@@ -102,8 +102,20 @@ exports.modifyUserPassword = (req, res, next) => {
 
 //DELETE ONE
 exports.deleteUser = (req, res, next) => {
-    //suppression de l'utilisateur
-    User.destroy({where : {id : req.params.id}})
-    .then(() => res.status(200).json({message : "Utilisateur supprimé."}))
-    .catch(error => res.status(400).json({error}));
+    //vérification que l'utilisateur n'est pas l'admin
+    User.findOne({where : {id : req.params.id}})
+    .then(user => {
+        //si l'utilisateur n'est pas l'admin
+        if(!user.admin){
+            //suppression de l'utilisateur
+            User.destroy({where : {id : req.params.id}})
+            .then(() => res.status(200).json({message : "Utilisateur supprimé."}))
+            .catch(error => res.status(400).json({error}));
+        }
+        //si l'utilisateur est l'admin
+        else{
+            return res.status(401).json({error : "Personne ne supprime Merlin!"})
+        }
+    })
+    .catch(error => res.status(500).json({error}));
 };
