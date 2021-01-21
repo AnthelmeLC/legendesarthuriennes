@@ -107,6 +107,20 @@
 
                 </div>
             </article>
+
+            <article>
+                <h2>Les types d'histoires :</h2>
+                <div id="storyTypes">
+
+                </div>
+                <form id="storyTypeForm">
+                    <div>
+                        <label for="newStoryType">Nouveau type d'histoires* :</label>
+                        <input type="text" id="newStoryType" name="newStoryType" required>
+                    </div>
+                    <button>Créer le type d'histoires</button>
+                </form>
+            </article>
         </div>
     </section>
 </template>
@@ -195,14 +209,14 @@
                     if(response.ok){
                         response.json()
                         .then(myJson => {
-                            const users = document.getElementById("users");
+                            const usersDiv = document.getElementById("users");
                             //mise en page pour chaque utilisateur
                             for(let user of myJson){
                                 //seul les utilisateurs non admin apparaissent
                                 if(!user.admin){
                                     const newUser = document.createElement("p");
                                     newUser.innerHTML = `${user.pseudo} <img src="./delete.png" alt="croix rouge" id="remove${user.id}">`;
-                                    users.appendChild(newUser);
+                                    usersDiv.appendChild(newUser);
                                     //boutton pour supprimer un utilisateur
                                     const remove = document.getElementById("remove" + user.id);
                                     remove.addEventListener("click",function(e){
@@ -239,6 +253,55 @@
                     }
                     else{
                         console.log("Mauvaise réponse du réseau");
+                    }
+                })
+                .catch(error => {
+                    console.log("Il y a eu un problème avec l'opération fetch :" + error.message);
+                });
+
+                //récupération des types d'histoires
+                fetch("http://localhost:3000/api/storyTypes", options)
+                .then(response => {
+                    if(response.ok){
+                        response.json()
+                        .then(myJson => {
+                            const storyTypesDiv = document.getElementById("storyTypes")
+                            for(let storyType of myJson){
+                                const newStoryType = document.createElement("p");
+                                newStoryType.innerHTML = `${storyType.name} <img src="./delete.png" alt="croix rouge" id="remove${storyType.id}">`
+                                storyTypesDiv.appendChild(newStoryType);
+                                //boutton pour supprimer le type d'histoire
+                                const remove = document.getElementById("remove" + storyType.id);
+                                remove.addEventListener("click",function(e){
+                                    e.preventDefault();
+                                    //options de la requête
+                                    const options = {
+                                        headers : {
+                                            authorization : localStorage.userId + " " + localStorage.token
+                                        },
+                                        method : "DELETE"
+                                    };
+                                    //envoi de la requête
+                                    fetch("http://localhost:3000/api/storyTypes/" + storyType.id, options)
+                                    .then(response => {
+                                        if(response.ok){
+                                            console.log("Type d'histoires supprimé.");
+                                            window.location.reload();
+                                        }
+                                        else{
+                                            console.log("Mauvaise réponse du réseau");
+                                        }
+                                    })
+                                    .catch(error => {
+                                        console.log("Il y a eu un problème avec l'opération fetch :" + error.message);
+                                    });
+                                    return false
+                                });
+                            }
+                        })
+                        .catch(error => {
+                            console.log("Il y a eu un problème avec l'opération fetch :" + error.message);
+                        });
                     }
                 })
                 .catch(error => {
@@ -400,6 +463,39 @@
                     });
                 }
                 return false;
+            });
+
+            //formulaire de création d'un type d'histoires
+            const storyTypeForm = document.getElementById("storyTypeForm");
+            storyTypeForm.addEventListener("submit", function(e){
+                e.preventDefault();
+                const storyTypeInput = document.getElementById("newStoryType");
+                //options de la requête
+                const options = {
+                    headers : {
+                        "Content-type" : "application/json",
+                        authorization : localStorage.userId + " " + localStorage.token
+                    },
+                    method : "POST",
+                    body : JSON.stringify({
+                        name : storyTypeInput.value
+                    })
+                };
+                //envoi du formulaire
+                fetch("http://localhost:3000/api/storyTypes/", options)
+                .then(response => {
+                    if(response.ok){
+                        console.log("Type d'histoire créé.");
+                        window.location.reload();
+                    }
+                    else{
+                        console.log("Mauvaise réponse du réseau.");
+                    }
+                })
+                .catch(error => {
+                    console.log("Il y a eu un problème avec l'opération fetch :" + error.message);
+                });
+                return false
             })
         }
     }
