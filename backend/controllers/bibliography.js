@@ -10,15 +10,13 @@ exports.getAllBibliography = (req, res, next) => {
 
 //POST NEW
 exports.createBibliography = (req, res, next) => {
+    //parsing de l'objet bibliography
+    const bibliographyObject = JSON.parse(req.body.bibliography);
+    console.log(bibliographyObject);
     //création de la nouvelle bibliographie
     Bibliography.create({
-        userId : req.body.userId,
-        title : req.body.title,
-        auther : req.body.auther,
-        translater : req.body.translater,
-        yearOfPublication : req.body.yearOfPublication,
-        yearOfReissue : req.body.yearOfReissue,
-        pictureUrl : req.body.pictureUrl
+        ...bibliographyObject,
+        pictureUrl : `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
     })
     .then(() => res.status(201).json({message : "Bibliographie créée."}))
     .catch(error => res.status(400).json({error}));

@@ -43,11 +43,23 @@
                     <div>
                         <label for="storyType">C'est l'histoire d'un :</label>
                         <select name="storyType" id="storyType" required>
-                            <option value="Objet">Objet</option>
-                            <option value="Lieu">Lieux</option>
-                            <option value="Événement">Événement</option>
-                            <option value="Personnage">Personnage</option>
+                            <option value="Objets">Objet</option>
+                            <option value="Lieux">Lieu</option>
+                            <option value="Événements">Événement</option>
+                            <option value="Personnages">Personnage</option>
                         </select>
+                    </div>
+                    <div>
+                        <label for="storyPicture">Illustrez votre histoire* :</label>
+                        <input type="file" id="storyPicture" name="storyPicture" accept="image/*">
+                    </div>
+                    <div>
+                        <label for="illustrator">Illustrateur* :</label>
+                        <input type="text" id="illustrator" name="illustrator" required>
+                    </div>
+                    <div>
+                        <label for="caption">Légendez votre image* :</label>
+                        <input type="text" id="caption" name="caption" required>
                     </div>
                     <button>Publier mon histoire</button>
                 </form>
@@ -58,7 +70,7 @@
                 <form id="newBibliographyForm">
                     <div>
                         <label for="title">Titre de l'oeuvre* :</label>
-                        <input type="text" id="bibliograhyTitle" name="bibliographyTitle" required>
+                        <input type="text" id="bibliograhyTitle" name="title" required>
                     </div>
                     <div>
                         <label for="auther">Auteur* :</label>
@@ -75,6 +87,10 @@
                     <div>
                         <label for="yearOfReissue">Date de réédition :</label>
                         <input type="text" id="yearOfReissue" name="YearOfReissue">
+                    </div>
+                    <div>
+                        <label for="bibliographyPicture">Aperçu de l'oeuvre* :</label>
+                        <input type="file" id="bibliographyPicture" name="bibliographyPicture" accept="image/*" required>
                     </div>
                     <button>Publier ma bibliographie</button>
                 </form>
@@ -180,6 +196,12 @@
 
     #storyDiv{
         flex-direction: column;
+    }
+
+    #storyPicture, #bibliographyPicture{
+        padding-top: 6px;
+        font-family: KingthingsCalligraphicaLight;
+        font-size: 1em;
     }
 </style>
 
@@ -496,6 +518,92 @@
                     console.log("Il y a eu un problème avec l'opération fetch :" + error.message);
                 });
                 return false
+            })
+
+            //formulaire de nouvelle histoire
+            const newStoryForm = document.getElementById("newStoryForm");
+            newStoryForm.addEventListener("submit", function(e){
+                e.preventDefault();
+                    //récupération des données entrées par l'utilisateur
+                    const form = new FormData(newStoryForm);
+                    //création d'un objet story sans l'image
+                    let story = {};
+                    for(let key of form.keys()){
+                        story[key] = form.get(key);
+                    }
+                    story["userId"] = localStorage.userId;
+                    delete story["storyPicture"];
+                    //création de l'objet image
+                    const file = form.get("storyPicture");
+                    //création du formData qui sera envoyé + insertion des deux objets précédent
+                    const formData = new FormData();
+                    formData.append("image", file);
+                    formData.append("story", JSON.stringify(story));
+                    //options du formulaire
+                    const options = {
+                        headers : {
+                            authorization : localStorage.userId + " " + localStorage.token
+                        },
+                        method : "POST",
+                        body : formData
+                    };
+                    //envoi du formulaire
+                    fetch("http://localhost:3000/api/stories/", options)
+                    .then(response => {
+                        if(response.ok){
+                            console.log("Histoire créée.");
+                        }
+                        else{
+                            console.log("Mauvaise réponse du réseau.");
+                        }
+                    })
+                    .catch(error => {
+                        console.log("Il y a eu un problème avec l'opération fetch :" + error.message);
+                    });
+                return false
+            });
+
+            //formulaire de nouvelle bibiographie
+            const newBibliographyForm = document.getElementById("newBibliographyForm");
+            newBibliographyForm.addEventListener("submit", function(e){
+                e.preventDefault();
+                //récupération des données entrées par l'utilisateur
+                const form = new FormData(newBibliographyForm);
+                //création d'un objet bibliography sans l'image
+                let bibliography = {};
+                for(let key of form.keys()){
+                    bibliography[key] = form.get(key);
+                }
+                bibliography["userId"] = localStorage.userId;
+                delete bibliography["bibliographyPicture"];
+                //création de l'objet image
+                const file = form.get("bibliographyPicture");
+                //création du formData qui sera envoyé + insertion des deux objets précédent
+                const formData = new FormData();
+                formData.append("image", file);
+                formData.append("bibliography", JSON.stringify(bibliography));
+                //options du formulaire
+                const options = {
+                        headers : {
+                            authorization : localStorage.userId + " " + localStorage.token
+                        },
+                        method : "POST",
+                        body : formData
+                    };
+                    //envoi du formulaire
+                    fetch("http://localhost:3000/api/bibliography/", options)
+                    .then(response => {
+                        if(response.ok){
+                            console.log("Bibliographie créée.");
+                        }
+                        else{
+                            console.log("Mauvaise réponse du réseau.");
+                        }
+                    })
+                    .catch(error => {
+                        console.log("Il y a eu un problème avec l'opération fetch :" + error.message);
+                    });
+                return false;
             })
         }
     }
