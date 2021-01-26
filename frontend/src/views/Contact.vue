@@ -2,23 +2,24 @@
     <section id="contact" class="container">
         <h1>Contact</h1>
         <p>N'hésitez pas à me contacter pour tout problème d'accessibilité ou pour toute réclamation.</p>
-        <form>
+        <form @submit.prevent="onSubmit">
             <div>
                 <label for="peuso">Nom Prénom / Pseudo* :</label>
-                <input type="text" required name="pseudo" id="pseudo">
+                <input type="text" required name="pseudo" id="pseudo" ref="pseudo" v-model="email.pseudo">
             </div>
 
             <div>
                 <label for="topic">Sujet* :</label>
-                <input type="text" required name="topic" id="topic">
+                <input type="text" required name="topic" id="topic" ref="topic" v-model="email.topic">
             </div>
 
             <div>
                 <label for="message">Message* :</label>
-                <textarea name="message" id="message" cols="40" rows="10" required></textarea>
+                <textarea name="message" id="message" cols="40" rows="10" required ref="message" v-model="email.message"></textarea>
             </div>
 
             <button>Envoyer</button>
+            <p>{{message}}</p>
         </form>
     </section>
 </template>
@@ -53,6 +54,24 @@
 
 <script>
     export default {
-        name: 'Contact'
+        name: 'Contact',
+
+        data(){
+            return {
+                email : {
+                    pseudo : "",
+                    topic : "",
+                    message : ""
+                },
+
+                message : ""
+            }
+        },
+
+        methods : {
+            onSubmit(){
+                
+            }
+        }
     }
 </script>

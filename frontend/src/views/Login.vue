@@ -1,16 +1,17 @@
 <template>
     <section class="container">
         <h1>Connectez vous!</h1>
-        <form id="login-form" name="login-form">
+        <form id="login-form" name="login-form" @submit.prevent="onSubmit">
             <div>
                 <label for="pseudo">Pseudo :</label>
-                <input type="text" id="pseudo" name="pseudo">
+                <input type="text" id="pseudo" name="pseudo" ref="pseudo" v-model="pseudo">
             </div>
             <div>
                 <label for="password">Mot de passe :</label>
-                <input type="password" id="password" name="password">
+                <input type="password" id="password" name="password" ref="pseudo" v-model="password">
             </div>
             <button>Connexion</button>
+            <p>{{message}}</p>
         </form>
     </section>
 </template>
@@ -41,23 +42,31 @@
     textarea{
         max-width: 85%;
     }
+
+    p{
+        color: red;
+    }
 </style>
 
 <script>
     export default {
         name: 'Login',
+
+        data(){
+            return {
+                pseudo : "",
+                password : "",
+
+                message : ""
+            }
+        },
     
-        mounted(){
-            //événement submit du formulaire de connexion
-            const login = document.getElementById("login-form");
-            login.addEventListener("submit", function(e){
-                e.preventDefault();
-                //récupération des données entrées par l'utilisateur
-                const form = new FormData(login);
-                let user = {};
-                for(let key of form.keys()){
-                    user[key] = form.get(key);
-                }
+        methods : {
+            onSubmit(){
+                let user = {
+                    pseudo : this.pseudo,
+                    password : this.password
+                };
                 //option de la requête
                 const options = {
                     headers : {
@@ -85,14 +94,13 @@
                         })
                     }
                     else{
-                        console.log("Mauvaise réponse du réseau.")
+                        this.message = "Identifiants incorrects.";
                     }
                 })
                 .catch(error => {
                     console.log("Il y a eu un problème avec l'opération fetch : " + error.message)
                 })
-                return false
-            })
+            }
         }
     }
 </script>
