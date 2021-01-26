@@ -16,6 +16,5 @@
     h1, p{
         text-align: center;
         margin-top: 10%;
-        font-size: 2em;
     }
 </style>

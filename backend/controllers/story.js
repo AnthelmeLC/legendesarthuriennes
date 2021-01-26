@@ -30,32 +30,33 @@ exports.getOneStory = (req, res, next) => {
 
 //POST NEW
 exports.createStory = (req, res, next) => {
+    //parsing de l'objet story
+    const storyObject = JSON.parse(req.body.story);
     //récupération du type d'histoire correspondant
-    StoryType.findOne({where : {name : req.body.storyType}})
+    StoryType.findOne({where : {name : storyObject.storyType}})
     .then(storyType => {
         //liaison entre l'image et l'histoires
-        Story.hasOne(Picture);
-        Picture.belongsTo(Story, {
+        Picture.Story = Picture.belongsTo(Story, {
             foreignKey : "storyId"
         });
         //création de la nouvelle histoire avec son image
-        Story.create({
-            userId : req.body.userId,
-            typeId : storyType.id,
-            title : req.body.title,
-            story : req.body.story,
-            Picture : {
-                url : req.body.url,
-                illustrator : req.body.illustrator,
-                caption : req.body.caption
+        Picture.create({
+            url : `${req.protocol}://${req.get("host")}/images/${req.file.filename}`,
+            illustrator : storyObject.illustrator,
+            caption : storyObject.caption,
+            Story : {
+                title : storyObject.title,
+                story : storyObject.story,
+                userId : storyObject.userId,
+                typeId : storyType.id
             }
         },{
-            include : {Picture}
+            include : {association : Picture.Story}
         })
         .then(() => res.status(201).json({message : "Histoire créée."}))
-        .catch(error => res.status(400).json({error}));
+        .catch(error => res.status(400).json({error} + "erreur sroty create."));
     })
-    .catch(error => res.status(400).json({error}));
+    .catch(error => res.status(400).json({error} + "erreur storyType findOne."));
 };
 
 //MODIFY ONE
