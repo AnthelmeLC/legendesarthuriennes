@@ -1,43 +1,7 @@
 <template>
     <div id="app">
-      <div id="nav">
-        <router-link to="/">Home</router-link> <!--à modifier avec le logo du site ou un logo temporaire-->
-        <router-link to="/preface">Préface</router-link>
-        <a class="expand">
-            Personnages
-            <div class="hidden unfold">
-                <a>Merlin l'enchanteur</a>
-            </div>
-        </a>
-        <a class="expand">
-            Lieux
-            <div class="hidden unfold">
-                <a>test</a>
-                <a>test encore</a>
-            </div>
-        </a>
-        <a class="expand">
-            Objets
-            <div class="hidden unfold">
-                <a>test</a>
-                <a>test encore</a>
-            </div>
-        </a>
-        <a class="expand">
-            Évènements
-            <div class="hidden unfold">
-                <a>test</a>
-                <a>test encore</a>
-            </div>
-        </a>
-        <router-link to="/bibliography">Bibliograhie</router-link>
-        <router-link to="/about">À propos</router-link>
-        <router-link to="/contact">Contact</router-link>
-        <router-link to="/login" id="login">Connexion</router-link>
-        <router-link to="/user" id="userSpaceLink">Espace Auteur</router-link>
-        <a id="disconnect">Déconnexion</a>
-      </div>
-      <router-view/>
+        <navBar></navBar>
+        <router-view/>
     </div>
 </template>
 
@@ -220,37 +184,13 @@
 </style>
 
 <script>
+    import navBar from './components/navBar';
+
     export default {
         name: 'App',
-        mounted(){
-            const disconnect = document.getElementById("disconnect");
-            //si utilisateur n'est pas connecté
-            if(!localStorage.token){
-                //on cache le lien vers l'espace utilisateur et le lien de déconnexion
-                const userSpaceLink = document.getElementById("userSpaceLink");
-                userSpaceLink.setAttribute("style", "display : none");
-                disconnect.setAttribute("style", "display : none");
-            }
-            else{
-                //on cache le boutton de connexion
-                const login = document.getElementById("login");
-                login.setAttribute("style", "display : none");
-                
-            }
-    
-            //boutton déconnexion
-            disconnect.addEventListener("click", function(e){
-                e.preventDefault();
-                //suppression du token d'authentification, tu userId et admin
-                localStorage.clear();
-                if(window.location.pathname === "/user"){
-                    window.location = window.location.origin + "/"
-                }
-                else{
-                    window.location.reload();
-                }
-                return false
-            })
+
+        components : {
+            navBar
         }
     }
 </script>
