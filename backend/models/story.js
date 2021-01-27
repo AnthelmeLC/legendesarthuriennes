@@ -19,7 +19,7 @@ const Story = sequelize.define("Story", {
         type : DataTypes.STRING,
         allowNull : false
     },
-    Story : {
+    story : {
         type : DataTypes.STRING,
         allowNull : false
     }

@@ -2,6 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const {Sequelize} = require("sequelize");
 const DBinstance = require("./DBinstance");
+const path = require("path");
 
 const userRoutes = require("./routes/user");
 const storyTypeRoutes = require("./routes/stroryType");
@@ -23,9 +24,11 @@ app.use((req, res, next) => {
 
 app.use(bodyParser.json());
 
+app.use("/images", express.static(path.join(__dirname, "images")));
+
 app.use("/api/auth", userRoutes);
 app.use("/api/storyTypes", storyTypeRoutes);
 app.use("/api/stories", storyRoutes);
-app.use("api/bibliography", bibliographyRoutes);
+app.use("/api/bibliography", bibliographyRoutes);
 
 module.exports = app;

@@ -6,6 +6,8 @@ import Story from '../views/Story.vue';
 import Bibliography from '../views/Bibliography.vue';
 import About from '../views/About.vue';
 import Contact from '../views/Contact.vue';
+import Login from '../views/Login.vue';
+import User from '../views/User.vue';
 
 Vue.use(VueRouter)
 
@@ -39,6 +41,16 @@ const routes = [
         path : '/contact',
         name : 'Contact',
         component : Contact
+    },
+    {
+        path : '/login',
+        name : 'Login',
+        component : Login
+    },
+    {
+        path : '/user',
+        name : 'userSpace',
+        component : User
     }
 ]
 

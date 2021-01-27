@@ -5,12 +5,12 @@
 </template>
 
 <script>
-import Wip from '../components/wip';
-
-export default {
-    name: 'About',
-    components: {
-      Wip
+    import Wip from '../components/wip'
+    
+    export default {
+        name: 'About',
+        components: {
+          Wip
+        }
     }
-}
 </script>

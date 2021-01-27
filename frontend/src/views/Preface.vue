@@ -24,7 +24,7 @@
 </style>
 
 <script>
-export default {
-    name: 'Preface'
-}
+    export default {
+        name: 'Preface'
+    }
 </script>
