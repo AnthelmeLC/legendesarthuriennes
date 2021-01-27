@@ -5,12 +5,11 @@ const Picture = require("../models/picture");
 //GET ALL TITLES
 exports.getAllTitles = (req, res, next) => {
     //liaison entre les histoires et les types d'histoires
-    StoryType.hasOne(Story);
     Story.belongsTo(StoryType, {
         foreignKey : "typeId"
     });
     //récupération de tous les titres avec les id d'histoires et de leur type
-    Story.findAll({attributes : ["title", "id", "typeId"]}, {include : StoryType})
+    Story.findAll({include : StoryType, attributes : ["title", "id", "typeId"]})
     .then(titles => res.status(200).json(titles))
     .catch(error => res.status(400).json({error}));
 };
@@ -18,12 +17,12 @@ exports.getAllTitles = (req, res, next) => {
 //GET ONE
 exports.getOneStory = (req, res, next) => {
     //liaison entre l'image et l'histoires
-    Story.hasOne(Picture);
     Picture.belongsTo(Story, {
-        foreignKey : "storyId"
+        foreignKey : "StoryId"
     });
+    console.log(req.params.id);
     // récupération de l'histoire
-    Story.findOne({where : {id : req.params.id}},{include : {Picture}})
+    Picture.findOne({where : {storyId : req.params.id}, include : Story})
     .then(story => res.status(200).json(story))
     .catch(error => res.status(400).json({error}));
 };
