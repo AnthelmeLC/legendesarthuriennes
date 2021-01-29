@@ -83,7 +83,14 @@
                 fetch("http://localhost:3000/api/bibliography/", options)
                 .then(response => {
                     if(response.ok){
-                       this.message = "Bibliographie créée.";
+                        
+                        this.message = "Bibliographie créée.";
+                        this.bibliography.title = "";
+                        this.bibliography.auther = "";
+                        this.bibliography.translater = "";
+                        this.bibliography.yearOfPublication = "";
+                        this.bibliography.yearOfReissue = "";
+                        this.file = "";
                     }
                     else{
                         this.message = "Mauvaise réponse du réseau.";

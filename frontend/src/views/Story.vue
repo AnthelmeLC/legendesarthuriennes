@@ -11,7 +11,6 @@
                 </figcaption>
             </figure>
         </div>
-        <p>{{message}}</p>
     </section>
 </template>
 
@@ -34,6 +33,11 @@
 
     figure{
         text-align: center;
+        width: 50%;
+    }
+
+    figure img{
+        max-width: 100%;
     }
 </style>
 
@@ -52,39 +56,49 @@
                     caption : ""
                 },
 
-                message : ""
+                message : "",
+
+                id : this.$route.params.id
+            }
+        },
+
+        watch : {
+            $route (){
+                this.getStory();
+            }
+        },
+
+        methods : {
+            getStory(){
+                 //récupération de l'histoire
+                const storyId = window.location.href.split("?id=")[1];
+                fetch("http://localhost:3000/api/stories/" + storyId)
+                .then(response => {
+                    if(response.ok){
+                        response.json()
+                        .then(myJson => {
+                            this.title = myJson.Story.title;
+                            this.story = myJson.Story.story;
+                            this.picture.url = myJson.url;
+                            this.picture.illustrator = myJson.illustrator;
+                            this.picture.caption = myJson.caption;
+                        })
+                        .catch(error => {
+                            console.log("Il y a eu un problème avec l'opération fetch :" + error.message);
+                        })
+                    }
+                    else{
+                        this.message = "Mauvaise réponse du réseau.";
+                    }
+                })
+                .catch(error => {
+                    console.log("Il y a eu un problème avec l'opération fetch :" + error.message);
+                })
             }
         },
 
         beforeMount(){
-            //récupération de l'histoire
-            const storyId = window.location.href.split("?id=")[1];
-            fetch("http://localhost:3000/api/stories/" + storyId)
-            .then(response => {
-                if(response.ok){
-                    response.json()
-                    .then(myJson => {
-                        this.title = myJson.Story.title;
-                        this.story = myJson.Story.story;
-                        this.picture.url = myJson.url;
-                        this.picture.illustrator = myJson.illustrator;
-                        this.picture.caption = myJson.caption;
-                    })
-                    .catch(error => {
-                        console.log("Il y a eu un problème avec l'opération fetch :" + error.message);
-                    })
-                }
-                else{
-                    this.message = "Mauvaise réponse du réseau.";
-                }
-            })
-            .catch(error => {
-                console.log("Il y a eu un problème avec l'opération fetch :" + error.message);
-            })
-        },
-
-        mounted(){
-
+            this.getStory();
         }
     }
 </script>

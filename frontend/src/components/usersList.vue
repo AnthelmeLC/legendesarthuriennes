@@ -1,10 +1,32 @@
 <template>
-    <article>
-        <h2>Les auteurs du site :</h2>
-        <div id="users" ref="users">
-
-        </div>
-    </article>
+    <div>
+        <article>
+            <h2>Créer un nouvel utilisateur :</h2>
+            <form id="newUserForm" @submit.prevent="onSubmit">
+                <div>
+                    <label for="pseudo">Pseudo* :</label>
+                    <input type="text" id="pseudo" name="pseudo" required ref="pseudo" v-model="pseudo">
+                </div>
+                <div>
+                    <label for="password">Mot de passe* : </label>
+                    <input type="password" id="password" name="password" required ref="password" v-model="password" @change="onSelect">
+                </div>
+                <div>
+                    <label for="confirmationPassword">Confirmation* :</label>
+                    <input type="password" id="confirmationPassword" name="confirmationPassword" required ref="confirmationPassword" v-model="confirmationPassword" @change="onSelect">
+                </div>
+                <button>Créer l'utilisateur</button>
+                <p>{{postMessage}}</p>
+            </form>
+        </article>
+        <article>
+            <h2>Les auteurs du site :</h2>
+            <div id="users" ref="users">
+                <p v-for="(user, index) of usersList" :key="user.id">{{user.pseudo}}<img src="../../public/delete.png" alt="croix rouge" v-on:click.prevent="remove(user.id, index)"></p>
+                <p>{{removeMessage}}</p>
+            </div>
+        </article>
+    </div>
 </template>
 
 <style scoped>
@@ -15,71 +37,150 @@
     export default {
         name : "usersList",
 
-        mounted(){
-            if(localStorage.admin === "true"){
-                //récupération de tous les utilisateurs
+        data(){
+            return {
+                pseudo : "",
+                password : "",
+                confirmationPassword : "",
+
+                postMessage : "",
+
+                usersList : [],
+
+                removeMessage : ""
+            }
+        },
+
+        methods : {
+            onSelect(){
+                //si les deux mots de passe ne correspondent pas
+                if(this.confirmationPassword != this.password){
+                    this.$refs.password.setAttribute("class", "invalid");
+                    this.$refs.confirmationPassword.setAttribute("class", "invalid");
+                }
+                //si les deux mots de passe correspondent
+                else{
+                    console.log(this.$refs.password);
+                    this.$refs.password.setAttribute("class", "valid");
+                    this.$refs.confirmationPassword.setAttribute("class", "valid");
+                }
+            },
+
+            onSubmit(){
+                //si le formulaire n'est pas correctement rempli
+                if(document.getElementsByClassName("invalid").length > 0){
+                    alert("Veuillez remplir correctement le formulaire pour ajouter un utilisateur.");
+                }
+                //si le formulaire est correctement rempli
+                else{
+                    
+                    let user = {
+                        pseudo : this.pseudo,
+                        password : this.confirmationPassword
+                    };
+                    //options de la requête
+                    const options = {
+                        headers : {
+                            "Content-type" : "application/json",
+                            authorization : localStorage.userId + " " + localStorage.token
+                        },
+                        method : "POST",
+                        body : JSON.stringify({
+                            pseudo : user.pseudo,
+                            password : user.password
+                        })
+                    };
+                    //envoi du formulaire
+                    fetch("http://localhost:3000/api/auth/signup", options)
+                    .then(response => {
+                        if(response.ok){
+                            this.postMessage = "Utilisateur créé.";
+                            this.removeMessage = "";
+                            this.pseudo = "";
+                            this.password = "";
+                            this.confirmationPassword = "";
+                            this.getUsers();
+                        }
+                        else{
+                            this.postMessage = "Mauvaise réponse du réseau.";
+                            this.removeMessage = "";
+                        }
+                    })
+                    .catch(error => {
+                        console.log("Il y a eu un problème avec l'opération fetch :" + error.message);
+                        this.postMessage = "Il y a eu un problème avec l'opération fetch";
+                        this.removeMessage = "";
+                    });
+                }
+            },
+
+            remove(id, index){
                 //options de la requête
                 const options = {
                     headers : {
                         authorization : localStorage.userId + " " + localStorage.token
-                    }
+                    },
+                    method : "DELETE"
                 };
                 //envoi de la requête
-                fetch("http://localhost:3000/api/auth/", options)
+                fetch("http://localhost:3000/api/auth/" + id, options)
                 .then(response => {
                     if(response.ok){
-                        response.json()
-                        .then(myJson => {
-                            const usersDiv = this.$refs.users;
-                            //mise en page pour chaque utilisateur
-                            for(let user of myJson){
-                                //seul les utilisateurs non admin apparaissent
-                                if(!user.admin){
-                                    const newUser = document.createElement("p");
-                                    newUser.innerHTML = `${user.pseudo} <img src="./delete.png" alt="croix rouge" id="remove${user.id}">`;
-                                    usersDiv.appendChild(newUser);
-                                    //boutton pour supprimer un utilisateur
-                                    const remove = document.getElementById("remove" + user.id);
-                                    remove.addEventListener("click",function(e){
-                                        e.preventDefault();
-                                        //options de la requête
-                                        const options = {
-                                            headers : {
-                                                authorization : localStorage.userId + " " + localStorage.token
-                                            },
-                                            method : "DELETE"
-                                        };
-                                        //envoi de la requête
-                                        fetch("http://localhost:3000/api/auth/" + user.id, options)
-                                        .then(response => {
-                                            if(response.ok){
-                                                console.log("Utilisateur supprimé.");
-                                                window.location.reload();
-                                            }
-                                            else{
-                                                console.log("Mauvaise réponse du réseau");
-                                            }
-                                        })
-                                        .catch(error => {
-                                            console.log("Il y a eu un problème avec l'opération fetch :" + error.message);
-                                        });
-                                        return false
-                                    });
-                                }
-                            }
-                        })
-                        .catch(error => {
-                            console.log("Il y a eu un problème avec l'opération fetch :" + error.message);
-                        });
+                        this.removeMessage = "Utilisateur supprimé.";
+                        this.postMessage = "";
+                        this.usersList.splice(index);
                     }
                     else{
-                        console.log("Mauvaise réponse du réseau");
+                        this.removeMessage = "Mauvaise réponse du réseau";
+                        this.postMessage = "";
                     }
                 })
                 .catch(error => {
                     console.log("Il y a eu un problème avec l'opération fetch :" + error.message);
+                    this.removeMessage = "Il y a eu un problème avec l'opération fetch";
+                    this.postMessage = "";
                 });
+            },
+
+            getUsers(){
+                //si l'utilisateur est admi, récupération de tous les utilisateurs
+                if(localStorage.admin === "true"){
+                    //options de la requête
+                    const options = {
+                        headers : {
+                            authorization : localStorage.userId + " " + localStorage.token
+                        }
+                    };
+                    //envoi de la requête
+                    fetch("http://localhost:3000/api/auth/", options)
+                    .then(response => {
+                        if(response.ok){
+                            response.json()
+                            .then(myJson => {
+                                this.usersList = [];
+                                for(let user of myJson){
+                                    if(!user.admin){
+                                        this.usersList.push(user);
+                                    }
+                                }
+                            })
+                            .catch(error => {
+                                console.log("Il y a eu un problème avec l'opération fetch :" + error.message);
+                            });
+                        }
+                        else{
+                            console.log("Mauvaise réponse du réseau");
+                        }
+                    })
+                    .catch(error => {
+                        console.log("Il y a eu un problème avec l'opération fetch :" + error.message);
+                    });
+                }
             }
+        },
+
+        mounted(){
+            this.getUsers();            
         }
     }
 </script>

@@ -16,8 +16,6 @@
         </div>
 
         <div id="admin" ref="admin">
-            <userPost></userPost>
-
             <usersList></usersList>
 
             <storyTypes></storyTypes>
@@ -94,7 +92,6 @@
     import passwordModification from '../components/passwordModification';
     import storyPost from '../components/storyPost';
     import bibliographyPost from '../components/bibliographyPost';
-    import userPost from '../components/userPost';
     import usersList from '../components/usersList';
     import storyTypes from '../components/storyTypes';
 
@@ -106,7 +103,6 @@
             passwordModification,
             storyPost,
             bibliographyPost,
-            userPost,
             usersList,
             storyTypes
         },

@@ -2,7 +2,7 @@
     <article>
         <h2>Les types d'histoires :</h2>
         <div id="storyTypes" ref="storyTypes">
-            
+            <p v-for="(storyType, index) of storyTypesList" :key="storyType.id">{{storyType.name}}<img src="../../public/delete.png" alt="Croix rouge" v-on:click.prevent="remove(storyType.id, index)"></p>            
         </div>
         <form id="storyTypeForm" ref="storyTypesForm" @submit.prevent="onSubmit">
             <div>
@@ -25,6 +25,8 @@
         
         data(){
             return {
+                storyTypesList : [],
+
                 newStoryType : "",
 
                 message : ""
@@ -49,7 +51,8 @@
                 .then(response => {
                     if(response.ok){
                         this.message = "Type d'histoire créé.";
-                        window.location.reload();
+                        this.newStoryType = "";
+                        this.getStoryTypes();
                     }
                     else{
                         this.message = "Mauvaise réponse du réseau.";
@@ -59,61 +62,66 @@
                     console.log("Il y a eu un problème avec l'opération fetch :" + error.message);
                     this.message = "Il y a eu un problème avec l'opération fetch";
                 });
-            }
-        },
+            },
 
-        mounted(){
-            //si l'utilisateur est admin
-            if(localStorage.admin === "true"){
-                //récupération des types d'histoires
-                fetch("http://localhost:3000/api/storyTypes")
+            remove(id, index){
+                //options de la requête
+                const options = {
+                    headers : {
+                        authorization : localStorage.userId + " " + localStorage.token
+                    },
+                    method : "DELETE"
+                };
+                //envoi de la requête
+                fetch("http://localhost:3000/api/storyTypes/" + id, options)
                 .then(response => {
                     if(response.ok){
-                        response.json()
-                        .then(myJson => {
-                            const storyTypesDiv = this.$refs.storyTypes
-                            for(let storyType of myJson){
-                                const newStoryType = document.createElement("p");
-                                newStoryType.innerHTML = `${storyType.name} <img src="./delete.png" alt="croix rouge" id="remove${storyType.id}">`
-                                storyTypesDiv.appendChild(newStoryType);
-                                //boutton pour supprimer le type d'histoire
-                                const remove = document.getElementById("remove" + storyType.id);
-                                remove.addEventListener("click",function(e){
-                                    e.preventDefault();
-                                    //options de la requête
-                                    const options = {
-                                        headers : {
-                                            authorization : localStorage.userId + " " + localStorage.token
-                                        },
-                                        method : "DELETE"
-                                    };
-                                    //envoi de la requête
-                                    fetch("http://localhost:3000/api/storyTypes/" + storyType.id, options)
-                                    .then(response => {
-                                        if(response.ok){
-                                            console.log("Type d'histoires supprimé.");
-                                            window.location.reload();
-                                        }
-                                        else{
-                                            console.log("Mauvaise réponse du réseau");
-                                        }
-                                    })
-                                    .catch(error => {
-                                        console.log("Il y a eu un problème avec l'opération fetch :" + error.message);
-                                    });
-                                    return false
-                                });
-                            }
-                        })
-                        .catch(error => {
-                            console.log("Il y a eu un problème avec l'opération fetch :" + error.message);
-                        });
+                        this.message = "Type d'histoires supprimé.";
+                        this.storyTypesList.splice(index);
+                    }
+                    else{
+                        this.message = "Mauvaise réponse du réseau";
                     }
                 })
                 .catch(error => {
                     console.log("Il y a eu un problème avec l'opération fetch :" + error.message);
+                    this.message = "Il y a eu un problème avec l'opération fetch";
                 });
+            },
+
+            getStoryTypes(){
+                //options de la requête
+                const options = {
+                    headers : {
+                        authorization : localStorage.userId + " " + localStorage.token
+                    }
+                };
+                //si l'utilisateur est admin, récupération des types d'histoires
+                if(localStorage.admin === "true"){
+                    fetch("http://localhost:3000/api/storyTypes", options)
+                    .then(response => {
+                        if(response.ok){
+                            response.json()
+                            .then(myJson => {
+                                this.storyTypesList = [];
+                                for(let storyType of myJson){
+                                    this.storyTypesList.push(storyType);
+                                }
+                            })
+                            .catch(error => {
+                                console.log("Il y a eu un problème avec l'opération fetch :" + error.message);
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.log("Il y a eu un problème avec l'opération fetch :" + error.message);
+                    });
+                }
             }
+        },
+
+        mounted(){
+            this.getStoryTypes();
         }
     }
 </script>
