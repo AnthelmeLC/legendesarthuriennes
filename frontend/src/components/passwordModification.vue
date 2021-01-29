@@ -52,7 +52,7 @@
             onSubmit(){
                 //si le formulaire n'est pas correctement rempli
                 if(document.getElementsByClassName("invalid").length > 0){
-                    alert("Veuillez remplir correctement le formulaire pour modifier votre pseudo.");
+                    this.message = "Veuillez remplir correctement le formulaire pour modifier votre pseudo.";
                 }
                 //si le formulaire est correctement rempli
                 else{
@@ -77,6 +77,9 @@
                     .then(response => {
                         if(response.ok){
                             this.message = "Mot de passe modifié.";
+                            this.oldPassword = "";
+                            this.newPassword = "";
+                            this.confirmationPassword = "";
                         }
                         else{
                             this.message = "Mauvaise réponse du réseau.";

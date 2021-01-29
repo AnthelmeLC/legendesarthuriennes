@@ -51,6 +51,7 @@
                 .then(response => {
                     if(response.ok){
                         this.message = "Pseudo modifié.";
+                        this.newPseudo = "";
                     }
                     else{
                         this.message = "Mauvaise réponse du réseau.";

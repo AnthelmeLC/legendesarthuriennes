@@ -3,14 +3,18 @@
         <router-link to="/">Home</router-link> <!--à modifier avec le logo du site ou un logo temporaire-->
         <router-link to="/preface">Préface</router-link>
         <div id="storyTypes" ref="storyTypeDiv">
-        
+            <a v-for="(storyType) of titles" :key="storyType.id" class="expand">{{storyType}}
+                <div class="hidden unfold">
+                    <router-link v-for="title of titles[storyType]" :key="title.id" :to="'/story?id='+title.id">{{title.title}}</router-link>
+                </div>
+            </a>
         </div>
         <router-link to="/bibliography">Bibliograhie</router-link>
         <router-link to="/about">À propos</router-link>
         <router-link to="/contact">Contact</router-link>
-        <router-link to="/login" id="login">Connexion</router-link>
-        <router-link to="/user" id="userSpaceLink">Espace Auteur</router-link>
-        <a id="disconnect">Déconnexion</a>
+        <router-link v-if="!token" to="/login" ref="login">Connexion</router-link>
+        <router-link v-if="token" to="/user" ref="userSpaceLink">Espace Auteur</router-link>
+        <a v-if="token" id="disconnect" ref="disconnect" @click="disconnect">Déconnexion</a>
     </nav>
 </template>
 
@@ -91,40 +95,38 @@
     export default {
         name : "navBar",
 
-        beforeMount(){
+        data(){
+            return {
+                titles : [],
+                token : localStorage.token
+            }
+        },
+
+        methods : {
+            disconnect(){
+                localStorage.clear();
+                this.token = ""
+                if(window.location.pathname === "/user"){
+                    window.location.pathname = "/";
+                }
+            }
+        },
+
+        mounted(){
             fetch("http://localhost:3000/api/stories/titles/")
             .then(response => {
                 if(response.ok){
                     response.json()
                     .then(myJson => {
                         for(let title of myJson){
-                            if(!document.getElementById(title.typeId)){
-                                const newStoryType = document.createElement("a");
-                                newStoryType.setAttribute("class", "expand");
-                                newStoryType.innerHTML = `${title.StoryType.name}<div class="unfold hidden" id="${title.typeId}"></div>`;
-                                this.$refs.storyTypeDiv.appendChild(newStoryType);
-                                const newTitle = document.createElement("a");
-                                newTitle.innerHTML = title.title;
-                                newTitle.setAttribute("href", window.location.origin + "?id=" + title.id);
-                                const hiddenDiv = document.getElementById(title.typeId)
-                                hiddenDiv.appendChild(newTitle);
-                                newTitle.addEventListener("click", function(e){
-                                    e.preventDefault();
-                                    window.location = window.location.origin + "/story?id=" + title.id;
-                                    return false
-                                })
+                            const storyType = title.StoryType.name;
+                            if(!this.titles.includes(storyType)){
+                                this.titles.push(storyType);
+                                this.titles[storyType] = [];
+                                this.titles[storyType].push(title);
                             }
                             else{
-                                const newTitle = document.createElement("a");
-                                newTitle.innerHTML = title.title;
-                                newTitle.setAttribute("href", window.location.origin + "?id=" + title.id);
-                                const hiddenDiv = document.getElementById(title.typeId)
-                                hiddenDiv.appendChild(newTitle);
-                                newTitle.addEventListener("click", function(e){
-                                    e.preventDefault();
-                                    window.location = window.location.origin + "/story?id=" + title.id;
-                                    return false
-                                })
+                                this.titles[storyType].push(title);
                             }
                         }
                     })
@@ -135,37 +137,6 @@
                 }
             })
             .catch(error => console.log("Il y a eu un problème avec l'opération fetch : " + error.message));
-        },
-
-        mounted(){
-            const disconnect = document.getElementById("disconnect");
-            //si utilisateur n'est pas connecté
-            if(!localStorage.token){
-                //on cache le lien vers l'espace utilisateur et le lien de déconnexion
-                const userSpaceLink = document.getElementById("userSpaceLink");
-                userSpaceLink.setAttribute("style", "display : none");
-                disconnect.setAttribute("style", "display : none");
-            }
-            else{
-                //on cache le boutton de connexion
-                const login = document.getElementById("login");
-                login.setAttribute("style", "display : none");
-                
-            }
-    
-            //boutton déconnexion
-            disconnect.addEventListener("click", function(e){
-                e.preventDefault();
-                //suppression du token d'authentification, tu userId et admin
-                localStorage.clear();
-                if(window.location.pathname === "/user"){
-                    window.location = window.location.origin + "/"
-                }
-                else{
-                    window.location.reload();
-                }
-                return false
-            })
         }
     }
 </script>

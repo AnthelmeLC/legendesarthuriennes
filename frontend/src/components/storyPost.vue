@@ -13,7 +13,7 @@
             <div>
                 <label for="storyType">C'est l'histoire d'un :</label>
                 <select name="storyType" id="storyType" required ref="storyType" v-model="story.storyType">
-
+                    <option v-for="storyType of storyTypesList" :key="storyType.name" :value="storyType.name">{{storyType.name}}</option>
                 </select>
             </div>
             <div>
@@ -44,6 +44,8 @@
     
         data(){
             return {
+                storyTypesList : [],
+
                 story : {
                     title : "",
                     story : "",
@@ -86,6 +88,12 @@
                 .then(response => {
                     if(response.ok){
                         this.message = "Histoire créée.";
+                        this.story.title = "";
+                        this.story.story = "";
+                        this.story.storyType = "";
+                        this.story.illustrator = "";
+                        this.story.caption = "";
+                        this.file = "";
                     }
                     else{
                         this.message = "Mauvaise réponse du réseau.";
@@ -99,18 +107,20 @@
         },
     
         mounted(){
+            //options de la requête
+            const options = {
+                headers : {
+                    authorization : localStorage.userId + " " + localStorage.token
+                }
+            }
             //récupération des types d'histoire
-            fetch("http://localhost:3000/api/storyTypes/")
+            fetch("http://localhost:3000/api/storyTypes/", options)
             .then(response => {
                 if(response.ok){
                     response.json()
                     .then(myJson => {
-                        const storyTypeSelect = this.$refs.storyType
                         for(let storyType of myJson){
-                            const newStoryType = document.createElement("option");
-                            newStoryType.setAttribute("value", storyType.name);
-                            newStoryType.innerHTML = storyType.name;
-                            storyTypeSelect.appendChild(newStoryType);
+                            this.storyTypesList.push(storyType);
                         }
                     })
                     .catch(error => {
