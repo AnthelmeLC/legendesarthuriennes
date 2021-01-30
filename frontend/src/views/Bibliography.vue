@@ -2,11 +2,12 @@
     <section class="container">
         <h1>Bibliographie</h1>
         <div ref="bibliographyDiv" id="bibliographyDiv">
+            <p>{{message}}</p>
             <article v-for="(bibliography, index) of bibliographyList" :key="bibliography.id">
                 <h2 class="title">{{bibliography.title}}</h2>
                 <div class="content">
                     <img :src="bibliography.pictureUrl" alt="">
-                    <div>
+                    <div class="details">
                         <p>Auteur : {{bibliography.auther}}</p>
                         <p>Traducteur : {{bibliography.translater}}</p>
                         <p>Date de publication : {{bibliography.yearOfPublication}}</p>
@@ -16,7 +17,6 @@
                         <img src="../../public/modify.png" alt="" @click.prevent="modify(bibliography)">
                         <img src="../../public/delete.png" alt="" @click.prevent="remove(bibliography.id, index)">
                     </div>
-                    <p>{{message}}</p>
                 </div>
             </article>
         </div>
@@ -48,7 +48,6 @@
                     <input type="file" id="bibliographyPicture" name="bibliographyPicture" accept="image/*" ref="bibliographyPicture" @change="onSelect">
                 </div>
                 <button>Publier ma bibliographie</button>
-                <p>{{message}}</p>
             </form>
         </article>
         
@@ -71,26 +70,30 @@
         display: flex;
     }
 
-    .content div{
-        width: 100%;
+    .details{
+        margin-left: 5%;
+        min-width: 40%;
     }
 
-    .content p{
+    .details p{
         font-size: 1.5em;
-        margin-top: 0;
-        margin-bottom: 10px;
+        margin: 0 0 10px 0;
+        width: fit-content;
     }
 
     .content img{
         width: 100px;
         display: block;
         height: fit-content;
+        margin-left: 5%;
     }
 
     .moderation{
         display: flex;
         flex-direction: column;
         justify-content: space-around;
+        width: 32px;
+        margin-left: 20%;
     }
 
     .moderation img{
@@ -131,6 +134,7 @@
                     if(response.ok){
                         response.json()
                         .then(myJson => {
+                            this.bibliographyList = [];
                             for(let bibliography of myJson){
                                 this.bibliographyList.push(bibliography);
                             }
@@ -206,7 +210,10 @@
                     if(response.ok){
                         this.message = "Bibliographie mise à jour."
                         this.bibliography = "";
-                        //this.getBibliography();
+                        this.file = "";
+                        this.getBibliography();
+                        this.$refs.modifyBibliographyForm.setAttribute("class", "hidden");
+                        window.location.hash = "";
                     }
                     else{
                         this.message = "Mauvaise réponse du réseau";
