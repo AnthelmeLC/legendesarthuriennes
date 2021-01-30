@@ -1,6 +1,7 @@
 const Story = require("../models/story");
 const StoryType = require("../models/storyType");
 const Picture = require("../models/picture");
+const fs = require("fs");
 
 //GET ALL TITLES
 exports.getAllTitles = (req, res, next) => {
@@ -20,7 +21,6 @@ exports.getOneStory = (req, res, next) => {
     Picture.belongsTo(Story, {
         foreignKey : "StoryId"
     });
-    console.log(req.params.id);
     // récupération de l'histoire
     Picture.findOne({where : {storyId : req.params.id}, include : Story})
     .then(story => res.status(200).json(story))
@@ -60,32 +60,64 @@ exports.createStory = (req, res, next) => {
 
 //MODIFY ONE
 exports.modifyStory = (req, res, next) => {
+    //parsing de l'objet story
+    const storyObject = JSON.parse(req.body.story);
     //récupération du type d'histoire correspondant
-    StoryType.findOne({where : {name : req.body.storyType}})
+    StoryType.findOne({where : {name : storyObject.storyType}})
     .then(storyType => {
-        //liaison entre l'image et l'histoires
-        Story.hasOne(Picture);
-        Picture.belongsTo(Story, {
-            foreignKey : "storyId"
-        });
-        //modification de l'histoire
-        Story.update({
-            typeId : storyType.id,
-            title : req.body.title,
-            story : req.body.story,
-            Picture : {
-                url : req.body.url,
-                illustrator : req.body.illustrator,
-                caption : req.body.caption
-            }
-        },{
-            include : {Picture}
-        },
-        {
-            where : {id : req.params.id}
-        })
-        .then(() => res.status(201).json({message : "Histoire modifiée."}))
-        .catch(error => res.status(400).json({error}));
+        if(req.file){
+            Picture.findOne({where : {id : storyObject.pictureId}})
+            .then(picture => {
+                const filename = picture.url.split("/images/")[1];
+                fs.unlink(`images/${filename}`, () => {
+                    //liaison entre l'image et l'histoires
+                    Picture.Story = Picture.belongsTo(Story, {
+                        foreignKey : "storyId"
+                    });
+                    Picture.update({
+                        url : `${req.protocol}://${req.get("host")}/images/${req.file.filename}`,
+                        illustrator : storyObject.illustrator,
+                        caption : storyObject.caption,
+                    },{
+                        where : {id : storyObject.pictureId},
+                    })
+                    .then(() => {
+                        Story.update({
+                            title : storyObject.title,
+                            story : storyObject.story,
+                            typeId : storyType.id
+                        },{
+                            where : {id : req.params.id}
+                        })
+                        .then(() => res.status(201).json({message : "Histoire modifiée"}))
+                        .catch(error => res.status(400).json({error}))
+                    })
+                    .catch(error => res.status(400).json({error}));
+                })
+            })
+            .catch(error => res.status(400).json(error))
+        }
+        else{
+            Picture.update({
+                illustrator : storyObject.illustrator,
+                caption : storyObject.caption,
+            
+            },{
+                where : {id : storyObject.pictureId}
+            })
+            .then(() => {
+                Story.update({
+                    title : storyObject.title,
+                    story : storyObject.story,
+                    typeId : storyType.id
+                },{
+                    where : {id : req.params.id}
+                })
+                .then(() => res.status(201).json({message : "Histoire modifiée"}))
+                .catch(error => res.status(400).json({error}))
+            })
+            .catch(error => res.status(400).json({error}));
+        }
     })
     .catch(error => res.status(400).json({error}));
 };

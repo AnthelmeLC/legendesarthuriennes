@@ -38,10 +38,10 @@ exports.modifyBibliography = (req, res, next) => {
                 }
                 Bibliography.update({...bibliographyObject}, {where : {id : req.params.id}})
                 .then(() => res.status(201).json({message : "Bibliograhie modifiée"}))
-                .catch(error => res.status(400).json(error));
+                .catch(error => res.status(400).json({error}));
             })
         })
-        .catch(error => res.status(400).json(error));
+        .catch(error => res.status(400).json({error}));
     }
     //si l'utilisateur ne modifie pas l'image de la bibliographie
     else{
@@ -50,21 +50,8 @@ exports.modifyBibliography = (req, res, next) => {
         }
         Bibliography.update({...bibliographyObject}, {where : {id : req.params.id}})
         .then(() => res.status(201).json({message : "Bibliograhie modifiée"}))
-        .catch(error => res.status(400).json(error));
+        .catch(error => res.status(400).json({error}));
     }
-    //modification de la bibliographie
-    //Bibliography.update({
-    //    title : req.body.title,
-    //    auther : req.body.auther,
-    //    translater : req.body.translater,
-    //    yearOfPublication : req.body.yearOfPublication,
-    //    yearOfReissue : req.body.yearOfReissue,
-    //    pictureUrl : req.body.pictureUrl
-    //},{
-    //    where : {id : req.params.id}
-    //})
-    //.then(() => res.status(201).json({message : "Bibliographie modifiée."}))
-    //.catch(error => res.status(400).json({error}));
 };
 
 //DELETE ONE

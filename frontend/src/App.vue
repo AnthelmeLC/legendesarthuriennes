@@ -107,6 +107,22 @@
         scale: 0.9;
         transition: scale() ease-in-out 200ms;
     }
+
+    .moderation{
+        display: flex;
+        justify-content: space-around;
+    }
+
+    .moderation img{
+        display: block;
+        width: 32px;
+        cursor: pointer;
+    }
+
+    .moderation img:hover{
+        scale: 0.9;
+        transition: scale() ease-in-out 200ms;
+    }
 </style>
 
 <script>

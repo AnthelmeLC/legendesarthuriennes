@@ -54,7 +54,7 @@
     </section>
 </template>
 
-<style>
+<style scoped>
     #bibliographyDiv article{
         margin-right: 5%;
         margin-left: 5%;
@@ -89,22 +89,13 @@
     }
 
     .moderation{
-        display: flex;
         flex-direction: column;
-        justify-content: space-around;
         width: 32px;
         margin-left: 20%;
     }
 
     .moderation img{
-        display: block;
         width: 32px;
-        cursor: pointer;
-    }
-
-    .moderation img:hover{
-        scale: 0.9;
-        transition: scale() ease-in-out 200ms;
     }
 </style>
 
@@ -173,7 +164,8 @@
                 .then(response => {
                     if(response.ok){
                         this.message = "Bibliography supprimée.";
-                        this.bibliographyList.splice(index);
+                        this.bibliographyList.splice(index, 1);
+                        console.log(this.bibliographyList);
                     }
                     else{
                         this.message = "Mauvaise réponse du réseau";
