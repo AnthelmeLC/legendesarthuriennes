@@ -17,15 +17,15 @@
         </div>
 
         <article class="hidden" ref="modifyStoryForm" id="modifyStoryForm">
-        <h2>Nouvelle histoire :</h2>
+        <h2>Modifier l'histoire :</h2>
         <form id="newStoryForm" @submit.prevent="onSubmit">
             <div>
                 <label for="storyTitle">Titre* :</label>
                 <input type="text" id="title" name="title" required ref="title" v-model="title">
             </div>
-            <div id="storyDiv">
+            <div id="formStoryDiv">
                 <label for="story">Racontez nous* :</label>
-                <textarea name="story" id="story" cols="30" rows="30" required ref="story" v-model="story"></textarea>
+                <textarea name="story" id="formStory" cols="30" rows="30" required ref="story" v-model="story"></textarea>
             </div>
             <div>
                 <label for="storyType">C'est l'histoire d'un :</label>
@@ -82,6 +82,62 @@
     .moderation{
         margin-top: 5%;
         margin-bottom: 2%;
+    }
+
+    article{
+        margin-bottom: 20%;
+    }
+
+    h2{
+        width: 50%;
+        margin-left: auto;
+        margin-right: auto;
+        font-size: 3em;
+    }
+
+    form{
+        width: 80%;
+        margin-right: auto;
+        margin-left: auto;
+        position: relative;
+        margin-bottom: 10%;
+    }
+
+    form div{
+        display: flex;
+        margin-bottom: 5%;
+    }
+
+    label{
+        display: block;
+        font-size: 2em;
+    }
+
+    input, textarea, select{
+        display: block;
+        margin-left: 5%;
+    }
+
+    textarea{
+        width: 85%;
+    }
+
+    select{
+        font-family: KingthingsCalligraphicaLight;
+        font-size: 2em;
+    }
+
+    button{
+        width: 150px;
+        height: 60px;
+    }
+
+    .profilForm{
+        width: 50%;
+    }
+
+    #formStoryDiv{
+        flex-direction: column;
     }
 </style>
 

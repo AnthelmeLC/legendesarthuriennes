@@ -8,6 +8,7 @@ const userRoutes = require("./routes/user");
 const storyTypeRoutes = require("./routes/stroryType");
 const storyRoutes = require("./routes/story");
 const bibliographyRoutes = require("./routes/bibliography");
+const mailRoutes = require("./routes/mail");
 
 const app = express();
 
@@ -30,5 +31,6 @@ app.use("/api/auth", userRoutes);
 app.use("/api/storyTypes", storyTypeRoutes);
 app.use("/api/stories", storyRoutes);
 app.use("/api/bibliography", bibliographyRoutes);
+app.use("/api/mail", mailRoutes)
 
 module.exports = app;

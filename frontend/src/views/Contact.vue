@@ -70,7 +70,41 @@
 
         methods : {
             onSubmit(){
-                
+                const mail = {
+                    pseudo : this.email.pseudo,
+                    topic : this.email.topic,
+                    message : this.email.message
+                };
+                //options de la requête
+                const options = {
+                    headers : {
+                        "Content-type" : "application/json"
+                    },
+                    method : "post",
+                    body : JSON.stringify({
+                        pseudo : mail.pseudo,
+                        topic : mail.topic,
+                        message : mail.message
+                    })
+                };
+                console.log(options);
+                //envoi du formulaire
+                fetch("http://localhost:3000/api/mail/", options)
+                .then(response => {
+                    if(response.ok){
+                        this.message = "email envoyé";
+                        this.email.pseudo = "";
+                        this.email.topic = "";
+                        this.email.message = "";
+                    }
+                    else{
+                        this.message = "email non envoyé";
+                    }
+                })
+                .catch(error => {
+                    console.log("Il y a eu un problème avec l'opération fetch : " + error);
+                    this.message = "Il y a eu un problème avec l'opération fetch";
+                });
             }
         }
     }
