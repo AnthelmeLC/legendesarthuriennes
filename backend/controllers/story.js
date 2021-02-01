@@ -124,8 +124,17 @@ exports.modifyStory = (req, res, next) => {
 
 //DELETE ONE
 exports.deleteStory = (req, res, next) => {
-    //suppression de l'histoire
-    Story.destroy({where : {id : req.params.id}})
-    .then(() => res.status(200).json({message : "Histoire supprimée."}))
-    .catch(error => res.status(400).json({error}));
+    //recherche de l'image correspondant à l'histoire
+    Picture.findOne({where : {storyId : req.params.id}})
+    .then(picture => {
+        //suppression de l'image
+        const filename = picture.url.split("/images/")[1];
+        fs.unlink(`images/${filename}`, () => {
+            //suppression de l'histoire
+            Story.destroy({where : {id : req.params.id}})
+            .then(() => res.status(200).json({message : "Histoire supprimée."}))
+            .catch(error => res.status(400).json({error}));
+        })
+    })
+    .catch(error => res.status(400).json(error))
 };
