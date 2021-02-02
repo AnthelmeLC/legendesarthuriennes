@@ -2,7 +2,7 @@
     <section class="container">
         <h1>Bibliographie</h1>
         <div ref="bibliographyDiv" id="bibliographyDiv">
-            <p>{{message}}</p>
+            <p ref="message">{{message}}</p>
             <article v-for="(bibliography, index) of bibliographyList" :key="bibliography.id">
                 <h2 class="title">{{bibliography.title}}</h2>
                 <div class="content">
@@ -44,10 +44,10 @@
                     <input type="text" id="yearOfReissue" name="yearOfReissue" ref="yearOfReissue" v-model="bibliography.yearOfReissue">
                 </div>
                 <div>
-                    <label for="bibliographyPicture">Aperçu de l'oeuvre* :</label>
+                    <label for="bibliographyPicture">Aperçu de l'oeuvre :</label>
                     <input type="file" id="bibliographyPicture" name="bibliographyPicture" accept="image/*" ref="bibliographyPicture" @change="onSelect">
                 </div>
-                <button>Publier ma bibliographie</button>
+                <button class="biggerBtn">Publier ma bibliographie</button>
             </form>
         </article>
         
@@ -64,6 +64,9 @@
 
     #bibliographyDiv h2{
         margin-left: 2%;
+        background-color: #efefef;
+        color: black;
+        text-align: left;
     }
 
     .content{
@@ -163,16 +166,18 @@
                 fetch("http://localhost:3000/api/bibliography/" + id, options)
                 .then(response => {
                     if(response.ok){
+                        this.$refs.message.setAttribute("class", "validMessage")
                         this.message = "Bibliography supprimée.";
                         this.bibliographyList.splice(index, 1);
-                        console.log(this.bibliographyList);
                     }
                     else{
-                        this.message = "Mauvaise réponse du réseau";
+                        this.$refs.message.setAttribute("class", "invalidMessage")
+                        this.message = "La bibliographie n'a pas pu être supprimée.";
                     }
                 })
                 .catch(error => {
                     console.log("Il y a eu un problème avec l'opération fetch :" + error.message);
+                    this.$refs.message.setAttribute("class", "invalidMessage")
                     this.message = "Il y a eu un problème avec l'opération fetch" + error;
                 });
             },
@@ -200,6 +205,7 @@
                 fetch("http://localhost:3000/api/bibliography/" + this.bibliography.id, options)
                 .then(response => {
                     if(response.ok){
+                        this.$refs.message.setAttribute("class", "validMessage")
                         this.message = "Bibliographie mise à jour."
                         this.bibliography = "";
                         this.file = "";
@@ -208,11 +214,13 @@
                         window.location.hash = "";
                     }
                     else{
-                        this.message = "Mauvaise réponse du réseau";
+                        this.$refs.message.setAttribute("class", "invalidMessage")
+                        this.message = "La bibliographie n'a pas pu être modifiée.";
                     }
                 })
                 .catch(error => {
                     console.log("Il y a eu un problème avec l'opération fetch : " + error);
+                    this.$refs.message.setAttribute("class", "validMessage")
                     this.message = "Il y a eu un problème avec l'opération fetch"
                 })
             }

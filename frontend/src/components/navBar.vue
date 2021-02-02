@@ -57,7 +57,8 @@
     }
 
     a.router-link-exact-active{
-        color: #1000e6;
+        background-color: #2d6ca2;
+        color: white;
     }
 
     .expand{

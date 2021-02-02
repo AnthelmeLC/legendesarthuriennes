@@ -1,6 +1,7 @@
 <template>
     <section class="container">
-        <Wip msg='une page A propos :D'></Wip>
+        <h1>A propos</h1>
+        <Wip msg='une page A propos ainsi que certaines références.'></Wip>
     </section>
 </template>
 

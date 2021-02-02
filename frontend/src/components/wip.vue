@@ -1,8 +1,8 @@
 <template>
-    <section id="wip" class="container">
-        <h1>Cette page est en cours de développement<br>et sera disponible prochainement.</h1>
+    <article id="wip">
+        <h2>Cette page est en cours de développement<br>et sera disponible prochainement.</h2>
         <p>Vous trouverez ici {{msg}}</p>
-    </section>
+    </article>
 </template>
 
 <script>

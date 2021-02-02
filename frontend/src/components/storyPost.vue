@@ -8,10 +8,10 @@
             </div>
             <div id="storyDiv">
                 <label for="story">Racontez nous* :</label>
-                <textarea name="story" id="story" cols="30" rows="30" required ref="story" v-model="story.story"></textarea>
+                <textarea name="story" id="story" rows="10" required ref="story" v-model="story.story"></textarea>
             </div>
             <div>
-                <label for="storyType">C'est l'histoire d'un :</label>
+                <label for="storyType">C'est l'histoire d'un* :</label>
                 <select name="storyType" id="storyType" required ref="storyType" v-model="story.storyType">
                     <option v-for="storyType of storyTypesList" :key="storyType.name" :value="storyType.name">{{storyType.name}}</option>
                 </select>
@@ -28,8 +28,9 @@
                 <label for="caption">Légendez votre image* :</label>
                 <input type="text" id="caption" name="caption" required ref="caption" v-model="story.caption">
             </div>
-            <button>Publier mon histoire</button>
-            <p>{{message}}</p>
+            <p ref="message">{{message}}</p>
+            <p v-if="this.message">Rafraichissez la page pour qu'elle <br>apparaisse dans votre barre de navigation.</p>
+            <button class="biggerBtn">Publier mon histoire</button>
         </form>
     </article>
 </template>
@@ -87,6 +88,7 @@
                 fetch("http://localhost:3000/api/stories/", options)
                 .then(response => {
                     if(response.ok){
+                        this.$refs.message.setAttribute("class", "validMessage")
                         this.message = "Histoire créée.";
                         this.story.title = "";
                         this.story.story = "";
@@ -96,44 +98,50 @@
                         this.file = "";
                     }
                     else{
-                        this.message = "Mauvaise réponse du réseau.";
+                        this.$refs.message.setAttribute("class", "invalidMessage")
+                        this.message = "L'histoire n'a pas pu être créée.";
                     }
                 })
                 .catch(error => {
                     console.log("Il y a eu un problème avec l'opération fetch :" + error.message);
+                    this.$refs.message.setAttribute("class", "invalidMessage")
                     this.message = "Il y a eu un problème avec l'opération fetch";
+                });
+            },
+
+            getStoryTypes(){
+                //options de la requête
+                const options = {
+                    headers : {
+                        authorization : localStorage.userId + " " + localStorage.token
+                    }
+                }
+                //récupération des types d'histoire
+                fetch("http://localhost:3000/api/storyTypes/", options)
+                .then(response => {
+                    if(response.ok){
+                        response.json()
+                        .then(myJson => {
+                            for(let storyType of myJson){
+                                this.storyTypesList.push(storyType);
+                            }
+                        })
+                        .catch(error => {
+                            console.log("Il y a eu un problème avec l'opération fetch : " + error);
+                        });
+                    }
+                    else{
+                        this.message = "Impossible de récupérer les types d'histoires";
+                    }
+                })
+                .catch(error => {
+                    console.log("Il y a eu un problème avec l'opération fetch : " + error);
                 });
             }
         },
     
-        mounted(){
-            //options de la requête
-            const options = {
-                headers : {
-                    authorization : localStorage.userId + " " + localStorage.token
-                }
-            }
-            //récupération des types d'histoire
-            fetch("http://localhost:3000/api/storyTypes/", options)
-            .then(response => {
-                if(response.ok){
-                    response.json()
-                    .then(myJson => {
-                        for(let storyType of myJson){
-                            this.storyTypesList.push(storyType);
-                        }
-                    })
-                    .catch(error => {
-                        console.log("Il y a eu un problème avec l'opération fetch : " + error);
-                    });
-                }
-                else{
-                    this.message = "Impossible de récupérer les types d'histoires";
-                }
-            })
-            .catch(error => {
-                console.log("Il y a eu un problème avec l'opération fetch : " + error);
-            });
+        beforeMount(){
+            this.getStoryTypes();
         }
     }
 </script>

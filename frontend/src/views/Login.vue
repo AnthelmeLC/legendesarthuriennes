@@ -10,39 +10,13 @@
                 <label for="password">Mot de passe :</label>
                 <input type="password" id="password" name="password" ref="pseudo" v-model="password">
             </div>
-            <button>Connexion</button>
             <p>{{message}}</p>
+            <button>Connexion</button>
         </form>
     </section>
 </template>
 
 <style scoped>
-    form{
-        width: 50%;
-        margin-right: auto;
-        margin-left: auto;
-        position: relative;
-    }
-
-    form div{
-        display: flex;
-        margin-bottom: 5%;
-    }
-
-    label{
-        display: block;
-        font-size: 2em;
-    }
-
-    input, textarea{
-        display: block;
-        margin-left: 5%;
-    }
-
-    textarea{
-        max-width: 85%;
-    }
-
     p{
         color: red;
     }

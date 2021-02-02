@@ -1,13 +1,13 @@
 <template>
-    <section class="container">
+    <section class="container" v-if="id" ref="storyFound">
         <h1>{{title}}</h1>
         <div id="storyDiv">
             <p id="story">{{story}}</p>
             <figure>
                 <img :src="picture.url" alt="">
                 <figcaption>
-                    Illustrateur : {{picture.illustrator}}<br>
-                    {{picture.caption}}
+                    {{picture.caption}}<br>
+                    Illustrateur : {{picture.illustrator}}
                 </figcaption>
             </figure>
         </div>
@@ -28,13 +28,13 @@
                 <textarea name="story" id="formStory" cols="30" rows="30" required ref="story" v-model="story"></textarea>
             </div>
             <div>
-                <label for="storyType">C'est l'histoire d'un :</label>
+                <label for="storyType">C'est l'histoire d'un* :</label>
                 <select name="storyType" id="storyType" required ref="storyType" v-model="storyType">
                     <option v-for="storyType of storyTypesList" :key="storyType.name" :value="storyType.name">{{storyType.name}}</option>
                 </select>
             </div>
             <div>
-                <label for="storyPicture">Illustrez votre histoire* :</label>
+                <label for="storyPicture">Illustrez votre histoire :</label>
                 <input type="file" id="storyPicture" name="storyPicture" accept="image/*" ref="storyPicture" @change="onSelect">
             </div>
             <div>
@@ -45,11 +45,16 @@
                 <label for="caption">Légendez votre image* :</label>
                 <input type="text" id="caption" name="caption" required ref="caption" v-model="picture.caption">
             </div>
-            <button>Modifier mon histoire</button>
+            <button class="biggerBtn">Modifier mon histoire</button>
         </form>
     </article>
-
-    <p>{{message}}</p>
+    <p ref="message">{{message}}</p>
+    </section>
+    <section v-else class="container" ref="storyNotFound">
+        <h1>Les oubliettes</h1>
+        <p>L'histoire que vous essayez de consulter n'existe pas.</p>
+        <p>Vous trouverez toutes nos histoires disponibles dans la barre de navigation.</p>
+        <p>Si vous pensez que c'est une erreur, n'hésitez pas à  nous contacter via notre formulaire.</p>
     </section>
 </template>
 
@@ -88,56 +93,8 @@
         margin-bottom: 20%;
     }
 
-    h2{
-        width: 50%;
-        margin-left: auto;
-        margin-right: auto;
-        font-size: 3em;
-    }
-
     form{
-        width: 80%;
-        margin-right: auto;
-        margin-left: auto;
-        position: relative;
-        margin-bottom: 10%;
-    }
-
-    form div{
-        display: flex;
-        margin-bottom: 5%;
-    }
-
-    label{
-        display: block;
-        font-size: 2em;
-    }
-
-    input, textarea, select{
-        display: block;
-        margin-left: 5%;
-    }
-
-    textarea{
         width: 85%;
-    }
-
-    select{
-        font-family: KingthingsCalligraphicaLight;
-        font-size: 2em;
-    }
-
-    button{
-        width: 150px;
-        height: 60px;
-    }
-
-    .profilForm{
-        width: 50%;
-    }
-
-    #formStoryDiv{
-        flex-direction: column;
     }
 </style>
 
@@ -174,7 +131,17 @@
 
         watch : {
             $route (){
-                this.getStory();
+                if(this.$refs.storyFound){
+                    if(!window.location.hash && !this.$refs.modifyStoryForm.getAttribute("class")){
+                        this.$refs.modifyStoryForm.setAttribute("class", "hidden");
+                        window.location.hash = "";
+                    }
+                    this.getStory();
+                    this.message="";
+                }
+                else{
+                    this.getStory();
+                }
             }
         },
 
@@ -203,7 +170,8 @@
                         })
                     }
                     else{
-                        this.message = "Mauvaise réponse du réseau.";
+                        this.$refs.message.setAttribute("class", "invalidMessage")
+                        this.message = "L'histoire n'a pas pu être chargée.";
                     }
                 })
                 .catch(error => {
@@ -215,6 +183,7 @@
                 this.getStoryTypes();
                 this.$refs.modifyStoryForm.removeAttribute("class", "hidden");
                 window.location.hash = "#modifyStoryForm";
+                this.message = "";
             },
 
             remove(){
@@ -229,15 +198,16 @@
                 fetch("http://localhost:3000/api/stories/" + this.id, options)
                 .then(response => {
                     if(response.ok){
-                        this.message = "Histoire supprimée.";
                         window.location = window.location.origin;
                     }
                     else{
-                        this.message = "Mauvaise réponse du réseau";
+                        this.$refs.message.setAttribute("class", "invalidMessage")
+                        this.message = "L'histoire n'a pas pu être supprimée.";
                     }
                 })
                 .catch(error => {
                     console.log("Il y a eu un problème avec l'opération fetch :" + error.message);
+                    this.$refs.message.setAttribute("class", "invalidMessage")
                     this.message = "Il y a eu un problème avec l'opération fetch" + error;
                 });
             },
@@ -308,16 +278,18 @@
                 fetch("http://localhost:3000/api/stories/" + this.id, options)
                 .then(response => {
                     if(response.ok){
-                        this.message = "Histoire mise à jour.";
                         this.$refs.modifyStoryForm.setAttribute("class", "hidden");
-                        window.location.hash = "";
+                        this.$refs.message.setAttribute("class", "validMessage")
+                        this.message = "Histoire mise à jour.";
                     }
                     else{
-                        this.message = "Mauvaise réponse du réseau.";
+                        this.$refs.message.setAttribute("class", "invalidMessage")
+                        this.message = "L'histoire n'a pas pu être mise à jour.";
                     }
                 })
                 .catch(error => {
                     console.log("Il y a eu un problème avec l'opération fetch :" + error.message);
+                    this.$refs.message.setAttribute("class", "invalidMessage")
                     this.message = "Il y a eu un problème avec l'opération fetch";
                 });
             }

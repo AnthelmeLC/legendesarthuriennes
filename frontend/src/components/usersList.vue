@@ -9,21 +9,21 @@
                 </div>
                 <div>
                     <label for="password">Mot de passe* : </label>
-                    <input type="password" id="password" name="password" required ref="password" v-model="password" @change="onSelect">
+                    <input type="password" id="password" name="password" required ref="password" v-model="password" @keyup="onSelect">
                 </div>
                 <div>
                     <label for="confirmationPassword">Confirmation* :</label>
-                    <input type="password" id="confirmationPassword" name="confirmationPassword" required ref="confirmationPassword" v-model="confirmationPassword" @change="onSelect">
+                    <input type="password" id="confirmationPassword" name="confirmationPassword" required ref="confirmationPassword" v-model="confirmationPassword" @keyup="onSelect">
                 </div>
-                <button>Créer l'utilisateur</button>
-                <p>{{postMessage}}</p>
+                <p ref="postMessage">{{postMessage}}</p>
+                <button class="biggerBtn">Créer l'utilisateur</button>
             </form>
         </article>
         <article>
             <h2>Les auteurs du site :</h2>
             <div id="users" ref="users">
                 <p v-for="(user, index) of usersList" :key="user.id">{{user.pseudo}}<img src="../../public/delete.png" alt="croix rouge" v-on:click.prevent="remove(user.id, index)"></p>
-                <p>{{removeMessage}}</p>
+                <p ref="removeMessage">{{removeMessage}}</p>
             </div>
         </article>
     </div>
@@ -94,6 +94,7 @@
                     fetch("http://localhost:3000/api/auth/signup", options)
                     .then(response => {
                         if(response.ok){
+                            this.$refs.postMessage.setAttribute("class", "validMessage")
                             this.postMessage = "Utilisateur créé.";
                             this.removeMessage = "";
                             this.pseudo = "";
@@ -102,12 +103,14 @@
                             this.getUsers();
                         }
                         else{
-                            this.postMessage = "Mauvaise réponse du réseau.";
+                            this.$refs.postMessage.setAttribute("class", "invalidMessage")
+                            this.postMessage = "Pseudo indisponible.";
                             this.removeMessage = "";
                         }
                     })
                     .catch(error => {
                         console.log("Il y a eu un problème avec l'opération fetch :" + error.message);
+                        this.$refs.postMessage.setAttribute("class", "invalidMessage")
                         this.postMessage = "Il y a eu un problème avec l'opération fetch";
                         this.removeMessage = "";
                     });
@@ -126,17 +129,20 @@
                 fetch("http://localhost:3000/api/auth/" + id, options)
                 .then(response => {
                     if(response.ok){
+                        this.$refs.removeMessage.setAttribute("class", "validMessage")
                         this.removeMessage = "Utilisateur supprimé.";
                         this.postMessage = "";
-                        this.usersList.splice(index);
+                        this.usersList.splice(index, 1);
                     }
                     else{
-                        this.removeMessage = "Mauvaise réponse du réseau";
+                        this.$refs.removeMessage.setAttribute("class", "invalidMessage")
+                        this.removeMessage = "Impossible de supprimer cet utilisateur.";
                         this.postMessage = "";
                     }
                 })
                 .catch(error => {
                     console.log("Il y a eu un problème avec l'opération fetch :" + error.message);
+                    this.$refs.removeMessage.setAttribute("class", "invalidMessage")
                     this.removeMessage = "Il y a eu un problème avec l'opération fetch";
                     this.postMessage = "";
                 });
@@ -179,7 +185,7 @@
             }
         },
 
-        mounted(){
+        beforeMount(){
             this.getUsers();            
         }
     }

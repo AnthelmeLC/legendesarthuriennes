@@ -29,7 +29,7 @@
     html, body{
         margin: 0;
         padding: 0;
-        background-color: #cc9a46;
+        background:  #cc9a46 ;
     }
 
     h1{
@@ -38,6 +38,13 @@
         font-weight: lighter;
         text-decoration: underline;
         text-align: center;
+    }
+
+    h2{
+        font-size: 3em;
+        text-align: center;
+        background-color: #2d6ca2;
+        color: white;
     }
 
     p{
@@ -56,6 +63,7 @@
         padding-top: 1px;
         padding-bottom: 20px;
         background-color: #efefef;
+        box-shadow: 1px 1px 20px black;
     }
 
     .hidden{
@@ -66,8 +74,16 @@
         border: red solid 3px;
     }
 
+    .invalidMessage{
+        color: red;
+    }
+
     .valid{
         border: green solid 3px;
+    }
+
+    .validMessage{
+        color: green;
     }
 
     #app{
@@ -76,25 +92,6 @@
         -moz-osx-font-smoothing: grayscale;
         color: black;
         position: relative;
-    }
-
-    button{
-            width: 100px;
-            height: 50px;
-            border-radius: 25%;
-            border: none;
-            font-family: KingthingsCalligraphicaLight;
-            font-size: 1.5em;
-            position: absolute;
-            right: 0;
-            background-color: #2d6ca2;
-            color: white;
-            cursor: pointer;
-    }
-
-    button:hover{
-        background-color: #1F496E;
-        transition: all 400ms ease-in-out;
     }
 
     p img{
@@ -122,6 +119,61 @@
     .moderation img:hover{
         scale: 0.9;
         transition: scale() ease-in-out 200ms;
+    }
+
+    form{
+        min-width: 50%;
+        max-width: 85%;
+        width: fit-content;
+        margin-right: auto;
+        margin-left: auto;
+        position: relative;
+    }
+
+    form div{
+        margin-bottom: 5%;
+    }
+
+    label{
+        display: block;
+        font-size: 2em;
+        margin-bottom: 2%;
+    }
+
+
+    input, textarea{
+        width: 95%;
+        margin-left: 2%;
+        font-size: 1.5em;
+        font-family: KingthingsCalligraphicaLight;
+    }
+
+    select{
+        font-family: KingthingsCalligraphicaLight;
+        font-size: 2em;
+        margin-left: 2%;
+    }
+    
+    button{
+        width: 100px;
+        height: 50px;
+        border-radius: 25%;
+        border: none;
+        font-family: KingthingsCalligraphicaLight;
+        font-size: 1.5em;
+        background-color: #2d6ca2;
+        color: white;
+        cursor: pointer;
+    }
+
+    button:hover{
+        background-color: #1F496E;
+        transition: all 400ms ease-in-out;
+    }
+
+    .biggerBtn{
+        width: 150px;
+        height: 60px;
     }
 </style>
 

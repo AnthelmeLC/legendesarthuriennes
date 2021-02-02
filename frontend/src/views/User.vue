@@ -3,19 +3,20 @@
         <h1>Votre espace auteur</h1>
         <article>
             <h2>Profil :</h2>
+            <p>Ici vous pouvez modifier les informations liées à votre compte à tout moment.</p>
             
             <pseudoModification></pseudoModification>
 
             <passwordModification></passwordModification>
         </article>
 
-        <div id="notAdmin" ref="notAdmin">
+        <div id="notAdmin" ref="notAdmin" v-if="admin === `false`">
             <storyPost></storyPost>
 
             <bibliographyPost></bibliographyPost>
         </div>
 
-        <div id="admin" ref="admin">
+        <div id="admin" ref="admin" v-if="admin === `true`">
             <usersList></usersList>
 
             <storyTypes></storyTypes>
@@ -23,57 +24,13 @@
     </section>
 </template>
 
-<style>
+<style scoped>
     article{
         margin-bottom: 20%;
     }
 
-    h2{
-        width: 50%;
-        margin-left: auto;
-        margin-right: auto;
-        font-size: 3em;
-    }
-
     form{
-        width: 80%;
-        margin-right: auto;
-        margin-left: auto;
-        position: relative;
         margin-bottom: 10%;
-    }
-
-    form div{
-        display: flex;
-        margin-bottom: 5%;
-    }
-
-    label{
-        display: block;
-        font-size: 2em;
-    }
-
-    input, textarea, select{
-        display: block;
-        margin-left: 5%;
-    }
-
-    textarea{
-        max-width: 85%;
-    }
-
-    select{
-        font-family: KingthingsCalligraphicaLight;
-        font-size: 2em;
-    }
-
-    button{
-        width: 150px;
-        height: 60px;
-    }
-
-    .profilForm{
-        width: 50%;
     }
 
     #storyDiv{
@@ -107,15 +64,9 @@
             storyTypes
         },
 
-        mounted(){
-            //si l'utilisateur n'est pas l'admin, on cache la partie admin
-            if(localStorage.admin != "true"){
-                this.$refs.admin.setAttribute("class", "hidden");
-            }
-            //si l'utilisateur est l'admin
-            else{
-                //on cache la partie auteur
-                this.$refs.notAdmin.setAttribute("class", "hidden");
+        data(){
+            return {
+                admin : localStorage.admin
             }
         }
     }

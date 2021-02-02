@@ -9,8 +9,8 @@
                 <label for="newStoryType">Nouveau type d'histoires* :</label>
                 <input type="text" id="newStoryType" name="newStoryType" required ref="newStoryType" v-model="newStoryType">
             </div>
-            <button>Créer le type d'histoires</button>
-            <p>{{message}}</p>
+            <p ref="message">{{message}}</p>
+            <button class="biggerBtn">Créer le type d'histoires</button>
         </form>
     </article>
 </template>
@@ -50,16 +50,19 @@
                 fetch("http://localhost:3000/api/storyTypes/", options)
                 .then(response => {
                     if(response.ok){
+                        this.$refs.message.setAttribute("class", "validMessage")
                         this.message = "Type d'histoire créé.";
                         this.newStoryType = "";
                         this.getStoryTypes();
                     }
                     else{
-                        this.message = "Mauvaise réponse du réseau.";
+                        this.$refs.message.setAttribute("class", "invalidMessage")
+                        this.message = "Type d'histoires déjà créé.";
                     }
                 })
                 .catch(error => {
                     console.log("Il y a eu un problème avec l'opération fetch :" + error.message);
+                    this.$refs.message.setAttribute("class", "invalidMessage")
                     this.message = "Il y a eu un problème avec l'opération fetch";
                 });
             },
@@ -76,15 +79,18 @@
                 fetch("http://localhost:3000/api/storyTypes/" + id, options)
                 .then(response => {
                     if(response.ok){
+                        this.$refs.message.setAttribute("class", "validMessage")
                         this.message = "Type d'histoires supprimé.";
                         this.storyTypesList.splice(index);
                     }
                     else{
-                        this.message = "Mauvaise réponse du réseau";
+                        this.$refs.message.setAttribute("class", "invalidMessage")
+                        this.message = "Impossible de supprimer ce type d'histoires.";
                     }
                 })
                 .catch(error => {
                     console.log("Il y a eu un problème avec l'opération fetch :" + error.message);
+                    this.$refs.message.setAttribute("class", "invalidMessage")
                     this.message = "Il y a eu un problème avec l'opération fetch";
                 });
             },
@@ -120,7 +126,7 @@
             }
         },
 
-        mounted(){
+        beforeMount(){
             this.getStoryTypes();
         }
     }

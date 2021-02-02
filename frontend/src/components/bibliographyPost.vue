@@ -26,8 +26,8 @@
                 <label for="bibliographyPicture">Aperçu de l'oeuvre* :</label>
                 <input type="file" id="bibliographyPicture" name="bibliographyPicture" accept="image/*" required ref="bibliographyPicture" @change="onSelect">
             </div>
-            <button>Publier ma bibliographie</button>
-            <p>{{message}}</p>
+            <p ref="message">{{message}}</p>
+            <button class="biggerBtn">Publier ma bibliographie</button>
         </form>
     </article>
 </template>
@@ -83,7 +83,7 @@
                 fetch("http://localhost:3000/api/bibliography/", options)
                 .then(response => {
                     if(response.ok){
-                        
+                        this.$refs.message.setAttribute("class", "validMessage")
                         this.message = "Bibliographie créée.";
                         this.bibliography.title = "";
                         this.bibliography.auther = "";
@@ -93,11 +93,13 @@
                         this.file = "";
                     }
                     else{
-                        this.message = "Mauvaise réponse du réseau.";
+                        this.$refs.message.setAttribute("class", "invalidMessage")
+                        this.message = "La bibliographie n'a pas pu être créée.";
                     }
                 })
                 .catch(error => {
                     console.log("Il y a eu un problème avec l'opération fetch :" + error.message);
+                    this.$refs.message.setAttribute("class", "invalidMessage")
                     this.message = "Il y a eu un problème avec l'opération fetch";
                 });
             }

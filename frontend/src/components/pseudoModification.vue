@@ -1,11 +1,11 @@
 <template>
     <form class="profilForm" id="newPseudoForm" @submit.prevent="onSubmit">
         <div>
-            <label for="newPseudo">nouveau pseudo* :</label>
-            <input type="text" id="newPseudo" name="newPseudo" required ref="newPseudo" @change="onSelect">
+            <label for="newPseudo">Nouveau pseudo* :</label>
+            <input type="text" id="newPseudo" name="newPseudo" required ref="newPseudo" v-model="newPseudo">
         </div>
-        <button>Modifier mon pseudo :</button>
-        <p>{{message}}</p>
+        <p ref="message">{{message}}</p>
+        <button class="biggerBtn">Modifier mon pseudo :</button>
     </form>
 </template>
 
@@ -24,11 +24,7 @@
             }
         },
     
-        methods : {
-            onSelect(){
-                this.newPseudo = this.$refs.newPseudo.value
-            },
-    
+        methods : {    
             onSubmit(){
                 let user = {
                     newPseudo : this.newPseudo,
@@ -50,15 +46,18 @@
                 fetch("http://localhost:3000/api/auth/pseudo/" + localStorage.userId, options)
                 .then(response => {
                     if(response.ok){
+                        this.$refs.message.setAttribute("class", "validMessage")
                         this.message = "Pseudo modifié.";
                         this.newPseudo = "";
                     }
                     else{
-                        this.message = "Mauvaise réponse du réseau.";
+                        this.$refs.message.setAttribute("class", "invalidMessage")
+                        this.message = "Pseudo indisponible.";
                     }
                 })
                 .catch(error => {
                     console.log("Il y a eu un problème avec l'opération fetch : " + error.message);
+                    this.$refs.message.setAttribute("class", "invalidMessage")
                     this.message = "Il y a eu un problème avec l'opération fetch";
                 });
             }

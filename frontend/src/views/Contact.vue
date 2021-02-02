@@ -17,39 +17,14 @@
                 <label for="message">Message* :</label>
                 <textarea name="message" id="message" cols="40" rows="10" required ref="message" v-model="email.message"></textarea>
             </div>
-
+            <p ref="message">{{message}}</p>
             <button>Envoyer</button>
-            <p>{{message}}</p>
         </form>
     </section>
 </template>
 
 <style scoped>
-    form{
-        width: 50%;
-        margin-right: auto;
-        margin-left: auto;
-        position: relative;
-    }
 
-    form div{
-        display: flex;
-        margin-bottom: 5%;
-    }
-
-    label{
-        display: block;
-        font-size: 2em;
-    }
-
-    input, textarea{
-        display: block;
-        margin-left: 5%;
-    }
-
-    textarea{
-        max-width: 85%;
-    }
 </style>
 
 <script>
@@ -92,17 +67,20 @@
                 fetch("http://localhost:3000/api/mail/", options)
                 .then(response => {
                     if(response.ok){
-                        this.message = "email envoyé";
+                        this.$refs.message.setAttribute("class", "validMessage")
+                        this.message = "Email envoyé. Ne tenez pas compte des bordures rouges.";
                         this.email.pseudo = "";
                         this.email.topic = "";
                         this.email.message = "";
                     }
                     else{
+                        this.$refs.message.setAttribute("class", "invalidMessage")
                         this.message = "email non envoyé";
                     }
                 })
                 .catch(error => {
                     console.log("Il y a eu un problème avec l'opération fetch : " + error);
+                    this.$refs.message.setAttribute("class", "invalidMessage")
                     this.message = "Il y a eu un problème avec l'opération fetch";
                 });
             }
