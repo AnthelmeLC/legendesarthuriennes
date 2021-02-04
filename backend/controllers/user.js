@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const fetch = require("node-fetch");
 
 const User = require("../models/user");
 
@@ -21,32 +22,63 @@ exports.signup = (req, res, next) => {
 
 //LOG IN
 exports.login = (req, res, next) => {
-    //recherche de l'utilisateur dans la base de données
-    User.findOne({where : {pseudo : req.body.user.pseudo}})
-    .then(user => {
-        //si l'utilisateur n'existe pas
-        if(user === null){
-            return res.status(401).json({error : "Identifiants incorrects."});
-        }
-        //si l'utilisateur existe, on vérifie le mot de passe
-        else{
-            bcrypt.compare(req.body.user.password, user.password)
-            .then(valid => {
-                //si le mot de passe est incorrect
-                if(!valid){
-                    return res.status(401).json({error : "Identifiants incorrects."});
+    const token = req.body.user.captcha;
+    const secretKey = "6LcU-0gaAAAAAAoeP8SwueDluOU43zmmVMA_oWMq";
+    const url =  `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${token}`
+
+    //si le token n'existe pas ou est vide
+    if(token === null || token === undefined || token === ""){
+        return res.status(401).json({error : "Token invalide."});
+    }
+    //si le token existe
+    else{
+         //options de la requête
+         const options = {
+            method : "POST"
+        };
+        //vérification du token auprès du service recaptcha de google
+        fetch(url, options)
+        .then(response => {
+            response.json()
+            .then(myJson => {
+                //si la vérification est un succes
+                if(myJson.success === true){
+                    //recherche de l'utilisateur dans la base de données
+                    User.findOne({where : {pseudo : req.body.user.pseudo}})
+                    .then(user => {
+                        //si l'utilisateur n'existe pas
+                        if(user === null){
+                            return res.status(401).json({error : "Identifiants incorrects."});
+                        }
+                        //si l'utilisateur existe, on vérifie le mot de passe
+                        else{
+                            bcrypt.compare(req.body.user.password, user.password)
+                            .then(valid => {
+                                //si le mot de passe est incorrect
+                                if(!valid){
+                                    return res.status(401).json({error : "Identifiants incorrects."});
+                                }
+                                //si le mot de passe est correct
+                                res.status(200).json({
+                                    userId : user.id,
+                                    token : jwt.sign({userId : user.id}, "HbI8sqVP2IDEsEmSpAKM", {expiresIn : "30 days"}),
+                                    admin : user.admin
+                                });
+                            })
+                            .catch(error => res.status(500).json({error}));
+                        }
+                    })
+                    .catch(error => res.status(500).json({error}));
                 }
-                //si le mot de passe est correct
-                res.status(200).json({
-                    userId : user.id,
-                    token : jwt.sign({userId : user.id}, "HbI8sqVP2IDEsEmSpAKM", {expiresIn : "30 days"}),
-                    admin : user.admin
-                });
+                //si la vérification a échouée
+                else{
+                    return res.status(401).json({error : "Token invalide"});
+                }
             })
             .catch(error => res.status(500).json({error}));
-        }
-    })
-    .catch(error => res.status(500).json({error}));
+        })
+        .catch(error => res.status(500).json({error}));
+    }
 };
 
 //GET ALL

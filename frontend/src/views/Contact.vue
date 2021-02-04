@@ -3,6 +3,7 @@
         <h1>Contact</h1>
         <p>N'hésitez pas à me contacter pour tout problème d'accessibilité ou pour toute réclamation.</p>
         <form @submit.prevent="onSubmit" method="POST">
+            <p ref="message">{{message}}</p>
             <div>
                 <label for="peuso">Nom Prénom / Pseudo* :</label>
                 <input type="text" required name="pseudo" id="pseudo" ref="pseudo" v-model="email.pseudo">
@@ -15,10 +16,9 @@
 
             <div>
                 <label for="message">Message* :</label>
-                <textarea name="message" id="message" cols="40" rows="10" required ref="message" v-model="email.message"></textarea>
+                <textarea name="message" id="message" cols="40" rows="10" required v-model="email.message"></textarea>
             </div>
-            <vue-recaptcha ref="recaptcha" sitekey="6Le-m0gaAAAAAC9Zh8QMFf5NxUjDOY6OOWUe0s_e" :loadRecaptchaScript="true" @verify="verifyCaptcha" @expired="expiredCaptcha"></vue-recaptcha>
-            <p ref="message">{{message}}</p>
+            <vue-recaptcha ref="recaptcha" sitekey="6Le-m0gaAAAAAC9Zh8QMFf5NxUjDOY6OOWUe0s_e" loadRecaptchaScript="true" @verify="verifyCaptcha" @expired="expiredCaptcha"></vue-recaptcha>
             <button>Envoyer</button>
         </form>
     </section>
@@ -63,7 +63,7 @@
             },
 
             onSubmit(){
-                console.log(this.captcha);
+                this.message = "Envoi en cours, veuillez patienter..."
                 //récupération des données entrées par l'utilisateur
                 const mail = {
                     captcha : this.captcha,

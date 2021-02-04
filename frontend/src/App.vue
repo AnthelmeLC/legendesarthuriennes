@@ -29,7 +29,7 @@
     html, body{
         margin: 0;
         padding: 0;
-        background:  #995050;
+        background:  #9c2a2a;
     }
 
     h1{

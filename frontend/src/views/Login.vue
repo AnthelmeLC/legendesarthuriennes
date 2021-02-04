@@ -1,7 +1,7 @@
 <template>
     <section class="container">
         <h1>Connectez vous!</h1>
-        <form id="login-form" name="login-form" @submit.prevent="onSubmit">
+        <form id="login-form" name="login-form">
             <div>
                 <label for="pseudo">Pseudo :</label>
                 <input type="text" id="pseudo" name="pseudo" ref="pseudo" v-model="pseudo">
@@ -11,7 +11,8 @@
                 <input type="password" id="password" name="password" ref="pseudo" v-model="password">
             </div>
             <p>{{message}}</p>
-            <button>Connexion</button>
+            <vue-programmatic-invisible-google-recaptcha ref="recaptcha" sitekey="6LcU-0gaAAAAAFnEAhQSL0m1adF1X2FlnharB2HJ" elementId="recaptcha" @recaptcha-callback="recaptchaCallback"></vue-programmatic-invisible-google-recaptcha>
+            <button @click.prevent="onSubmit">Connexion</button>
         </form>
     </section>
 </template>
@@ -23,24 +24,38 @@
 </style>
 
 <script>
+    import VueProgrammaticInvisibleGoogleRecaptcha from "vue-programmatic-invisible-google-recaptcha";
+    
     export default {
         name: 'Login',
+
+        components : {
+            VueProgrammaticInvisibleGoogleRecaptcha
+        },
 
         data(){
             return {
                 pseudo : "",
                 password : "",
 
-                message : ""
+                message : "",
+
+                token : ""
             }
         },
     
         methods : {
+
             onSubmit(){
+                this.$refs.recaptcha.execute();
+            },
+
+            recaptchaCallback(recaptchaToken){
                 //récupération des données entrées par l'utilisateur
                 let user = {
                     pseudo : this.pseudo,
-                    password : this.password
+                    password : this.password,
+                    captcha : recaptchaToken
                 };
                 //option de la requête
                 const options = {
