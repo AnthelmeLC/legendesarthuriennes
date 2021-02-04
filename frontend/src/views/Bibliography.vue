@@ -50,7 +50,6 @@
                 <button class="biggerBtn">Publier ma bibliographie</button>
             </form>
         </article>
-        
     </section>
 </template>
 
@@ -123,11 +122,13 @@
 
         methods : {
             getBibliography(){
+                //récupération de toutes les bibliographies
                 fetch("http://localhost:3000/api/bibliography/")
                 .then(response => {
                     if(response.ok){
                         response.json()
                         .then(myJson => {
+                            //enregistrement des données
                             this.bibliographyList = [];
                             for(let bibliography of myJson){
                                 this.bibliographyList.push(bibliography);
@@ -149,6 +150,7 @@
             },
 
             modify(bibliography){
+                //affichage et déplacement vers le formulaire de modification
                 this.$refs.modifyBibliographyForm.removeAttribute("class", "hidden");
                 this.bibliography = bibliography;
                 window.location.hash = "#modifyBibliographyForm";
@@ -166,6 +168,7 @@
                 fetch("http://localhost:3000/api/bibliography/" + id, options)
                 .then(response => {
                     if(response.ok){
+                        //message à l'utilisateur et suppression de la bibliographie dans les données
                         this.$refs.message.setAttribute("class", "validMessage")
                         this.message = "Bibliography supprimée.";
                         this.bibliographyList.splice(index, 1);
@@ -187,9 +190,10 @@
             },
         
             onSubmit(){
-                //si l'utilisateur n'upload pas d'image
+                //récupération des données entrées par l'utilisateur
                 let formData = new FormData;
                 formData.append("bibliography" , JSON.stringify(this.bibliography));
+                //si l'utilisateur modifie l'image, récupération de la nouvelle image
                 if(this.file){
                     formData.append("image", this.file);
                 }
@@ -205,6 +209,7 @@
                 fetch("http://localhost:3000/api/bibliography/" + this.bibliography.id, options)
                 .then(response => {
                     if(response.ok){
+                        //message à l'utilisateur, vidage des données et masquage du formulaire de modification
                         this.$refs.message.setAttribute("class", "validMessage")
                         this.message = "Bibliographie mise à jour."
                         this.bibliography = "";
@@ -229,5 +234,5 @@
         beforeMount(){
             this.getBibliography();
         }
-    }
+    };
 </script>

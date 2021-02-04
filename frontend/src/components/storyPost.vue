@@ -88,6 +88,7 @@
                 fetch("http://localhost:3000/api/stories/", options)
                 .then(response => {
                     if(response.ok){
+                        //message à l'utilisateur et vidage des données
                         this.$refs.message.setAttribute("class", "validMessage")
                         this.message = "Histoire créée.";
                         this.story.title = "";
@@ -122,6 +123,7 @@
                     if(response.ok){
                         response.json()
                         .then(myJson => {
+                            //enregistrement des données
                             for(let storyType of myJson){
                                 this.storyTypesList.push(storyType);
                             }
@@ -143,5 +145,5 @@
         beforeMount(){
             this.getStoryTypes();
         }
-    }
+    };
 </script>

@@ -1,6 +1,6 @@
 <template>
     <nav id="nav">
-        <router-link to="/">Home</router-link> <!--à modifier avec le logo du site ou un logo temporaire-->
+        <router-link to="/"><img src="../../public/logo.png" alt=""></router-link> <!--à modifier avec le logo du site ou un logo temporaire-->
         <router-link to="/preface">Préface</router-link>
         <div id="storyTypes" ref="storyTypeDiv">
             <a v-for="(storyType) of titles" :key="storyType.id" class="expand">{{storyType}}
@@ -27,6 +27,7 @@
         left: 0;
         font-size: 2em;
         background-color: #efefef;
+        box-shadow: 0px 0px 10px black;
     }
 
     a{
@@ -80,11 +81,7 @@
         top: 0%;
         background-color: #efefef;
         width: 100%;
-    }
-
-    .unfold div{
-        margin: 0% auto 5% auto;
-        padding-top: 5%;
+        box-shadow: 0px 0px 10px black;
     }
 
     #disconnect{
@@ -105,39 +102,51 @@
 
         methods : {
             disconnect(){
+                //suppression des données d'authentification
                 localStorage.clear();
                 this.token = ""
+                //si l'utilisateur est dans l'espace auteur, redirection vers la page principale
                 if(window.location.pathname === "/user"){
                     window.location.pathname = "/";
                 }
+            },
+
+            getTitles(){
+                //récupération des titres d'histoires
+                fetch("http://localhost:3000/api/stories/titles/")
+                .then(response => {
+                    if(response.ok){
+                        response.json()
+                        .then(myJson => {
+                            //enregistrement des données
+                            for(let title of myJson){
+                                const storyType = title.StoryType.name;
+                                if(!this.titles.includes(storyType)){
+                                    this.titles.push(storyType);
+                                    this.titles[storyType] = [];
+                                    this.titles[storyType].push(title);
+                                }
+                                else{
+                                    this.titles[storyType].push(title);
+                                }
+                            }
+                        })
+                        .catch(error => {
+                            console.log("Il y a eu un problème avec l'opération fetch : " + error.message)
+                        });
+                    }
+                    else{
+                        console.log("Mauvaise réponse du réseau.");
+                    }
+                })
+                .catch(error => {
+                    console.log("Il y a eu un problème avec l'opération fetch : " + error.message)
+                });
             }
         },
 
-        mounted(){
-            fetch("http://localhost:3000/api/stories/titles/")
-            .then(response => {
-                if(response.ok){
-                    response.json()
-                    .then(myJson => {
-                        for(let title of myJson){
-                            const storyType = title.StoryType.name;
-                            if(!this.titles.includes(storyType)){
-                                this.titles.push(storyType);
-                                this.titles[storyType] = [];
-                                this.titles[storyType].push(title);
-                            }
-                            else{
-                                this.titles[storyType].push(title);
-                            }
-                        }
-                    })
-                    .catch(error => console.log("Il y a eu un problème avec l'opération fetch : " + error.message));
-                }
-                else{
-                    console.log("Mauvaise réponse du réseau.");
-                }
-            })
-            .catch(error => console.log("Il y a eu un problème avec l'opération fetch : " + error.message));
+        beforeMount(){
+            this.getTitles();
         }
-    }
+    };
 </script>

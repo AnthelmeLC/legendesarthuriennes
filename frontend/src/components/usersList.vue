@@ -73,7 +73,7 @@
                 }
                 //si le formulaire est correctement rempli
                 else{
-                    
+                    //récupération des données entrées par l'utilisateur
                     let user = {
                         pseudo : this.pseudo,
                         password : this.confirmationPassword
@@ -94,6 +94,7 @@
                     fetch("http://localhost:3000/api/auth/signup", options)
                     .then(response => {
                         if(response.ok){
+                            //message à l'utilisateur, vidage des données et récupération de tous les utilisateurs
                             this.$refs.postMessage.setAttribute("class", "validMessage")
                             this.postMessage = "Utilisateur créé.";
                             this.removeMessage = "";
@@ -129,6 +130,7 @@
                 fetch("http://localhost:3000/api/auth/" + id, options)
                 .then(response => {
                     if(response.ok){
+                        //message à l'utilisateur et suppression de l'utilisateur dans les données
                         this.$refs.removeMessage.setAttribute("class", "validMessage")
                         this.removeMessage = "Utilisateur supprimé.";
                         this.postMessage = "";
@@ -163,6 +165,7 @@
                         if(response.ok){
                             response.json()
                             .then(myJson => {
+                                //enregistrement des données
                                 this.usersList = [];
                                 for(let user of myJson){
                                     if(!user.admin){
@@ -188,7 +191,7 @@
         beforeMount(){
             this.getUsers();            
         }
-    }
+    };
 </script>
 
 

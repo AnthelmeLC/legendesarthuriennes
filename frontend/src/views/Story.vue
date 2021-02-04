@@ -17,38 +17,38 @@
         </div>
 
         <article class="hidden" ref="modifyStoryForm" id="modifyStoryForm">
-        <h2>Modifier l'histoire :</h2>
-        <form id="newStoryForm" @submit.prevent="onSubmit">
-            <div>
-                <label for="storyTitle">Titre* :</label>
-                <input type="text" id="title" name="title" required ref="title" v-model="title">
-            </div>
-            <div id="formStoryDiv">
-                <label for="story">Racontez nous* :</label>
-                <textarea name="story" id="formStory" cols="30" rows="30" required ref="story" v-model="story"></textarea>
-            </div>
-            <div>
-                <label for="storyType">C'est l'histoire d'un* :</label>
-                <select name="storyType" id="storyType" required ref="storyType" v-model="storyType">
-                    <option v-for="storyType of storyTypesList" :key="storyType.name" :value="storyType.name">{{storyType.name}}</option>
-                </select>
-            </div>
-            <div>
-                <label for="storyPicture">Illustrez votre histoire :</label>
-                <input type="file" id="storyPicture" name="storyPicture" accept="image/*" ref="storyPicture" @change="onSelect">
-            </div>
-            <div>
-                <label for="illustrator">Illustrateur* :</label>
-                <input type="text" id="illustrator" name="illustrator" required ref="illustrator" v-model="picture.illustrator">
-            </div>
-            <div>
-                <label for="caption">Légendez votre image* :</label>
-                <input type="text" id="caption" name="caption" required ref="caption" v-model="picture.caption">
-            </div>
-            <button class="biggerBtn">Modifier mon histoire</button>
-        </form>
-    </article>
-    <p ref="message">{{message}}</p>
+            <h2>Modifier l'histoire :</h2>
+            <form id="newStoryForm" @submit.prevent="onSubmit">
+                <div>
+                    <label for="storyTitle">Titre* :</label>
+                    <input type="text" id="title" name="title" required ref="title" v-model="title">
+                </div>
+                <div id="formStoryDiv">
+                    <label for="story">Racontez nous* :</label>
+                    <textarea name="story" id="formStory" cols="30" rows="30" required ref="story" v-model="story"></textarea>
+                </div>
+                <div>
+                    <label for="storyType">C'est l'histoire d'un* :</label>
+                    <select name="storyType" id="storyType" required ref="storyType" v-model="storyType">
+                        <option v-for="storyType of storyTypesList" :key="storyType.name" :value="storyType.name">{{storyType.name}}</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="storyPicture">Illustrez votre histoire :</label>
+                    <input type="file" id="storyPicture" name="storyPicture" accept="image/*" ref="storyPicture" @change="onSelect">
+                </div>
+                <div>
+                    <label for="illustrator">Illustrateur* :</label>
+                    <input type="text" id="illustrator" name="illustrator" required ref="illustrator" v-model="picture.illustrator">
+                </div>
+                <div>
+                    <label for="caption">Légendez votre image* :</label>
+                    <input type="text" id="caption" name="caption" required ref="caption" v-model="picture.caption">
+                </div>
+                <button class="biggerBtn">Modifier mon histoire</button>
+            </form>
+        </article>
+        <p ref="message">{{message}}</p>
     </section>
     <section v-else class="container" ref="storyNotFound">
         <h1>Les oubliettes</h1>
@@ -99,7 +99,6 @@
 </style>
 
 <script>
-    
     export default {
         name: 'Story',
 
@@ -130,16 +129,22 @@
         },
 
         watch : {
+            //si l'url change
             $route (){
+                //si l'histoire a été trouvée
                 if(this.$refs.storyFound){
+                    //si le formulaire de modification est visible, on le cache
                     if(!window.location.hash && !this.$refs.modifyStoryForm.getAttribute("class")){
                         this.$refs.modifyStoryForm.setAttribute("class", "hidden");
                         window.location.hash = "";
                     }
+                    //récupération de la nouvelle histoire
                     this.getStory();
                     this.message="";
                 }
+                //si l'histoire n'a pas été trouvée
                 else{
+                    //récupération de la nouvelle histoire
                     this.getStory();
                 }
             }
@@ -147,13 +152,14 @@
 
         methods : {
             getStory(){
-                 //récupération de l'histoire
+                //récupération de l'histoire
                 const storyId = window.location.href.split("?id=")[1];
                 fetch("http://localhost:3000/api/stories/" + storyId)
                 .then(response => {
                     if(response.ok){
                         response.json()
                         .then(myJson => {
+                            //enregistrement des données
                             this.file = [];
                             this.userId = myJson.Story.userId;
                             this.id = myJson.Story.id;
@@ -180,7 +186,9 @@
             },
 
             modify(){
+                //récupération des types d'histoires
                 this.getStoryTypes();
+                //affichage et déplacement vers le formulaire de modification
                 this.$refs.modifyStoryForm.removeAttribute("class", "hidden");
                 window.location.hash = "#modifyStoryForm";
                 this.message = "";
@@ -225,6 +233,7 @@
                     if(response.ok){
                         response.json()
                         .then(myJson => {
+                            //enregistrement des données
                             this.storyTypesList = [];
                             for(let storyType of myJson){
                                 this.storyTypesList.push(storyType);
@@ -278,6 +287,7 @@
                 fetch("http://localhost:3000/api/stories/" + this.id, options)
                 .then(response => {
                     if(response.ok){
+                        //masquage du formulaire de modification et message à l'utilisateur
                         this.$refs.modifyStoryForm.setAttribute("class", "hidden");
                         this.$refs.message.setAttribute("class", "validMessage")
                         this.message = "Histoire mise à jour.";
@@ -298,5 +308,5 @@
         beforeMount(){
             this.getStory();
         }
-    }
+    };
 </script>

@@ -50,6 +50,7 @@
                 fetch("http://localhost:3000/api/storyTypes/", options)
                 .then(response => {
                     if(response.ok){
+                        //message à l'utilisateur, vidage des données et récupération de tous les types d'histoires
                         this.$refs.message.setAttribute("class", "validMessage")
                         this.message = "Type d'histoire créé.";
                         this.newStoryType = "";
@@ -79,6 +80,7 @@
                 fetch("http://localhost:3000/api/storyTypes/" + id, options)
                 .then(response => {
                     if(response.ok){
+                        //message à l'utilisateur et suppresion du type d'histoires dans les données
                         this.$refs.message.setAttribute("class", "validMessage")
                         this.message = "Type d'histoires supprimé.";
                         this.storyTypesList.splice(index);
@@ -109,6 +111,7 @@
                         if(response.ok){
                             response.json()
                             .then(myJson => {
+                                //enregistrement des données
                                 this.storyTypesList = [];
                                 for(let storyType of myJson){
                                     this.storyTypesList.push(storyType);
@@ -129,5 +132,5 @@
         beforeMount(){
             this.getStoryTypes();
         }
-    }
+    };
 </script>

@@ -83,6 +83,7 @@
                 fetch("http://localhost:3000/api/bibliography/", options)
                 .then(response => {
                     if(response.ok){
+                        //message à l'utilisateur et vidage des données
                         this.$refs.message.setAttribute("class", "validMessage")
                         this.message = "Bibliographie créée.";
                         this.bibliography.title = "";
@@ -104,5 +105,5 @@
                 });
             }
         }
-    }
+    };
 </script>

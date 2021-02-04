@@ -69,5 +69,5 @@
                 admin : localStorage.admin
             }
         }
-    }
+    };
 </script>

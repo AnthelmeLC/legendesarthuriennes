@@ -56,6 +56,7 @@
                 }
                 //si le formulaire est correctement rempli
                 else{
+                    //récupération des données entrées par l'utilisateur
                     let user = {
                         oldPassword : this.oldPassword,
                         newPassword : this.confirmationPassword
@@ -76,6 +77,7 @@
                     fetch("http://localhost:3000/api/auth/password/" + localStorage.userId, options)
                     .then(response => {
                         if(response.ok){
+                            //message à l'utilisateur et vidage des données
                             this.$refs.message.setAttribute("class", "validMessage")
                             this.message = "Mot de passe modifié.";
                             this.oldPassword = "";
@@ -95,5 +97,5 @@
                 }
             }
         }
-    }
+    };
 </script>

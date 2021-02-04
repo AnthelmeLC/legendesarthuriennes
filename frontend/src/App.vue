@@ -29,7 +29,7 @@
     html, body{
         margin: 0;
         padding: 0;
-        background:  #cc9a46 ;
+        background:  #995050;
     }
 
     h1{
@@ -63,7 +63,7 @@
         padding-top: 1px;
         padding-bottom: 20px;
         background-color: #efefef;
-        box-shadow: 1px 1px 20px black;
+        box-shadow: 0px 0px 10px black;
     }
 
     .hidden{
@@ -186,5 +186,5 @@
         components : {
             navBar
         }
-    }
+    };
 </script>

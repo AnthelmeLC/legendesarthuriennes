@@ -5,16 +5,16 @@
     </article>
 </template>
 
-<script>
-    export default {
-        name : "wip",
-        props : ['msg']
-    }
-</script>
-
 <style scoped>
     h1, p{
         text-align: center;
         margin-top: 10%;
     }
 </style>
+
+<script>
+    export default {
+        name : "wip",
+        props : ['msg']
+    };
+</script>

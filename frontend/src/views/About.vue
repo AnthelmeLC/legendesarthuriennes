@@ -5,6 +5,10 @@
     </section>
 </template>
 
+<style scoped>
+
+</style>
+
 <script>
     import Wip from '../components/wip'
     
@@ -13,5 +17,5 @@
         components: {
           Wip
         }
-    }
+    };
 </script>

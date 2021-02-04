@@ -26,6 +26,7 @@
     
         methods : {    
             onSubmit(){
+                //récupération des données entrées par l'utilisateur
                 let user = {
                     newPseudo : this.newPseudo,
                     userId : localStorage.userId
@@ -46,6 +47,7 @@
                 fetch("http://localhost:3000/api/auth/pseudo/" + localStorage.userId, options)
                 .then(response => {
                     if(response.ok){
+                        //message à l'utilisateur et vidage des données
                         this.$refs.message.setAttribute("class", "validMessage")
                         this.message = "Pseudo modifié.";
                         this.newPseudo = "";
@@ -62,5 +64,5 @@
                 });
             }
         }
-    }
+    };
 </script>

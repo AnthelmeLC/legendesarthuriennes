@@ -37,6 +37,7 @@
     
         methods : {
             onSubmit(){
+                //récupération des données entrées par l'utilisateur
                 let user = {
                     pseudo : this.pseudo,
                     password : this.password
@@ -76,5 +77,5 @@
                 })
             }
         }
-    }
+    };
 </script>

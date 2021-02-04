@@ -60,7 +60,7 @@ exports.deleteBibliography = (req, res, next) => {
     .then(bibliography => {
         const filename = bibliography.pictureUrl.split("/images/")[1];
         fs.unlink(`images/${filename}`, () => {
-            //suppression de la bibliographie
+        //suppression de la bibliographie
         Bibliography.destroy({where : {id : req.params.id}})
         .then(() => res.status(200).json({message : "Bibliographie supprimée."}))
         .catch(error => res.status(400).json({error}));
