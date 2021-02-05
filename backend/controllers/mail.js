@@ -1,10 +1,10 @@
 const nodemailer = require("nodemailer");
 const fetch = require("node-fetch");
+const secrets = require("../secrets");
 
 exports.mailto = (req, res, next) => {
     const token = req.body.captcha;
-    const secretKey = "6Le-m0gaAAAAAIJ-Uvg0yaRh6PnCKRoh9v7las56";
-    const url =  `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${token}`
+    const url =  `https://www.google.com/recaptcha/api/siteverify?secret=${secrets.captchaSecretKey}&response=${token}`;
 
     //si le token n'existe pas ou est vide
     if(token === null || token === undefined || token === ""){
@@ -37,7 +37,7 @@ exports.mailto = (req, res, next) => {
                         port : 587,
                         auth : {
                             user : "contact.labibliothequedemerlin",
-                            pass : "Jesuisl'ench@nteur2002"
+                            pass : secrets.mailPassword
                         }
                     });
                 

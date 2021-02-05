@@ -1,5 +1,6 @@
 const {sequelize, Sequelize} = require("sequelize");
+const secrets = require("./secrets");
 
-const DBinstance = new Sequelize("merlinlibraryDB", "merlinlibrary", "cBRer5w9yQr3HLui9", {dialect : "mysql", host : "localhost"});
+const DBinstance = new Sequelize("merlinlibraryDB", "merlinlibrary", secrets.dbpassword, {dialect : "mysql", host : "localhost"});
 
 module.exports = DBinstance;

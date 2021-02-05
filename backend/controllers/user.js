@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const fetch = require("node-fetch");
+const secrets = require("../secrets");
 
 const User = require("../models/user");
 
@@ -23,8 +24,7 @@ exports.signup = (req, res, next) => {
 //LOG IN
 exports.login = (req, res, next) => {
     const token = req.body.user.captcha;
-    const secretKey = "6LcU-0gaAAAAAAoeP8SwueDluOU43zmmVMA_oWMq";
-    const url =  `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${token}`
+    const url =  `https://www.google.com/recaptcha/api/siteverify?secret=${secrets.invisibleCaptchaSecretKey}&response=${token}`
 
     //si le token n'existe pas ou est vide
     if(token === null || token === undefined || token === ""){
@@ -61,7 +61,7 @@ exports.login = (req, res, next) => {
                                 //si le mot de passe est correct
                                 res.status(200).json({
                                     userId : user.id,
-                                    token : jwt.sign({userId : user.id}, "HbI8sqVP2IDEsEmSpAKM", {expiresIn : "30 days"}),
+                                    token : jwt.sign({userId : user.id}, secrets.salt, {expiresIn : "30 days"}),
                                     admin : user.admin
                                 });
                             })
