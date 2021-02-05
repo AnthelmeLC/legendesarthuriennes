@@ -1,4 +1,5 @@
 const multer = require("multer");
+const {v4 : uuidv4} = require("uuid");
 
 const MIME_TYPES = {
     "image/jpg" : "jpg",
@@ -13,14 +14,13 @@ const storage = multer.diskStorage({
         callback(null, "images");
     },
     filename : (req, file, callback) => {
-        const prename = file.originalname.split(" ").join("_");
-        const name = prename.split(".")[0];
+        const name = uuidv4();
         const extension = MIME_TYPES[file.mimetype];
         if(extension === undefined){
             console.log("MIME TYPE non pris en charge.");
         }
         else{
-            callback(null, name + Date.now() + "." + extension);
+            callback(null, name + "." + extension);
         }
     }
 });

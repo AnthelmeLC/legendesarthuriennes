@@ -23,7 +23,12 @@ exports.getOneStory = (req, res, next) => {
     });
     // récupération de l'histoire
     Picture.findOne({where : {storyId : req.params.id}, include : Story})
-    .then(story => res.status(200).json(story))
+    .then(story => {
+        res.status(200).json({
+            ...story.dataValues,
+            url : `${req.protocol}://${req.get("host")}/images/${story.dataValues.url}`
+        })
+    })
     .catch(error => res.status(400).json({error}));
 };
 
@@ -40,7 +45,7 @@ exports.createStory = (req, res, next) => {
         });
         //création de la nouvelle histoire avec son image
         Picture.create({
-            url : `${req.protocol}://${req.get("host")}/images/${req.file.filename}`,
+            url : req.file.filename,
             illustrator : storyObject.illustrator,
             caption : storyObject.caption,
             Story : {
@@ -65,17 +70,20 @@ exports.modifyStory = (req, res, next) => {
     //récupération du type d'histoire correspondant
     StoryType.findOne({where : {name : storyObject.storyType}})
     .then(storyType => {
+        //si l'utilisateur change l'image
         if(req.file){
+            //récupération de l'ancienne image
             Picture.findOne({where : {id : storyObject.pictureId}})
             .then(picture => {
-                const filename = picture.url.split("/images/")[1];
-                fs.unlink(`images/${filename}`, () => {
+                //suppression de l'image dans le dossier
+                fs.unlink(`images/${picture.url}`, () => {
                     //liaison entre l'image et l'histoires
                     Picture.Story = Picture.belongsTo(Story, {
                         foreignKey : "storyId"
                     });
+                    //mise à jour de l'image puis de l'histoire
                     Picture.update({
-                        url : `${req.protocol}://${req.get("host")}/images/${req.file.filename}`,
+                        url : req.file.filename,
                         illustrator : storyObject.illustrator,
                         caption : storyObject.caption,
                     },{
@@ -128,8 +136,7 @@ exports.deleteStory = (req, res, next) => {
     Picture.findOne({where : {storyId : req.params.id}})
     .then(picture => {
         //suppression de l'image
-        const filename = picture.url.split("/images/")[1];
-        fs.unlink(`images/${filename}`, () => {
+        fs.unlink(`images/${picture.url}`, () => {
             //suppression de l'histoire
             Story.destroy({where : {id : req.params.id}})
             .then(() => res.status(200).json({message : "Histoire supprimée."}))

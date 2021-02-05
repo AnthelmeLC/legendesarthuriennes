@@ -22,7 +22,7 @@
         <article>
             <h2>Les auteurs du site :</h2>
             <div id="users" ref="users">
-                <p v-for="(user, index) of usersList" :key="user.id">{{user.pseudo}}<img src="../../public/delete.png" alt="croix rouge" v-on:click.prevent="remove(user.id, index)"></p>
+                <p v-for="(user, index) of usersList" :key="user.id">{{user.pseudo}}<img src="../../public/delete.png" alt="croix rouge" v-show="!user.deleted" v-on:click.prevent="remove(user.id, index)"></p>
                 <p ref="removeMessage">{{removeMessage}}</p>
             </div>
         </article>
@@ -60,7 +60,6 @@
                 }
                 //si les deux mots de passe correspondent
                 else{
-                    console.log(this.$refs.password);
                     this.$refs.password.setAttribute("class", "valid");
                     this.$refs.confirmationPassword.setAttribute("class", "valid");
                 }
@@ -134,7 +133,7 @@
                         this.$refs.removeMessage.setAttribute("class", "validMessage")
                         this.removeMessage = "Utilisateur supprimé.";
                         this.postMessage = "";
-                        this.usersList.splice(index, 1);
+                        this.usersList[index].deleted = true;
                     }
                     else{
                         this.$refs.removeMessage.setAttribute("class", "invalidMessage")

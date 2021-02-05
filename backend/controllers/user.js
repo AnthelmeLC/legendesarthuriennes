@@ -47,7 +47,7 @@ exports.login = (req, res, next) => {
                     User.findOne({where : {pseudo : req.body.user.pseudo}})
                     .then(user => {
                         //si l'utilisateur n'existe pas
-                        if(user === null){
+                        if(user === null || user.deleted === "true"){
                             return res.status(401).json({error : "Identifiants incorrects."});
                         }
                         //si l'utilisateur existe, on vérifie le mot de passe
@@ -140,7 +140,7 @@ exports.deleteUser = (req, res, next) => {
         //si l'utilisateur n'est pas l'admin
         if(!user.admin){
             //suppression de l'utilisateur
-            User.destroy({where : {id : req.params.id}})
+            User.update({deleted : true},{where : {id : req.params.id}})
             .then(() => res.status(200).json({message : "Utilisateur supprimé."}))
             .catch(error => res.status(400).json({error}));
         }

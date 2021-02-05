@@ -5,7 +5,13 @@ const fs = require("fs");
 exports.getAllBibliography = (req, res, next) => {
     //récupération de toutes les bibliographies
     Bibliography.findAll()
-    .then(bibliography => res.status(200).json(bibliography))
+    .then(bibliography => {
+        let bibliographyList = bibliography;
+        for(let bibliography of bibliographyList){
+            bibliography.pictureUrl = `${req.protocol}://${req.get("host")}/images/${bibliography.pictureUrl}`
+        }
+        res.status(200).json(bibliographyList)
+    })
     .catch(error => res.status(400).json({error}));
 };
 
@@ -16,7 +22,7 @@ exports.createBibliography = (req, res, next) => {
     //création de la nouvelle bibliographie
     Bibliography.create({
         ...bibliographyObject,
-        pictureUrl : `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
+        pictureUrl : req.file.filename
     })
     .then(() => res.status(201).json({message : "Bibliographie créée."}))
     .catch(error => res.status(400).json({error}));
@@ -24,19 +30,18 @@ exports.createBibliography = (req, res, next) => {
 
 //MODIFY ONE
 exports.modifyBibliography = (req, res, next) => {
+    const bibliographyObject = {
+        ...JSON.parse(req.body.bibliography),
+    }
+    delete bibliographyObject.pictureUrl;
     //si l'utilisateur modifie l'image de la bibliographie
     if(req.file){
         Bibliography.findOne({where : {id : req.params.id}})
         .then(bibliography => {
             //suppression de l'ancienne image
-            const filename = bibliography.pictureUrl.split("/images/")[1];
-            fs.unlink(`images/${filename}`, () => {
+            fs.unlink(`images/${bibliography.pictureUrl}`, () => {
                 //nouvelles valeurs de la bibliographie
-                const bibliographyObject = {
-                    ...JSON.parse(req.body.bibliography),
-                    pictureUrl : `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
-                }
-                Bibliography.update({...bibliographyObject}, {where : {id : req.params.id}})
+                Bibliography.update({...bibliographyObject, pictureUrl : req.file.filename}, {where : {id : req.params.id}})
                 .then(() => res.status(201).json({message : "Bibliograhie modifiée"}))
                 .catch(error => res.status(400).json({error}));
             })
@@ -45,9 +50,6 @@ exports.modifyBibliography = (req, res, next) => {
     }
     //si l'utilisateur ne modifie pas l'image de la bibliographie
     else{
-        const bibliographyObject = {
-            ...JSON.parse(req.body.bibliography),
-        }
         Bibliography.update({...bibliographyObject}, {where : {id : req.params.id}})
         .then(() => res.status(201).json({message : "Bibliograhie modifiée"}))
         .catch(error => res.status(400).json({error}));
@@ -58,8 +60,7 @@ exports.modifyBibliography = (req, res, next) => {
 exports.deleteBibliography = (req, res, next) => {
     Bibliography.findOne({where : {id : req.params.id}})
     .then(bibliography => {
-        const filename = bibliography.pictureUrl.split("/images/")[1];
-        fs.unlink(`images/${filename}`, () => {
+        fs.unlink(`images/${bibliography.pictureUrl}`, () => {
         //suppression de la bibliographie
         Bibliography.destroy({where : {id : req.params.id}})
         .then(() => res.status(200).json({message : "Bibliographie supprimée."}))

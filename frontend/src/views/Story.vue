@@ -289,6 +289,7 @@
                     if(response.ok){
                         //masquage du formulaire de modification et message à l'utilisateur
                         this.$refs.modifyStoryForm.setAttribute("class", "hidden");
+                        this.getStory();
                         this.$refs.message.setAttribute("class", "validMessage")
                         this.message = "Histoire mise à jour.";
                     }
