@@ -168,7 +168,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'Merlin','$2b$10$Fuxl3.LoDGz2H1KZLDQ4gOvJNNbX/QKqzOYM1IvZeuZt1GXGaliB.',1);
+INSERT INTO `users` (pseudo, password, admin) VALUES ('Merlin','$2b$10$Fuxl3.LoDGz2H1KZLDQ4gOvJNNbX/QKqzOYM1IvZeuZt1GXGaliB.',true);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
