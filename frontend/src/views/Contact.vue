@@ -30,6 +30,7 @@
 
 <script>
     import VueRecaptcha from "vue-recaptcha";
+    import secrets from "../../secrets";
     
     export default {
         name: 'Contact',
@@ -85,7 +86,7 @@
                     })
                 };
                 //envoi du formulaire
-                fetch("http://localhost:3000/api/mail/", options)
+                fetch(secrets.fetchPath + "api/mail/", options)
                 .then(response => {
                     if(response.ok){
                         //message à l'utilisateur et vidage des données

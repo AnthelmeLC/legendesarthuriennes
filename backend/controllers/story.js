@@ -19,7 +19,7 @@ exports.getAllTitles = (req, res, next) => {
 exports.getOneStory = (req, res, next) => {
     //liaison entre l'image et l'histoires
     Picture.belongsTo(Story, {
-        foreignKey : "StoryId"
+        foreignKey : "storyId"
     });
     // récupération de l'histoire
     Picture.findOne({where : {storyId : req.params.id}, include : Story})
@@ -48,7 +48,7 @@ exports.createStory = (req, res, next) => {
             url : req.file.filename,
             illustrator : storyObject.illustrator,
             caption : storyObject.caption,
-            Story : {
+            story : {
                 title : storyObject.title,
                 story : storyObject.story,
                 userId : storyObject.userId,
@@ -58,7 +58,7 @@ exports.createStory = (req, res, next) => {
             include : {association : Picture.Story}
         })
         .then(() => res.status(201).json({message : "Histoire créée."}))
-        .catch(error => res.status(400).json({error} + "erreur sroty create."));
+        .catch(error => res.status(400).json({error} + "erreur story create."));
     })
     .catch(error => res.status(400).json({error} + "erreur storyType findOne."));
 };

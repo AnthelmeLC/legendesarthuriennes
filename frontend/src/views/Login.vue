@@ -11,7 +11,7 @@
                 <input type="password" id="password" name="password" ref="pseudo" v-model="password">
             </div>
             <p>{{message}}</p>
-            <vue-programmatic-invisible-google-recaptcha ref="recaptcha" sitekey="6LcU-0gaAAAAAFnEAhQSL0m1adF1X2FlnharB2HJ" elementId="recaptcha" @recaptcha-callback="recaptchaCallback"></vue-programmatic-invisible-google-recaptcha>
+            <vue-programmatic-invisible-google-recaptcha ref="recaptcha" sitekey="6Le-m0gaAAAAAC9Zh8QMFf5NxUjDOY6OOWUe0s_e" elementId="recaptcha" @recaptcha-callback="recaptchaCallback"></vue-programmatic-invisible-google-recaptcha>
             <button @click.prevent="onSubmit">Connexion</button>
         </form>
     </section>
@@ -25,6 +25,7 @@
 
 <script>
     import VueProgrammaticInvisibleGoogleRecaptcha from "vue-programmatic-invisible-google-recaptcha";
+    import secrets from "../../secrets";
     
     export default {
         name: 'Login',
@@ -66,7 +67,7 @@
                     body : JSON.stringify({user : user})
                 };
                 //envoi du formulaire
-                fetch("http://localhost:3000/api/auth/login", options)
+                fetch(secrets.fetchPath + "api/auth/login", options)
                 .then(response => {
                     if(response.ok){
                         //connexion réussie

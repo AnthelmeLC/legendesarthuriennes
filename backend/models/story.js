@@ -1,7 +1,7 @@
 const {Sequelize, DataTypes} = require("sequelize");
 const sequelize = require("../DBinstance");
 
-const Story = sequelize.define("Story", {
+const Story = sequelize.define("story", {
     id : {
         type : DataTypes.NUMBER,
         primaryKey : true,
@@ -27,4 +27,4 @@ const Story = sequelize.define("Story", {
     timestamps : false
 });
 
-module.exports = sequelize.models.Story;
+module.exports = sequelize.models.story;

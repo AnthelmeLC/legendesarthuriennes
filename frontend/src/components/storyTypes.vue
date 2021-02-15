@@ -20,6 +20,8 @@
 </style>
 
 <script>
+    import secrets from "../../secrets";
+
     export default {
         name : "storyTypes",
         
@@ -47,7 +49,7 @@
                     })
                 };
                 //envoi du formulaire
-                fetch("http://localhost:3000/api/storyTypes/", options)
+                fetch(secrets.fetchPath + "api/storyTypes/", options)
                 .then(response => {
                     if(response.ok){
                         //message à l'utilisateur, vidage des données et récupération de tous les types d'histoires
@@ -77,7 +79,7 @@
                     method : "DELETE"
                 };
                 //envoi de la requête
-                fetch("http://localhost:3000/api/storyTypes/" + id, options)
+                fetch(secrets.fetchPath + "api/storyTypes/" + id, options)
                 .then(response => {
                     if(response.ok){
                         //message à l'utilisateur et suppresion du type d'histoires dans les données
@@ -106,7 +108,7 @@
                 };
                 //si l'utilisateur est admin, récupération des types d'histoires
                 if(localStorage.admin === "true"){
-                    fetch("http://localhost:3000/api/storyTypes", options)
+                    fetch(secrets.fetchPath + "api/storyTypes", options)
                     .then(response => {
                         if(response.ok){
                             response.json()

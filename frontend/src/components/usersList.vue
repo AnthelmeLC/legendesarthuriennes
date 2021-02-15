@@ -34,6 +34,8 @@
 </style>
 
 <script>
+    import secrets from "../../secrets";
+
     export default {
         name : "usersList",
 
@@ -90,7 +92,7 @@
                         })
                     };
                     //envoi du formulaire
-                    fetch("http://localhost:3000/api/auth/signup", options)
+                    fetch(secrets.fetchPath + "api/auth/signup", options)
                     .then(response => {
                         if(response.ok){
                             //message à l'utilisateur, vidage des données et récupération de tous les utilisateurs
@@ -126,7 +128,7 @@
                     method : "DELETE"
                 };
                 //envoi de la requête
-                fetch("http://localhost:3000/api/auth/" + id, options)
+                fetch(secrets.fetchPath + "api/auth/" + id, options)
                 .then(response => {
                     if(response.ok){
                         //message à l'utilisateur et suppression de l'utilisateur dans les données
@@ -159,7 +161,7 @@
                         }
                     };
                     //envoi de la requête
-                    fetch("http://localhost:3000/api/auth/", options)
+                    fetch(secrets.fetchPath + "api/auth/", options)
                     .then(response => {
                         if(response.ok){
                             response.json()

@@ -99,6 +99,8 @@
 </style>
 
 <script>
+    import secrets from "../../secrets";
+
     export default {
         name: 'Story',
 
@@ -154,18 +156,18 @@
             getStory(){
                 //récupération de l'histoire
                 const storyId = window.location.href.split("?id=")[1];
-                fetch("http://localhost:3000/api/stories/" + storyId)
+                fetch(secrets.fetchPath + "api/stories/" + storyId)
                 .then(response => {
                     if(response.ok){
                         response.json()
                         .then(myJson => {
                             //enregistrement des données
                             this.file = [];
-                            this.userId = myJson.Story.userId;
-                            this.id = myJson.Story.id;
-                            this.title = myJson.Story.title;
-                            this.story = myJson.Story.story;
-                            this.storyTypeId = myJson.Story.typeId;
+                            this.userId = myJson.story.userId;
+                            this.id = myJson.story.id;
+                            this.title = myJson.story.title;
+                            this.story = myJson.story.story;
+                            this.storyTypeId = myJson.story.typeId;
                             this.picture.id = myJson.id;
                             this.picture.url = myJson.url;
                             this.picture.illustrator = myJson.illustrator;
@@ -203,7 +205,7 @@
                     method : "DELETE"
                 };
                 //envoi de la requête
-                fetch("http://localhost:3000/api/stories/" + this.id, options)
+                fetch(secrets.fetchPath + "api/stories/" + this.id, options)
                 .then(response => {
                     if(response.ok){
                         window.location = window.location.origin;
@@ -228,7 +230,7 @@
                     }
                 }
                 //récupération des types d'histoire
-                fetch("http://localhost:3000/api/storyTypes/", options)
+                fetch(secrets.fetchPath + "api/storyTypes/", options)
                 .then(response => {
                     if(response.ok){
                         response.json()
@@ -284,7 +286,7 @@
                     body : formData
                 };
                 //envoi du formulaire
-                fetch("http://localhost:3000/api/stories/" + this.id, options)
+                fetch(secrets.fetchPath + "api/stories/" + this.id, options)
                 .then(response => {
                     if(response.ok){
                         //masquage du formulaire de modification et message à l'utilisateur

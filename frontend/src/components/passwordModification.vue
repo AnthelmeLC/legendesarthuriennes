@@ -22,6 +22,8 @@
 </style>
 
 <script>
+    import secrets from "../../secrets";
+
     export default {
         name : "passwordModification",
     
@@ -74,7 +76,7 @@
                         })
                     };
                     //envoi du formulaire
-                    fetch("http://localhost:3000/api/auth/password/" + localStorage.userId, options)
+                    fetch(secrets.fetchPath + "api/auth/password/" + localStorage.userId, options)
                     .then(response => {
                         if(response.ok){
                             //message à l'utilisateur et vidage des données

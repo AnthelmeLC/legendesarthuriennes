@@ -40,6 +40,8 @@
 </style>
 
 <script>
+    import secrets from "../../secrets";
+
     export default {
         name : "storyPost",
     
@@ -85,7 +87,7 @@
                     body : formData
                 };
                 //envoi du formulaire
-                fetch("http://localhost:3000/api/stories/", options)
+                fetch(secrets.fetchPath + "api/stories/", options)
                 .then(response => {
                     if(response.ok){
                         //message à l'utilisateur et vidage des données
@@ -118,7 +120,7 @@
                     }
                 }
                 //récupération des types d'histoire
-                fetch("http://localhost:3000/api/storyTypes/", options)
+                fetch(secrets.fetchPath + "api/storyTypes/", options)
                 .then(response => {
                     if(response.ok){
                         response.json()

@@ -37,6 +37,8 @@
 </style>
 
 <script>
+    import secrets from "../../secrets";
+
     export default {
         name : "bibliographyPost",
 
@@ -80,7 +82,7 @@
                     body : formData
                 };
                 //envoi du formulaire
-                fetch("http://localhost:3000/api/bibliography/", options)
+                fetch(secrets.fetchPath + "api/bibliography/", options)
                 .then(response => {
                     if(response.ok){
                         //message à l'utilisateur et vidage des données

@@ -90,6 +90,8 @@
 </style>
 
 <script scoped>
+    import secrets from "../../secrets";
+
     export default {
         name : "navBar",
 
@@ -106,21 +108,21 @@
                 localStorage.clear();
                 this.token = ""
                 //si l'utilisateur est dans l'espace auteur, redirection vers la page principale
-                if(window.location.pathname === "/user"){
-                    window.location.pathname = "/";
+                if(window.location.href.split("/#/")[1] == "user"){
+                    window.location = window.location.origin;
                 }
             },
 
             getTitles(){
                 //récupération des titres d'histoires
-                fetch("http://localhost:3000/api/stories/titles/")
+                fetch(secrets.fetchPath + "api/stories/titles/")
                 .then(response => {
                     if(response.ok){
                         response.json()
                         .then(myJson => {
                             //enregistrement des données
                             for(let title of myJson){
-                                const storyType = title.StoryType.name;
+                                const storyType = title.storytype.name;
                                 if(!this.titles.includes(storyType)){
                                     this.titles.push(storyType);
                                     this.titles[storyType] = [];

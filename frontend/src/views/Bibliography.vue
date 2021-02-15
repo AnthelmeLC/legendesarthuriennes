@@ -102,6 +102,8 @@
 </style>
 
 <script>
+    import secrets from "../../secrets";
+
     export default {
         name: 'Bibliography',
 
@@ -123,7 +125,7 @@
         methods : {
             getBibliography(){
                 //récupération de toutes les bibliographies
-                fetch("http://localhost:3000/api/bibliography/")
+                fetch(secrets.fetchPath + "api/bibliography/")
                 .then(response => {
                     if(response.ok){
                         response.json()
@@ -165,7 +167,7 @@
                     method : "DELETE"
                 };
                 //envoi de la requête
-                fetch("http://localhost:3000/api/bibliography/" + id, options)
+                fetch(secrets.fetchPath + "api/bibliography/" + id, options)
                 .then(response => {
                     if(response.ok){
                         //message à l'utilisateur et suppression de la bibliographie dans les données
@@ -206,7 +208,7 @@
                     body : formData
                 };
                 //envoi du formulaire
-                fetch("http://localhost:3000/api/bibliography/" + this.bibliography.id, options)
+                fetch(secrets.fetchPath + "api/bibliography/" + this.bibliography.id, options)
                 .then(response => {
                     if(response.ok){
                         //message à l'utilisateur, vidage des données et masquage du formulaire de modification

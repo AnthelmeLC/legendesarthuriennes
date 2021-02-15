@@ -1,7 +1,7 @@
 const {Sequelize, DataTypes} = require("sequelize");
 const sequelize = require("../DBinstance");
 
-const Bibliography = sequelize.define("Bibliography", {
+const Bibliography = sequelize.define("bibliography", {
     id : {
         type : DataTypes.NUMBER,
         primaryKey : true,
@@ -39,4 +39,4 @@ const Bibliography = sequelize.define("Bibliography", {
     timestamps : false
 });
 
-module.exports = sequelize.models.Bibliography;
+module.exports = sequelize.models.bibliography;

@@ -14,6 +14,8 @@
 </style>
 
 <script>
+    import secrets from "../../secrets";
+
     export default {
         name : "pseudoModification",
     
@@ -44,7 +46,7 @@
                     })
                 };
                 //envoi de la requête
-                fetch("http://localhost:3000/api/auth/pseudo/" + localStorage.userId, options)
+                fetch(secrets.fetchPath + "api/auth/pseudo/" + localStorage.userId, options)
                 .then(response => {
                     if(response.ok){
                         //message à l'utilisateur et vidage des données
