@@ -2,6 +2,7 @@
     <div id="app">
         <navBar></navBar>
         <router-view/>
+        <Footer></Footer>
     </div>
 </template>
 
@@ -29,11 +30,17 @@
     html, body{
         margin: 0;
         padding: 0;
-        background:  #9c2a2a;
+        background:  #efefef;
+    }
+    
+    article{
+        margin-right: 5%;
+        margin-left: 5%;
+        margin-bottom: 5%;
     }
 
     h1{
-        font-family: Mirella Script;
+        font-family: Tangerine;
         font-size: 4em;
         font-weight: lighter;
         text-decoration: underline;
@@ -41,14 +48,15 @@
     }
 
     h2{
-        font-size: 3em;
+        font-family: Charm;
+        font-size: 2.5em;
         text-align: center;
         background-color: #2d6ca2;
-        color: white;
+        color: #ffd700;
     }
 
     p{
-        font-size: 2em;
+        font-size: 1.5em;
         width: 75%;
         margin-left: auto;
         margin-right: auto;
@@ -56,14 +64,15 @@
     }
 
     .container{
-        max-width: 1000px;
-        min-height: 100vh;
+        max-width: 1500px;
+        min-height: 90vh;
         margin-right: auto;
         margin-left: auto;
-        padding-top: 1px;
+        margin-bottom: 5vh;
+        padding-top: 50px;
         padding-bottom: 20px;
-        background-color: #efefef;
-        box-shadow: 0px 0px 10px black;
+        background-color: #fff;
+        /*box-shadow: 0px 0px 10px black;*/
     }
 
     .hidden{
@@ -87,7 +96,7 @@
     }
 
     #app{
-        font-family: KingthingsCalligraphicaLight, Times New Roman, Avenir, Helvetica, Arial, sans-serif;
+        font-family: Fondamento, Times New Roman, Avenir, Helvetica, Arial, sans-serif;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         color: black;
@@ -128,6 +137,8 @@
         margin-right: auto;
         margin-left: auto;
         position: relative;
+        box-shadow: 0px 0px 10px #2d6ca2;
+        padding: 10px;
     }
 
     form div{
@@ -136,31 +147,43 @@
 
     label{
         display: block;
-        font-size: 2em;
+        font-size: 1.5em;
         margin-bottom: 2%;
     }
 
 
     input, textarea{
-        width: 95%;
-        margin-left: 2%;
+        width: 100%;
         font-size: 1.5em;
-        font-family: KingthingsCalligraphicaLight;
+        font-family: Fondamento;
+        border: none;
+        border-bottom: 1px solid black;
+        background-color: #efefef;
+    }
+
+    input:focus, textarea:focus{
+        border-color: #ffd700;
+        outline: none;
     }
 
     select{
-        font-family: KingthingsCalligraphicaLight;
-        font-size: 2em;
-        margin-left: 2%;
+        font-family: Fondamento;
+        font-size: 1.5em;
+    }
+
+    .btn-div{
+        width: 100%;
+        text-align: end;
+        margin-bottom: 0;
     }
     
     button{
         width: 100px;
         height: 50px;
-        border-radius: 25%;
+        border-radius: 5px;
         border: none;
-        font-family: KingthingsCalligraphicaLight;
-        font-size: 1.5em;
+        font-family: Fondamento;
+        font-size: 1.2em;
         background-color: #2d6ca2;
         color: white;
         cursor: pointer;
@@ -179,12 +202,14 @@
 
 <script>
     import navBar from './components/navBar';
+    import Footer from './components/footer';
 
     export default {
         name: 'App',
 
         components : {
-            navBar
+            navBar,
+            Footer
         }
     };
 </script>

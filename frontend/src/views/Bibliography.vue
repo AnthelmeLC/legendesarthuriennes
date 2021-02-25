@@ -24,11 +24,11 @@
             <h2>Modifiez votre bibliographie :</h2>
             <form id="modifyBibliographyForm" @submit.prevent="onSubmit" name="modify">
                 <div>
-                    <label for="title">Titre de l'oeuvre* :</label>
+                    <label for="title">Titre de l'oeuvre <span class="invalidMessage">*</span> :</label>
                     <input type="text" id="title" name="title" required ref="title" v-model="bibliography.title">
                 </div>
                 <div>
-                    <label for="auther">Auteur* :</label>
+                    <label for="auther">Auteur <span class="invalidMessage">*</span> :</label>
                     <input type="text" id="auther" name="auther" required ref="auther" v-model="bibliography.auther">
                 </div>
                 <div>
@@ -36,7 +36,7 @@
                     <input type="text" id="translater" name="translater" ref="translater" v-model="bibliography.translater">
                 </div>
                 <div>
-                    <label for="yearOfPublication">Date de publication* :</label>
+                    <label for="yearOfPublication">Date de publication <span class="invalidMessage">*</span> :</label>
                     <input type="text" id="yearOfPublication" name="yearOfPublication" required ref="yearOfPublication" v-model="bibliography.yearOfPublication">
                 </div>
                 <div>
@@ -47,24 +47,17 @@
                     <label for="bibliographyPicture">Aperçu de l'oeuvre :</label>
                     <input type="file" id="bibliographyPicture" name="bibliographyPicture" accept="image/*" ref="bibliographyPicture" @change="onSelect">
                 </div>
-                <button class="biggerBtn">Publier ma bibliographie</button>
+                <div class="btn-div">
+                    <button class="biggerBtn">Modififer ma bibliographie</button>
+                </div>
             </form>
         </article>
     </section>
 </template>
 
 <style scoped>
-    #bibliographyDiv article{
-        margin-right: 5%;
-        margin-left: 5%;
-        margin-bottom: 5%;
-        border-bottom: solid black 1px;
-    }
-
-    #bibliographyDiv h2{
-        margin-left: 2%;
-        background-color: #efefef;
-        color: black;
+    h2{
+        padding-left: 2%;
         text-align: left;
     }
 

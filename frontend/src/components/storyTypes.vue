@@ -6,11 +6,13 @@
         </div>
         <form id="storyTypeForm" ref="storyTypesForm" @submit.prevent="onSubmit">
             <div>
-                <label for="newStoryType">Nouveau type d'histoires* :</label>
+                <label for="newStoryType">Nouveau type d'histoires <span class="invalidMessage">*</span> :</label>
                 <input type="text" id="newStoryType" name="newStoryType" required ref="newStoryType" v-model="newStoryType">
             </div>
             <p ref="message">{{message}}</p>
-            <button class="biggerBtn">Créer le type d'histoires</button>
+            <div class="btn-div">
+                <button class="biggerBtn">Créer le type d'histoires</button>
+            </div>
         </form>
     </article>
 </template>

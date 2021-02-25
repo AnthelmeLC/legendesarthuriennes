@@ -1,13 +1,13 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Home from '../views/Home.vue';
-import Preface from '../views/Preface.vue'
 import Story from '../views/Story.vue';
 import Bibliography from '../views/Bibliography.vue';
 import About from '../views/About.vue';
 import Contact from '../views/Contact.vue';
 import Login from '../views/Login.vue';
 import User from '../views/User.vue';
+import StoryType from '../views/StoryType.vue';
 
 Vue.use(VueRouter)
 
@@ -17,15 +17,15 @@ const routes = [
         name : 'Home',
         component : Home,
         meta : {
-            title : "La bibliothèque de merlin"
+            title : "La bibliothèque de Merlin"
         }
     },
     {
-        path : '/preface',
-        name : 'Preface',
-        component : Preface,
+        path : '/storytype',
+        name : 'Storytype',
+        component : StoryType,
         meta : {
-            title : "La bibliothèque de merlin"
+            title : "La bibliothèque de Merlin"
         }
     },
     {
@@ -33,7 +33,7 @@ const routes = [
         name : 'Strory',
         component : Story,
         meta : {
-            title : "La bibliothèque de merlin"
+            title : "La bibliothèque de Merlin"
         }
     },
     {
@@ -41,7 +41,7 @@ const routes = [
         name : 'Bibliogrpahy',
         component : Bibliography,
         meta : {
-            title : "La bibliothèque de merlin"
+            title : "La bibliothèque de Merlin"
         }
     },
     {
@@ -49,7 +49,7 @@ const routes = [
         name : 'About',
         component : About,
         meta : {
-            title : "La bibliothèque de merlin"
+            title : "La bibliothèque de Merlin"
         }
     },
     {
@@ -57,7 +57,7 @@ const routes = [
         name : 'Contact',
         component : Contact,
         meta : {
-            title : "La bibliothèque de merlin"
+            title : "La bibliothèque de Merlin"
         }
     },
     {
@@ -65,7 +65,7 @@ const routes = [
         name : 'Login',
         component : Login,
         meta : {
-            title : "La bibliothèque de merlin"
+            title : "La bibliothèque de Merlin"
         }
     },
     {
@@ -73,7 +73,7 @@ const routes = [
         name : 'userSpace',
         component : User,
         meta : {
-            title : "La bibliothèque de merlin"
+            title : "La bibliothèque de Merlin"
         }
     }
 ]

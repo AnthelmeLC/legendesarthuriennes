@@ -1,11 +1,13 @@
 <template>
     <form class="profilForm" id="newPseudoForm" @submit.prevent="onSubmit">
         <div>
-            <label for="newPseudo">Nouveau pseudo* :</label>
+            <label for="newPseudo">Nouveau pseudo <span class="invalidMessage">*</span> :</label>
             <input type="text" id="newPseudo" name="newPseudo" required ref="newPseudo" v-model="newPseudo">
         </div>
         <p ref="message">{{message}}</p>
-        <button class="biggerBtn">Modifier mon pseudo :</button>
+        <div class="btn-div">
+            <button class="biggerBtn">Modifier mon pseudo</button>
+        </div>
     </form>
 </template>
 

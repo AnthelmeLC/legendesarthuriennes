@@ -4,19 +4,21 @@
             <h2>Créer un nouvel utilisateur :</h2>
             <form id="newUserForm" @submit.prevent="onSubmit">
                 <div>
-                    <label for="pseudo">Pseudo* :</label>
+                    <label for="pseudo">Pseudo <span class="invalidMessage">*</span> :</label>
                     <input type="text" id="pseudo" name="pseudo" required ref="pseudo" v-model="pseudo">
                 </div>
                 <div>
-                    <label for="password">Mot de passe* : </label>
+                    <label for="password">Mot de passe <span class="invalidMessage">*</span> : </label>
                     <input type="password" id="password" name="password" required ref="password" v-model="password" @keyup="onSelect">
                 </div>
                 <div>
-                    <label for="confirmationPassword">Confirmation* :</label>
+                    <label for="confirmationPassword">Confirmation <span class="invalidMessage">*</span> :</label>
                     <input type="password" id="confirmationPassword" name="confirmationPassword" required ref="confirmationPassword" v-model="confirmationPassword" @keyup="onSelect">
                 </div>
                 <p ref="postMessage">{{postMessage}}</p>
-                <button class="biggerBtn">Créer l'utilisateur</button>
+                <div class="btn-div">
+                    <button class="biggerBtn">Créer l'utilisateur</button>
+                </div>
             </form>
         </article>
         <article>

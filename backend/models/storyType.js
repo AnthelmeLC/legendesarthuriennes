@@ -1,7 +1,7 @@
 const {Sequelize, DataTypes} = require("sequelize");
 const sequelize = require("../DBinstance");
 
-const StoryType = sequelize.define("storyType", {
+const StoryType = sequelize.define("storytype", {
     id : {
         type : DataTypes.NUMBER,
         primaryKey : true,

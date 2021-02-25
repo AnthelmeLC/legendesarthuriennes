@@ -1,19 +1,21 @@
 <template>
     <form class="profilForm" id="newPasswordForm" @submit.prevent="onSubmit">
         <div>
-            <label for="oldPassword">Ancien mot de passe* :</label>
+            <label for="oldPassword">Ancien mot de passe <span class="invalidMessage">*</span> :</label>
             <input type="password" id="oldPassword" name="oldPassword" required ref="oldPassword" v-model="oldPassword">
         </div>
         <div>
-            <label for="newPassword">Nouveau mot de passe* :</label>
+            <label for="newPassword">Nouveau mot de passe <span class="invalidMessage">*</span> :</label>
             <input type="password" id="newPassword" name="newPassword" required ref="newPassword" v-model="newPassword" @keyup="onSelect">
         </div>
         <div>
-            <label for="confirmationNewPassword">Confirmation* :</label>
+            <label for="confirmationNewPassword">Confirmation <span class="invalidMessage">*</span> :</label>
             <input type="password" id="confirmationNewPassword" name="confirmationNewPassword" required ref="confirmationPassword" v-model="confirmationPassword" @keyup="onSelect">
         </div>
         <p ref="message">{{message}}</p>
-        <button class="biggerBtn">Modifier mon mot de passe</button>
+        <div class="btn-div">
+            <button class="biggerBtn">Modifier mon mot de passe</button>
+        </div>
     </form>
 </template>
 

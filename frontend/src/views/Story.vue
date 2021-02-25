@@ -20,15 +20,15 @@
             <h2>Modifier l'histoire :</h2>
             <form id="newStoryForm" @submit.prevent="onSubmit">
                 <div>
-                    <label for="storyTitle">Titre* :</label>
+                    <label for="storyTitle">Titre <span class="invalidMessage">*</span> :</label>
                     <input type="text" id="title" name="title" required ref="title" v-model="title">
                 </div>
                 <div id="formStoryDiv">
-                    <label for="story">Racontez nous* :</label>
+                    <label for="story">Racontez nous <span class="invalidMessage">*</span> :</label>
                     <textarea name="story" id="formStory" cols="30" rows="30" required ref="story" v-model="story"></textarea>
                 </div>
                 <div>
-                    <label for="storyType">C'est l'histoire d'un* :</label>
+                    <label for="storyType">C'est l'histoire d'un <span class="invalidMessage">*</span> :</label>
                     <select name="storyType" id="storyType" required ref="storyType" v-model="storyType">
                         <option v-for="storyType of storyTypesList" :key="storyType.name" :value="storyType.name">{{storyType.name}}</option>
                     </select>
@@ -38,14 +38,16 @@
                     <input type="file" id="storyPicture" name="storyPicture" accept="image/*" ref="storyPicture" @change="onSelect">
                 </div>
                 <div>
-                    <label for="illustrator">Illustrateur* :</label>
+                    <label for="illustrator">Illustrateur <span class="invalidMessage">*</span> :</label>
                     <input type="text" id="illustrator" name="illustrator" required ref="illustrator" v-model="picture.illustrator">
                 </div>
                 <div>
-                    <label for="caption">Légendez votre image* :</label>
+                    <label for="caption">Légendez votre image <span class="invalidMessage">*</span> :</label>
                     <input type="text" id="caption" name="caption" required ref="caption" v-model="picture.caption">
                 </div>
-                <button class="biggerBtn">Modifier mon histoire</button>
+                <div class="btn-div">
+                    <button class="biggerBtn">Modifier mon histoire</button>
+                </div>
             </form>
         </article>
         <p ref="message">{{message}}</p>
@@ -70,14 +72,13 @@
     }
 
     #story{
-        width: 50%;
+        width: 60%;
         margin: 0;
-        font-size: x-large;
     }
 
     figure{
         text-align: center;
-        width: 50%;
+        width: 40%;
     }
 
     figure img{

@@ -25,10 +25,6 @@
 </template>
 
 <style scoped>
-    article{
-        margin-bottom: 20%;
-    }
-
     form{
         margin-bottom: 10%;
     }

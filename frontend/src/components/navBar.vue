@@ -1,43 +1,39 @@
 <template>
     <nav id="nav">
-        <router-link to="/"><img src="../../public/logo.png" alt=""></router-link> <!--à modifier avec le logo du site ou un logo temporaire-->
-        <router-link to="/preface">Préface</router-link>
-        <div id="storyTypes" ref="storyTypeDiv">
-            <a v-for="(storyType) of titles" :key="storyType.id" class="expand">{{storyType}}
-                <div class="hidden unfold">
-                    <router-link v-for="title of titles[storyType]" :key="title.id" :to="'/story?id='+title.id">{{title.title}}</router-link>
-                </div>
-            </a>
-        </div>
-        <router-link to="/bibliography">Bibliograhie</router-link>
-        <router-link to="/about">À propos</router-link>
+        <router-link to="/"><img src="../../public/logo-white.png" alt=""></router-link>
+        <router-link v-for="(storyType) of storyTypes" :key="storyType.id" :to="'/storytype?id=' + storyType.id" class="expand">{{storyType.name}}
+            <div class="hidden unfold">
+                <router-link v-for="title of titles[storyType.name]" :key="title.id" :to="'/story?id=' + title.id">{{title.title}}</router-link>
+            </div>
+        </router-link>
+        <router-link to="/bibliography">Bibliographie</router-link> 
         <router-link to="/contact">Contact</router-link>
-        <router-link v-if="!token" to="/login" ref="login">Connexion</router-link>
-        <router-link v-if="token" to="/user" ref="userSpaceLink">Espace Auteur</router-link>
-        <a v-if="token" id="disconnect" ref="disconnect" @click="disconnect">Déconnexion</a>
     </nav>
 </template>
 
 <style>
     #nav{
-        font-family: GothicUltra;
-        width: 10%;
+        font-family: Fondamento;
+        width: 100%;
+        height: 50px;
         position: fixed;
         top: 0;
         left: 0;
-        font-size: 2em;
-        background-color: #efefef;
-        box-shadow: 0px 0px 10px black;
+        font-size: 1.25em;
+        background-color: #9c2a2a;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        z-index: 1000;
     }
 
     a{
         display: block;
-        color: black;
+        color: #fff;
         text-decoration: none;
-        margin: 0% auto 5% auto;
-        padding-top: 5%;
         position: relative;
         padding-left: 10px;
+        padding-right: 10px;
     }
 
     a::after{
@@ -47,9 +43,9 @@
         bottom: 0;
         transform: scaleX(0);
         transform-origin: left;
-        width: 95%;
+        width: 100%;
         height: 2px;
-        background-color: red;
+        background-color: #ffd700;
         transition: transform 400ms ease-out;
     }
 
@@ -57,9 +53,8 @@
         transform: scaleX(1);
     }
 
-    a.router-link-exact-active{
-        background-color: #2d6ca2;
-        color: white;
+    a.router-link-exact-active::after{
+        transform: scaleX(1);
     }
 
     .expand{
@@ -77,15 +72,18 @@
 
     .unfold{
         position: absolute;
-        left: 100%;
-        top: 0%;
-        background-color: #efefef;
-        width: 100%;
-        box-shadow: 0px 0px 10px black;
+        left: 0%;
+        top: 100%;
+        padding-top: 30px;
+        background-color: #9c2a2a;
+        min-width: 100%;
+        opacity: 0.95;
     }
 
-    #disconnect{
-        cursor: pointer;
+    .unfold a{
+        margin-bottom: 20px;
+        width: 100%;
+        white-space: nowrap;
     }
 </style>
 
@@ -97,22 +95,12 @@
 
         data(){
             return {
-                titles : [],
-                token : localStorage.token
+                storyTypes : [],
+                titles : []
             }
         },
 
         methods : {
-            disconnect(){
-                //suppression des données d'authentification
-                localStorage.clear();
-                this.token = ""
-                //si l'utilisateur est dans l'espace auteur, redirection vers la page principale
-                if(window.location.href.split("/#/")[1] == "user"){
-                    window.location = window.location.origin;
-                }
-            },
-
             getTitles(){
                 //récupération des titres d'histoires
                 fetch(secrets.fetchPath + "api/stories/titles/")
@@ -125,6 +113,7 @@
                                 const storyType = title.storytype.name;
                                 if(!this.titles.includes(storyType)){
                                     this.titles.push(storyType);
+                                    this.storyTypes.push({"id" : title.storytype.id, "name" : title.storytype.name})
                                     this.titles[storyType] = [];
                                     this.titles[storyType].push(title);
                                 }
