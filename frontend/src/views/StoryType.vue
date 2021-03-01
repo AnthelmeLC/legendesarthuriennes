@@ -1,8 +1,10 @@
 <template>
     <section class="container">
+        <h1>{{storyType}}</h1>
         <ul>
             <li v-for="(title) of titles" :key="title.id"><router-link :to="'/story?id='+title.id">{{title.title}}</router-link></li>
         </ul>
+        <p>{{message}}</p>
     </section>
 </template>
 
@@ -10,6 +12,7 @@
     ul{
         width: fit-content;
         padding-top: 20px;
+        list-style-type: none;
     }
 
     a{
@@ -28,7 +31,9 @@
         
         data(){
             return {
-                titles : []
+                storyType : "",
+                titles : [],
+                message : ""
             }
         },
 
@@ -51,20 +56,21 @@
                             //enregistrement des données
                             for(let title of myJson){
                                 if(title.typeId == window.location.href.split("?id=")[1]){
+                                    this.storyType = title.storytype.name
                                     this.titles.push(title);
                                 }
                             }
                         })
                         .catch(error => {
-                            console.log("Il y a eu un problème avec l'opération fetch : " + error.message)
+                            console.log("Il y a eu un problème avec l'opération fetch : " + error.message);
                         });
                     }
                     else{
-                        console.log("Mauvaise réponse du réseau.");
+                        this.message = "Les titres n'ont pas pu être récupérés.";
                     }
                 })
                 .catch(error => {
-                    console.log("Il y a eu un problème avec l'opération fetch : " + error.message)
+                    console.log("Il y a eu un problème avec l'opération fetch : " + error.message);
                 });
             }
         },

@@ -1,8 +1,14 @@
 <template>
     <section class="container" v-if="id" ref="storyFound">
-        <h1>{{title}}</h1>
+        <h1>
+            <div class="moderation" v-if="userId == storageUserId || admin == 'true'">
+                <img src="../../public/modify.png" alt="Crayon noir" title="Modifier" @click.prevent="modify()">
+                <img src="../../public/delete.png" alt="Croix rouge" title="Supprimer" @click.prevent="remove()">
+            </div>
+            {{title}}
+        </h1>
         <div id="storyDiv">
-            <p id="story">{{story}}</p>
+            <p v-html="story" id="story"></p>
             <figure>
                 <img :src="picture.url" alt="">
                 <figcaption>
@@ -10,10 +16,6 @@
                     Illustrateur : {{picture.illustrator}}
                 </figcaption>
             </figure>
-        </div>
-        <div class="moderation" v-if="userId == storageUserId || admin == 'true'">
-            <img src="../../public/modify.png" alt="" @click.prevent="modify()">
-            <img src="../../public/delete.png" alt="" @click.prevent="remove()">
         </div>
 
         <article class="hidden" ref="modifyStoryForm" id="modifyStoryForm">
@@ -25,7 +27,7 @@
                 </div>
                 <div id="formStoryDiv">
                     <label for="story">Racontez nous <span class="invalidMessage">*</span> :</label>
-                    <textarea name="story" id="formStory" cols="30" rows="30" required ref="story" v-model="story"></textarea>
+                    <textarea name="story" id="formStory" cols="30" rows="30" required ref="story" v-model="storyForm"></textarea>
                 </div>
                 <div>
                     <label for="storyType">C'est l'histoire d'un <span class="invalidMessage">*</span> :</label>
@@ -61,6 +63,10 @@
 </template>
 
 <style scoped>
+    h1{
+        position: relative;
+    }
+
     #storyDiv{
         width: 100%;
         display: flex;
@@ -73,6 +79,7 @@
 
     #story{
         width: 60%;
+        text-align: justify;
         margin: 0;
     }
 
@@ -86,8 +93,14 @@
     }
 
     .moderation{
-        margin-top: 5%;
-        margin-bottom: 2%;
+        position: absolute;
+        height: 100%;
+        align-items: center;
+    }
+
+    .moderation img{
+        height: fit-content;
+        margin-left: 20px;
     }
 
     article{
@@ -111,6 +124,7 @@
                 id : "",
                 title : "",
                 story : "",
+                storyForm : "",
                 storyTypeId : "",
                 storyType : "",
                 picture : {
@@ -167,7 +181,8 @@
                             this.userId = myJson.story.userId;
                             this.id = myJson.story.id;
                             this.title = myJson.story.title;
-                            this.story = myJson.story.story;
+                            this.story = myJson.story.story.split("\n").join("<br>");
+                            this.storyForm = myJson.story.story;
                             this.storyTypeId = myJson.story.typeId;
                             this.picture.id = myJson.id;
                             this.picture.url = myJson.url;
@@ -266,7 +281,7 @@
                 //création de l'objet story
                 let story = {
                     title : this.title,
-                    story : this.story,
+                    story : this.storyForm,
                     storyType : this.storyType,
                     illustrator : this.picture.illustrator,
                     caption : this.picture.caption,

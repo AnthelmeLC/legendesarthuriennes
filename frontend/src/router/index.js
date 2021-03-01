@@ -33,7 +33,7 @@ const routes = [
         name : 'Strory',
         component : Story,
         meta : {
-            title : "La bibliothèque de Merlin"
+            title : "Histoire - La bibliothèque de Merlin"
         }
     },
     {
@@ -41,7 +41,7 @@ const routes = [
         name : 'Bibliogrpahy',
         component : Bibliography,
         meta : {
-            title : "La bibliothèque de Merlin"
+            title : "Bibliographie - La bibliothèque de Merlin"
         }
     },
     {
@@ -49,7 +49,7 @@ const routes = [
         name : 'About',
         component : About,
         meta : {
-            title : "La bibliothèque de Merlin"
+            title : "À propos - La bibliothèque de Merlin"
         }
     },
     {
@@ -57,7 +57,7 @@ const routes = [
         name : 'Contact',
         component : Contact,
         meta : {
-            title : "La bibliothèque de Merlin"
+            title : "Contact - La bibliothèque de Merlin"
         }
     },
     {
@@ -65,7 +65,7 @@ const routes = [
         name : 'Login',
         component : Login,
         meta : {
-            title : "La bibliothèque de Merlin"
+            title : "Connexion - La bibliothèque de Merlin"
         }
     },
     {
@@ -73,7 +73,7 @@ const routes = [
         name : 'userSpace',
         component : User,
         meta : {
-            title : "La bibliothèque de Merlin"
+            title : "Espace auteur.e - La bibliothèque de Merlin"
         }
     }
 ]

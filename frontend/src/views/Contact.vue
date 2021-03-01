@@ -15,7 +15,7 @@
 
                 <div>
                     <label for="message">Message <span class="invalidMessage">*</span> :</label>
-                    <textarea name="message" id="message" cols="40" rows="10" required v-model="email.message"></textarea>
+                    <textarea name="message" id="message" cols="40" rows="5" required v-model="email.message"></textarea>
                 </div>
                 <vue-recaptcha ref="recaptcha" sitekey="6Le-m0gaAAAAAC9Zh8QMFf5NxUjDOY6OOWUe0s_e" loadRecaptchaScript="true" @verify="verifyCaptcha" @expired="expiredCaptcha"></vue-recaptcha>
                 <button>Envoyer</button>
