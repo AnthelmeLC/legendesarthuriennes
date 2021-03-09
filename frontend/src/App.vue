@@ -8,20 +8,6 @@
 
 <style>
     /*STYLES ET CLASSES GENERAUX*/
-    @font-face{
-        font-family: "Mirella Script";
-        src:url(./assets/mirellascript.ttf) format("truetype");
-    }
-
-    @font-face{
-        font-family: "KingthingsCalligraphicaLight";
-        src:url(./assets/kingthingscalligraphicalight.ttf) format("truetype");
-    }
-
-    @font-face{
-        font-family: "GothicUltra";
-        src:url(./assets/gothicultra.ttf) format("truetype");
-    }
 
     *{
         box-sizing: border-box;
@@ -159,11 +145,12 @@
         border: none;
         border-bottom: 1px solid black;
         background-color: #efefef;
+        transition: border ease-in-out 200ms;
     }
 
     input:focus, textarea:focus{
-        border-color: #ffd700;
         outline: none;
+        border-bottom: 1px solid #ffd700;
     }
 
     select{

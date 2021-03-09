@@ -11,7 +11,7 @@
     </nav>
 </template>
 
-<style>
+<style scoped>
     #nav{
         font-family: Fondamento;
         width: 100%;
@@ -87,7 +87,7 @@
     }
 </style>
 
-<script scoped>
+<script>
     import secrets from "../../secrets";
 
     export default {

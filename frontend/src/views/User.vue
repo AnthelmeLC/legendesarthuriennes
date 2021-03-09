@@ -4,22 +4,36 @@
         <article>
             <h2>Profil :</h2>
             <p>Ici vous pouvez modifier les informations liées à votre compte à tout moment.</p>
-            
-            <pseudoModification></pseudoModification>
 
-            <passwordModification></passwordModification>
+            <div class="mode">
+                <button class="biggerBtn" @click="mode = 'modifyPseudo'" v-show="mode != 'modifyPseudo'">Modifier mon pseudo</button>
+                <button class="biggerBtn" @click="mode = 'modifyPassword'"  v-show="mode != 'modifyPassword'">Modifier mon mot de passe</button>
+            </div>
+            
+            <pseudoModification v-show="mode === 'modifyPseudo'"></pseudoModification>       
+            <passwordModification v-show="mode === 'modifyPassword'"></passwordModification>
         </article>
 
-        <div id="notAdmin" ref="notAdmin" v-if="admin === `false`">
-            <storyPost></storyPost>
+        <article id="notAdmin" ref="notAdmin" v-if="admin === `false`">
+            <h2>Espace auteur.e</h2>
 
-            <bibliographyPost></bibliographyPost>
-        </div>
+            <div class="mode">
+                <button class="biggerBtn" @click="mode = 'newStory'" v-show="mode != 'newStory'">Nouvelle histoire</button>
+                <button class="biggerBtn" @click="mode = 'newBibliography'" v-show="mode != 'newBibliography'">Nouvelle bibliographie</button>
+            </div>
+            
+            <storyPost v-show="mode === 'newStory'"></storyPost>
+            <bibliographyPost v-show="mode === 'newBibliography'"></bibliographyPost>
+        </article>
 
         <div id="admin" ref="admin" v-if="admin === `true`">
-            <usersList></usersList>
+            <div class="mode">
+                <button class="biggerBtn" @click="mode = 'usersList'" v-show="mode != 'usersList'">Nouvelle histoire</button>
+                <button class="biggerBtn" @click="mode = 'storyTypes'" v-show="mode != 'storyTypes'">Nouvelle bibliographie</button>
+            </div>
 
-            <storyTypes></storyTypes>
+            <usersList v-show="mode === 'usersList'"></usersList>
+            <storyTypes v-show="mode === 'storyTypes'"></storyTypes>
         </div>
     </section>
 </template>
@@ -37,6 +51,11 @@
         padding-top: 6px;
         font-family: KingthingsCalligraphicaLight;
         font-size: 1em;
+    }
+
+    .mode button{
+        display: block;
+        margin-bottom: 10px;
     }
 </style>
 
@@ -62,7 +81,8 @@
 
         data(){
             return {
-                admin : localStorage.admin
+                admin : localStorage.admin,
+                mode : ""
             }
         }
     };

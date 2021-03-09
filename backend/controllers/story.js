@@ -32,6 +32,40 @@ exports.getOneStory = (req, res, next) => {
     .catch(error => res.status(400).json({error}));
 };
 
+//GET 4 RANDOM
+exports.getFourRandom = (req, res, next) => {
+    Story.findAll({attributes : ["id"]})
+    .then(ids => {
+        let storiesIds = [];
+        for(let id of ids){
+            storiesIds.push(id.dataValues.id);
+        }
+        let randomIds = [];
+        for(let i=0; i<4; i++){
+            const random = Math.floor(Math.random() * storiesIds.length);
+            randomIds.push(storiesIds[random]);
+            storiesIds.splice(random, 1);
+        }
+        //liaison entre l'image et l'histoires
+        Picture.belongsTo(Story, {
+            foreignKey : "storyId"
+        });
+        Picture.findAll({where : {storyId : randomIds}, include : Story})
+        .then(stories => {
+            let randomStories = [];
+            for(let story of stories){
+                randomStories.push({
+                    ...story.dataValues,
+                    url : `${req.protocol}://${req.get("host")}/images/${story.dataValues.url}`
+                });
+            }
+            res.status(200).json(randomStories);
+        })
+        .catch(error => res.status(400).json({error}));
+    })
+    .catch(error => res.status(400).json({error}));
+}
+
 //POST NEW
 exports.createStory = (req, res, next) => {
     //parsing de l'objet story
