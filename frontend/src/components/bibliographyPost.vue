@@ -27,6 +27,7 @@
                 <input type="file" id="bibliographyPicture" name="bibliographyPicture" accept="image/*" required ref="bibliographyPicture" @change="onSelect">
             </div>
             <p ref="message">{{message}}</p>
+            <p class="requiredFields"><span class="invalidMessage">*</span> Champs obligatoires</p>
             <div class="btn-div">
                 <button class="biggerBtn">Publier ma bibliographie</button>
             </div>

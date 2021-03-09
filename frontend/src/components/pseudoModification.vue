@@ -5,6 +5,7 @@
             <input type="text" id="newPseudo" name="newPseudo" required ref="newPseudo" v-model="newPseudo">
         </div>
         <p ref="message">{{message}}</p>
+        <p class="requiredFields"><span class="invalidMessage">*</span> Champs obligatoires</p>
         <div class="btn-div">
             <button class="biggerBtn">Modifier mon pseudo</button>
         </div>

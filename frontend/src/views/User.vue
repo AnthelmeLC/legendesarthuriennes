@@ -1,6 +1,6 @@
 <template>
     <section class="container">
-        <h1>Votre espace auteur</h1>
+        <h1>Votre espace auteur.e</h1>
         <article>
             <h2>Profil :</h2>
             <p>Ici vous pouvez modifier les informations liées à votre compte à tout moment.</p>
@@ -26,15 +26,17 @@
             <bibliographyPost v-show="mode === 'newBibliography'"></bibliographyPost>
         </article>
 
-        <div id="admin" ref="admin" v-if="admin === `true`">
+        <article id="admin" ref="admin" v-if="admin === `true`">
+            <h2>Espace administrateur</h2>
+
             <div class="mode">
-                <button class="biggerBtn" @click="mode = 'usersList'" v-show="mode != 'usersList'">Nouvelle histoire</button>
-                <button class="biggerBtn" @click="mode = 'storyTypes'" v-show="mode != 'storyTypes'">Nouvelle bibliographie</button>
+                <button class="biggerBtn" @click="mode = 'usersList'" v-show="mode != 'usersList'">Liste des auteur.es</button>
+                <button class="biggerBtn" @click="mode = 'storyTypes'" v-show="mode != 'storyTypes'">Liste des types d'histoires</button>
             </div>
 
             <usersList v-show="mode === 'usersList'"></usersList>
             <storyTypes v-show="mode === 'storyTypes'"></storyTypes>
-        </div>
+        </article>
     </section>
 </template>
 

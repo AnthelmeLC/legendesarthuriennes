@@ -13,6 +13,7 @@
             <input type="password" id="confirmationNewPassword" name="confirmationNewPassword" required ref="confirmationPassword" v-model="confirmationPassword" @keyup="onSelect">
         </div>
         <p ref="message">{{message}}</p>
+        <p class="requiredFields"><span class="invalidMessage">*</span> Champs obligatoires</p>
         <div class="btn-div">
             <button class="biggerBtn">Modifier mon mot de passe</button>
         </div>

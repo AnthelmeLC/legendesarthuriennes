@@ -10,6 +10,7 @@
                 <input type="text" id="newStoryType" name="newStoryType" required ref="newStoryType" v-model="newStoryType">
             </div>
             <p ref="message">{{message}}</p>
+            <p class="requiredFields"><span class="invalidMessage">*</span> Champs obligatoires</p>
             <div class="btn-div">
                 <button class="biggerBtn">Créer le type d'histoires</button>
             </div>

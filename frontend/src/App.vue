@@ -16,7 +16,6 @@
     html, body{
         margin: 0;
         padding: 0;
-        background:  #efefef;
     }
     
     article{
@@ -81,6 +80,13 @@
         color: green;
     }
 
+    .requiredFields{
+        margin: 0;
+        margin-bottom: 2%;
+        width: 100%;
+        font-size: initial;
+    }
+
     #app{
         font-family: Fondamento, Times New Roman, Avenir, Helvetica, Arial, sans-serif;
         -webkit-font-smoothing: antialiased;
@@ -117,9 +123,7 @@
     }
 
     form{
-        min-width: 50%;
-        max-width: 85%;
-        width: fit-content;
+        width: 85%;
         margin-right: auto;
         margin-left: auto;
         position: relative;

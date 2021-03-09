@@ -47,6 +47,7 @@
                     <label for="bibliographyPicture">Aperçu de l'oeuvre :</label>
                     <input type="file" id="bibliographyPicture" name="bibliographyPicture" accept="image/*" ref="bibliographyPicture" @change="onSelect">
                 </div>
+                <p class="requiredFields"><span class="invalidMessage">*</span> Champs obligatoires</p>
                 <div class="btn-div">
                     <button class="biggerBtn">Modififer ma bibliographie</button>
                 </div>

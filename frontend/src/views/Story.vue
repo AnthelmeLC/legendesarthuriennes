@@ -47,6 +47,7 @@
                     <label for="caption">Légendez votre image <span class="invalidMessage">*</span> :</label>
                     <input type="text" id="caption" name="caption" required ref="caption" v-model="picture.caption">
                 </div>
+                <p class="requiredFields"><span class="invalidMessage">*</span> Champs obligatoires</p>
                 <div class="btn-div">
                     <button class="biggerBtn">Modifier mon histoire</button>
                 </div>
@@ -105,10 +106,6 @@
 
     article{
         margin-bottom: 20%;
-    }
-
-    form{
-        width: 85%;
     }
 </style>
 

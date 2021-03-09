@@ -30,6 +30,7 @@
             </div>
             <p ref="message">{{message}}</p>
             <p v-if="this.message">Rafraichissez la page pour qu'elle <br>apparaisse dans votre barre de navigation.</p>
+            <p class="requiredFields"><span class="invalidMessage">*</span> Champs obligatoires</p>
             <div class="btn-div">
                 <button class="biggerBtn">Publier mon histoire</button>
             </div>
