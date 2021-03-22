@@ -1,7 +1,7 @@
 <template>
     <section id="home" class="container">
         <h1>La bibliothèque de Merlin</h1>
-        <p>Vous invite à découvrir les légendes arthuriennes au travers de récits résumés et accessibles à tous.</p>
+        <p id="catchPhrase">Vous invite à découvrir les légendes arthuriennes au travers de récits résumés et accessibles à tous.</p>
         <p>{{message}}</p>
         <figure class="slideshow">
             <a class="prev" @click="slideIndex -= 1">&#10094;</a>
@@ -15,9 +15,9 @@
             
             <a class="next" @click="slideIndex += 1">&#10095;</a>
      
-        <div class="dots">
-            <span class="dot" :class="{active : index === slideIndex - 1}" v-for="(story, index) of randomStories" :key="index" @click="slideIndex = index + 1"></span>
-        </div>
+            <div class="dots">
+                <span class="dot" :class="{active : index === slideIndex - 1}" v-for="(story, index) of randomStories" :key="index" @click="slideIndex = index + 1"></span>
+            </div>
         </figure>
         <p>La légende arthurienne (ou cycle arthurien) est un ensemble de textes écrits au Moyen Âge autour du roi Arthur, de son entourage et de la quête du Graal. Elle est un thème fort de la matière de Bretagne. Il n'existe non pas une légende arthurienne, mais plusieurs. Cela est dû aux nombreux auteurs qui ont assemblé ces traditions au cours des siècles, depuis les premiers moines collecteurs jusqu'aux écrivains qui l'ont enrichie, comme Chrétien de Troyes ou plus récemment Xavier de Langlais. Ainsi, le nom des personnages et les circonstances de leur vie (jeunesse, hauts faits, mort) varient d'une époque à l'autre, d'un pays à l'autre. Il existe cependant une unité de lieu : le royaume de l'île de Bretagne, qui recouvre les territoires du centre, du sud et de l'ouest de la Grande-Bretagne actuelle ainsi qu'une partie non définie de la Bretagne continentale, et une unité de temps : la fin du Ve siècle et le début du VIe siècle quand les Romains viennent de quitter l'Île de Bretagne, période des grandes invasions qui précédèrent et suivirent la chute de l'empire romain d'Occident. Il ne s'agit donc pas, à l'origine, de personnages médiévaux, même si leur popularité en France a été portée par des écrivains du Moyen Âge.</p>
         <figure class="blason">
@@ -27,7 +27,7 @@
         <p>Les auteurs des histoires que vous pourrez lire ici se sont inspirés de multiples lectures que vous pourrez retrouver dans la bibliographie.<br>Ces histoires sont le fruit de recherches poussées et leur but est de synthétiser un bout de légende dans un récit court et facilement compréhensif.</p>
         <p>Certaines parties du cycle arthuriens ayant étées écrites ou réécrites par plusieurs auteurs, il est possible que vous trouviez des incohérences entre les différentes histoires ou avec ce que vous avez pu lire ailleurs.</p>
         <p>Bonne lecture...</p>
-        <img src="../../public/big-logo.png" alt="" id="logo">
+        <img src="../../public/big-logo.png" alt="" class="logo">
     </section>
 </template>
 
@@ -70,28 +70,18 @@
 
     figcaption{
         font-size: 75%;
-        font-family: Times New Roman;
     }
 
     .prev, .next {
         height: 500px;
         min-width: 100px;
         cursor: pointer;
-        color: #2d6ca2;
         font-size: 3em;
         font-weight: bold;
         transition: 0.6s ease;
         display: flex;
         flex-direction: column;
         justify-content: space-around;
-    }
-
-    .prev{
-        border-radius: 3px 0 0 3px;
-    }
-
-    .next {
-        border-radius: 0 3px 3px 0;
     }
 
     .prev:hover, .next:hover {
@@ -111,12 +101,11 @@
         
     }
 
-    .dot {
+    .dot{
         cursor: pointer;
         height: 15px;
         width: 15px;
         margin: 0 5px;
-        background-color: #2d6ca2;
         border-radius: 50%;
         display: inline-block;
         transition: border, scale 300ms ease-in-out;
@@ -124,13 +113,6 @@
 
     .active, .dot:hover {
         scale: 1.5;
-        background-color: #2d6ca2;
-    }
-
-    #logo{
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
     }
 
     h2{
@@ -141,27 +123,29 @@
         text-align: justify;
     }
 
-    a{
-        text-decoration: none;
-        position: relative;
+    @media all and (max-width : 700px){
+        .slideshow{
+            width: 95%;
+        }
+
+        .next, .prev{
+            width: 15%;
+            min-width: 0;
+        }
+
+        .slide{
+            width: 70%;
+        }
+
+        .slide div{
+            width: 100%;
+        }
+
+        .dots{
+            display: none;
+        }
     }
     
-    a::after{
-        content: "";
-        position: absolute;
-        left: 0;
-        bottom: 0;
-        transform: scaleX(0);
-        transform-origin: left;
-        width: 100%;
-        height: 2px;
-        background-color: #ffd700;
-        transition: transform 400ms ease-out;
-    }
-
-    a:hover::after{
-        transform: scaleX(1);
-    }
 </style>
 
 <script scoped>

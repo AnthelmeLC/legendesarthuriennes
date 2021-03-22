@@ -2,7 +2,8 @@
     <section class="container" v-if="id" ref="storyFound">
         <h1>
             <div class="moderation" v-if="userId == storageUserId || admin == 'true'">
-                <img src="../../public/modify.png" alt="Crayon noir" title="Modifier" @click.prevent="modify()">
+                <img src="../../public/modify.png" alt="Crayon noir" title="Modifier" @click.prevent="modify()" v-show="!dark">
+                <img src="../../public/modify-white.png" alt="Crayon blanc" title="Modifier" @click.prevent="modify()" v-show="dark">
                 <img src="../../public/delete.png" alt="Croix rouge" title="Supprimer" @click.prevent="remove()">
             </div>
             {{title}}
@@ -73,8 +74,6 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-left: 25px;
-        margin-right: 25px;
         flex-direction: row;
     }
 
@@ -107,6 +106,25 @@
     article{
         margin-bottom: 20%;
     }
+
+    @media all and (max-width : 900px){
+        #storyDiv{
+            flex-direction: column;            
+        }
+
+        #story{
+            width: 95%;
+        }
+
+        figure{
+            width: 80%;
+        }
+
+        .moderation{
+            right: 20px;
+            top: -100px;
+        }
+    }
 </style>
 
 <script>
@@ -135,6 +153,7 @@
 
                 storageUserId : localStorage.userId,
                 admin : localStorage.admin,
+                dark : localStorage.dark,
 
                 storyTypesList : [],
 

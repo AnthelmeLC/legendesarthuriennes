@@ -4,6 +4,7 @@ import Home from '../views/Home.vue';
 import Story from '../views/Story.vue';
 import Bibliography from '../views/Bibliography.vue';
 import About from '../views/About.vue';
+import LegalNotice from '../views/LegalNotice';
 import Contact from '../views/Contact.vue';
 import Login from '../views/Login.vue';
 import User from '../views/User.vue';
@@ -50,6 +51,14 @@ const routes = [
         component : About,
         meta : {
             title : "À propos - La bibliothèque de Merlin"
+        }
+    },
+    {
+        path : '/legal',
+        name : 'LegaleNotice',
+        component : LegalNotice,
+        meta : {
+            title : "Mentions légales - La bibliothèque de Merlin"
         }
     },
     {

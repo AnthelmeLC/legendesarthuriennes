@@ -2,7 +2,7 @@
     <section id="contact" class="container">
         <h1>Contact</h1>
         <div id="contactDiv">
-            <form @submit.prevent="onSubmit" method="POST">
+            <form @submit.prevent="onSubmit">
                 <div>
                     <label for="peuso">Nom Prénom / Pseudo <span class="invalidMessage">*</span> :</label>
                     <input type="text" required name="pseudo" id="pseudo" ref="pseudo" v-model="email.pseudo">
@@ -24,6 +24,7 @@
             <div id="messageDiv">
                 <p ref="message">{{message}}</p>
                 <p>N'hésitez pas à me contacter pour tout problème d'accessibilité ou pour toute réclamation.</p>
+                <img src="../../public/big-logo.png" alt="" class="logo">
             </div>
         </div>
     </section>
@@ -44,6 +45,20 @@
 
     #messageDiv{
         width: 40%;
+    }
+
+    @media all and (max-width : 900px){
+        #contactDiv{
+            flex-direction: column;
+        }
+
+        form{
+            width: 95%;
+        }
+
+        #messageDiv{
+            width: 95%;
+        }
     }
 </style>
 

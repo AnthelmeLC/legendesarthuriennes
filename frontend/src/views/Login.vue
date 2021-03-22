@@ -10,7 +10,7 @@
                 <label for="password">Mot de passe :</label>
                 <input type="password" id="password" name="password" ref="pseudo" v-model="password">
             </div>
-            <p>{{message}}</p>
+            <p class="invalidMessage">{{message}}</p>
             <vue-programmatic-invisible-google-recaptcha ref="recaptcha" sitekey="6LcU-0gaAAAAAFnEAhQSL0m1adF1X2FlnharB2HJ" elementId="recaptcha" @recaptcha-callback="recaptchaCallback"></vue-programmatic-invisible-google-recaptcha>
             <div class="btn-div">
                 <button class="biggerBtn">Connexion</button>
@@ -20,9 +20,7 @@
 </template>
 
 <style scoped>
-    p{
-        color: red;
-    }
+
 </style>
 
 <script>

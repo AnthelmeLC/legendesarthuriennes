@@ -66,6 +66,19 @@ exports.getFourRandom = (req, res, next) => {
     .catch(error => res.status(400).json({error}));
 }
 
+//GET ALL BY STORYTYPE
+exports.getAllByStoryType = (req, res, next) => {
+    StoryType.findOne({where : {id : req.params.typeId}})
+    .then(storyType => {
+        Story.findAll({where : {typeId : req.params.typeId}, attributes : ["id", "title"]})
+        .then(stories => {
+            res.status(200).json({"storyType" : storyType, "stories" : stories});
+        })
+        .catch(error => res.status(400).json({error}));
+    })
+    .catch(error => res.status(400).json({error}));
+}
+
 //POST NEW
 exports.createStory = (req, res, next) => {
     //parsing de l'objet story

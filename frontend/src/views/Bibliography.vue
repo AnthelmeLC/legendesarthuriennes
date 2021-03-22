@@ -14,7 +14,8 @@
                         <p>Date de réédition : {{bibliography.yearOfReissue}}</p>
                     </div>
                     <div class="moderation" v-if="bibliography.userId == userId || admin == 'true'">
-                        <img src="../../public/modify.png" alt="Crayon noir" title="Modifier" @click.prevent="modify(bibliography)">
+                        <img src="../../public/modify.png" alt="Crayon noir" title="Modifier" @click.prevent="modify(bibliography)" v-show="!dark">
+                        <img src="../../public/modify-white.png" alt="Crayon blanc" title="Modifier" @click.prevent="modify(bibliography)" v-show="dark">
                         <img src="../../public/delete.png" alt="Croix rouge" title="Supprimer" @click.prevent="remove(bibliography.id, index)">
                     </div>
                 </div>
@@ -93,6 +94,24 @@
     .moderation img{
         width: 32px;
     }
+
+    @media all and (max-width : 900px){
+        .content{
+            flex-direction: column;
+        }
+
+        .moderation{
+            flex-direction: row;
+            justify-content: space-around;
+            width: 100%;
+            margin-left: 0;
+        }
+
+        .content img{
+            margin-right: auto;
+            margin-left: auto;
+        }
+    }
 </style>
 
 <script>
@@ -112,7 +131,8 @@
                 message : "",
 
                 userId : localStorage.userId,
-                admin : localStorage.admin
+                admin : localStorage.admin,
+                dark : localStorage.dark
             }
         },
 

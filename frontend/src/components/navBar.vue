@@ -1,60 +1,66 @@
 <template>
     <nav id="nav">
-        <router-link to="/"><img src="../../public/logo-white.png" alt=""></router-link>
-        <router-link v-for="(storyType) of storyTypes" :key="storyType.id" :to="'/storytype?id=' + storyType.id" class="expand">{{storyType.name}}
-            <div class="hidden unfold">
-                <router-link v-for="title of titles[storyType.name]" :key="title.id" :to="'/story?id=' + title.id">{{title.title}}</router-link>
-            </div>
-        </router-link>
-        <router-link to="/bibliography">Bibliographie</router-link> 
-        <router-link to="/contact">Contact</router-link>
+        <a @click="navDeployement" id="navDeployer" ref="navDeployer" class="hidden"><img src="../../public/menu.png" alt="trois traits horizontaux parallèles blanc"></a>
+        <div ref="nav" id="menu">
+            <router-link to="/"><img src="../../public/logo-white.png" alt="Un livre ouvert blanc." title="Accueil"></router-link>
+            <router-link v-for="(storyType) of storyTypes" :key="storyType.id" :to="'/storytype?id=' + storyType.id" class="expand">{{storyType.name}}
+                <div class="hidden unfold">
+                    <router-link v-for="title of titles[storyType.name]" :key="title.id" :to="'/story?id=' + title.id">{{title.title}}</router-link>
+                </div>
+            </router-link>
+            <router-link to="/bibliography">Bibliographie</router-link> 
+            <router-link to="/contact">Contact</router-link>
+            <a class="expand" @click="deploy">
+                <img src="../../public/settings.png" alt="Un engrange blanc" title="paramètres">
+                <div class="unfold" :class="{'hidden' : hidden}" ref="settings">
+                    <a>Police :<br><div @click="changeFontMode()" class="back" title="police d'écriture"><div :class="{'right' : unstyled}" class="front"></div><div class="stylized">A</div><div class="unstyled">A</div></div></a>
+                    <a>Thème :<br><div @click="changeColorMode()" class="back" title="thème de couleurs"><div :class="{'right' : dark}" class="front"></div><div>off</div><div>on</div></div></a>
+                </div>
+            </a>
+        </div>
     </nav>
 </template>
 
 <style scoped>
     #nav{
-        font-family: Fondamento;
         width: 100%;
         height: 50px;
         position: fixed;
         top: 0;
         left: 0;
         font-size: 1.25em;
-        background-color: #9c2a2a;
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
         z-index: 1000;
     }
 
+    #navDeployer{
+        width: fit-content;
+        height: fit-content;
+        border: 2px solid white;
+        border-radius: 5px;
+        cursor: pointer;
+        margin: 2px;
+    }
+
+    #navDeployer img{
+        vertical-align: middle;
+    }
+
+    #menu{
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        height: 100%;
+    }
+
     a{
-        display: block;
-        color: #fff;
-        text-decoration: none;
-        position: relative;
         padding-left: 10px;
         padding-right: 10px;
     }
 
-    a::after{
-        content: "";
-        position: absolute;
-        left: 0;
-        bottom: 0;
-        transform: scaleX(0);
-        transform-origin: left;
-        width: 100%;
-        height: 2px;
-        background-color: #ffd700;
-        transition: transform 400ms ease-out;
-    }
-
-    a:hover::after{
-        transform: scaleX(1);
-    }
-
-    a.router-link-exact-active::after{
-        transform: scaleX(1);
+    a img{
+        width: 32px;
+        height: 32px;
     }
 
     .expand{
@@ -65,7 +71,7 @@
         cursor: pointer;
     }
 
-    .expand:hover div{
+    .expand:hover .unfold{
         display: block;
         cursor: pointer;
     }
@@ -75,7 +81,6 @@
         left: 0%;
         top: 100%;
         padding-top: 30px;
-        background-color: #9c2a2a;
         min-width: 100%;
         opacity: 0.95;
     }
@@ -84,6 +89,61 @@
         margin-bottom: 20px;
         width: 100%;
         white-space: nowrap;
+    }
+
+    .back{
+        width: 60px;
+        height: 30px;
+        border-radius: 30px;
+        display: flex;
+        justify-content: space-between;
+        position: relative;
+        cursor: pointer;
+    }
+
+    .back div{
+        width: 26px;
+        height: 26px;
+        margin: 0;
+        text-align: center;
+        border-radius: 50%;
+    }
+
+    .front{
+        position: absolute;
+        left: 2px;
+        top: 2px;
+    }
+
+    .right{
+        left: 32px;
+    }
+
+    @media all and (max-width : 900px){
+        #nav{
+            width: fit-content;
+            max-width: 100%;
+            height: fit-content;
+            max-height: 100vmax;
+        }
+
+        #navDeployer{
+            display: block;
+        }
+
+        #menu{
+            display: none;
+        }
+
+        a{
+            display: block;
+            margin-bottom: 10%;
+        }
+
+        .unfold{
+            left: 100%;
+            top: -350%;
+        }
     }
 </style>
 
@@ -96,7 +156,11 @@
         data(){
             return {
                 storyTypes : [],
-                titles : []
+                titles : [],
+                unstyled : localStorage.unstyled,
+                dark : localStorage.dark,
+                hidden : true,
+                deployed : ""
             }
         },
 
@@ -133,6 +197,62 @@
                 .catch(error => {
                     console.log("Il y a eu un problème avec l'opération fetch : " + error.message)
                 });
+            },
+
+            changeFontMode(){
+                if(localStorage.unstyled){
+                    document.getElementById("app").className = document.getElementById("app").className.replace("unstyled", "stylized");
+                    localStorage.removeItem("unstyled");
+                    this.unstyled = "";
+                }
+                else{
+                    document.getElementById("app").className = document.getElementById("app").className.replace("stylized", "unstyled");
+                    localStorage.setItem("unstyled", true)
+                    this.unstyled = true;
+                }
+            },
+
+            changeColorMode(){
+                if(localStorage.dark){
+                    document.getElementById("app").className = document.getElementById("app").className.replace("dark", "light");
+                    localStorage.removeItem("dark");
+                    this.dark = "";
+                }
+                else{
+                    document.getElementById("app").className = document.getElementById("app").className.replace("light", "dark");
+                    localStorage.setItem("dark", true)
+                    this.dark = true;
+                }
+            },
+
+            deploy(){
+                if(navigator.userAgent.match(/Android/i)
+                    || navigator.userAgent.match(/webOS/i)
+                    || navigator.userAgent.match(/iPhone/i)
+                    || navigator.userAgent.match(/iPad/i)
+                    || navigator.userAgent.match(/iPod/i)
+                    || navigator.userAgent.match(/BlackBerry/i)
+                    || navigator.userAgent.match(/Windows Phone/i)
+                    || this.deployed == true
+                ){
+                    if(this.hidden){
+                        this.hidden = "";
+                    }
+                    else{
+                        this.hidden = true;
+                    }
+                }
+            },
+
+            navDeployement(){
+                if(this.deployed){
+                    this.$refs.nav.style.display = "none";
+                    this.deployed = "";
+                }
+                else{
+                    this.$refs.nav.style.display = "block";
+                    this.deployed = true;
+                }
             }
         },
 
