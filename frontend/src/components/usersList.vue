@@ -3,7 +3,7 @@
         <article>
             <h2>Les auteur.es :</h2>
             <div id="users" ref="users">
-                <p v-for="(user, index) of usersList" :key="user.id">{{user.pseudo}}<img src="../../public/delete.png" alt="croix rouge" v-show="!user.deleted" v-on:click.prevent="remove(user.id, index)"></p>
+                <p v-for="(user, index) of usersList" :key="user.id">{{user.pseudo}}<img src="../assets/images/delete.png" alt="croix rouge" v-show="!user.deleted" v-on:click.prevent="remove(user.id, index)"></p>
                 <p ref="removeMessage">{{removeMessage}}</p>
             </div>
             <form id="newUserForm" @submit.prevent="onSubmit">
@@ -96,7 +96,7 @@
                     .then(response => {
                         if(response.ok){
                             //message à l'utilisateur, vidage des données et récupération de tous les utilisateurs
-                            this.$refs.postMessage.setAttribute("class", "validMessage")
+                            this.$refs.postMessage.setAttribute("class", "validMessage");
                             this.postMessage = "Auteur.e créé.";
                             this.removeMessage = "";
                             this.pseudo = "";
@@ -105,14 +105,14 @@
                             this.getUsers();
                         }
                         else{
-                            this.$refs.postMessage.setAttribute("class", "invalidMessage")
+                            this.$refs.postMessage.setAttribute("class", "invalidMessage");
                             this.postMessage = "Pseudo indisponible.";
                             this.removeMessage = "";
                         }
                     })
                     .catch(error => {
                         console.log("Il y a eu un problème avec l'opération fetch :" + error.message);
-                        this.$refs.postMessage.setAttribute("class", "invalidMessage")
+                        this.$refs.postMessage.setAttribute("class", "invalidMessage");
                         this.postMessage = "Il y a eu un problème avec l'opération fetch";
                         this.removeMessage = "";
                     });
@@ -132,20 +132,20 @@
                 .then(response => {
                     if(response.ok){
                         //message à l'utilisateur et suppression de l'utilisateur dans les données
-                        this.$refs.removeMessage.setAttribute("class", "validMessage")
+                        this.$refs.removeMessage.setAttribute("class", "validMessage");
                         this.removeMessage = "Auteur.e supprimé.";
                         this.postMessage = "";
                         this.usersList[index].deleted = true;
                     }
                     else{
-                        this.$refs.removeMessage.setAttribute("class", "invalidMessage")
+                        this.$refs.removeMessage.setAttribute("class", "invalidMessage");
                         this.removeMessage = "Impossible de supprimer cet auteur.e.";
                         this.postMessage = "";
                     }
                 })
                 .catch(error => {
                     console.log("Il y a eu un problème avec l'opération fetch :" + error.message);
-                    this.$refs.removeMessage.setAttribute("class", "invalidMessage")
+                    this.$refs.removeMessage.setAttribute("class", "invalidMessage");
                     this.removeMessage = "Il y a eu un problème avec l'opération fetch";
                     this.postMessage = "";
                 });

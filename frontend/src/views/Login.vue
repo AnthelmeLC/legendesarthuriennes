@@ -82,16 +82,16 @@
                             window.location.reload();
                         })
                         .catch(error => {
-                            console.log("Il y a eu un problème avec l'opération fetch : " + error.message)
-                        })
+                            console.log("Il y a eu un problème avec l'opération fetch : " + error.message);
+                        });
                     }
                     else{
                         this.message = "Identifiants incorrects.";
                     }
                 })
                 .catch(error => {
-                    console.log("Il y a eu un problème avec l'opération fetch : " + error.message)
-                })
+                    console.log("Il y a eu un problème avec l'opération fetch : " + error.message);
+                });
             }
         }
     };

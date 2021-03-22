@@ -34,12 +34,14 @@ exports.getOneStory = (req, res, next) => {
 
 //GET 4 RANDOM
 exports.getFourRandom = (req, res, next) => {
+    //récupération de tous les ids d'histoires
     Story.findAll({attributes : ["id"]})
     .then(ids => {
         let storiesIds = [];
         for(let id of ids){
             storiesIds.push(id.dataValues.id);
         }
+        //sélection aléatoire de 4 ids
         let randomIds = [];
         for(let i=0; i<4; i++){
             const random = Math.floor(Math.random() * storiesIds.length);
@@ -50,6 +52,7 @@ exports.getFourRandom = (req, res, next) => {
         Picture.belongsTo(Story, {
             foreignKey : "storyId"
         });
+        //récupération des histoires correspondantes aux 4 ids aléatoires
         Picture.findAll({where : {storyId : randomIds}, include : Story})
         .then(stories => {
             let randomStories = [];
@@ -64,12 +67,14 @@ exports.getFourRandom = (req, res, next) => {
         .catch(error => res.status(400).json({error}));
     })
     .catch(error => res.status(400).json({error}));
-}
+};
 
 //GET ALL BY STORYTYPE
 exports.getAllByStoryType = (req, res, next) => {
+    //récupération du bon type d'histoires
     StoryType.findOne({where : {id : req.params.typeId}})
     .then(storyType => {
+        //récupération de toutes les histoires de ce type
         Story.findAll({where : {typeId : req.params.typeId}, attributes : ["id", "title"]})
         .then(stories => {
             res.status(200).json({"storyType" : storyType, "stories" : stories});
@@ -77,7 +82,7 @@ exports.getAllByStoryType = (req, res, next) => {
         .catch(error => res.status(400).json({error}));
     })
     .catch(error => res.status(400).json({error}));
-}
+};
 
 //POST NEW
 exports.createStory = (req, res, next) => {
@@ -132,9 +137,9 @@ exports.modifyStory = (req, res, next) => {
                     Picture.update({
                         url : req.file.filename,
                         illustrator : storyObject.illustrator,
-                        caption : storyObject.caption,
+                        caption : storyObject.caption
                     },{
-                        where : {id : storyObject.pictureId},
+                        where : {id : storyObject.pictureId}
                     })
                     .then(() => {
                         Story.update({
@@ -145,18 +150,19 @@ exports.modifyStory = (req, res, next) => {
                             where : {id : req.params.id}
                         })
                         .then(() => res.status(201).json({message : "Histoire modifiée"}))
-                        .catch(error => res.status(400).json({error}))
+                        .catch(error => res.status(400).json({error}));
                     })
                     .catch(error => res.status(400).json({error}));
                 })
             })
-            .catch(error => res.status(400).json(error))
+            .catch(error => res.status(400).json(error));
         }
+        //si l'utilisateur ne change pas l'image
         else{
+            //mise à jour de l'image puis de l'histoire
             Picture.update({
                 illustrator : storyObject.illustrator,
-                caption : storyObject.caption,
-            
+                caption : storyObject.caption            
             },{
                 where : {id : storyObject.pictureId}
             })
@@ -169,7 +175,7 @@ exports.modifyStory = (req, res, next) => {
                     where : {id : req.params.id}
                 })
                 .then(() => res.status(201).json({message : "Histoire modifiée"}))
-                .catch(error => res.status(400).json({error}))
+                .catch(error => res.status(400).json({error}));
             })
             .catch(error => res.status(400).json({error}));
         }
@@ -190,5 +196,5 @@ exports.deleteStory = (req, res, next) => {
             .catch(error => res.status(400).json({error}));
         })
     })
-    .catch(error => res.status(400).json(error))
+    .catch(error => res.status(400).json(error));
 };

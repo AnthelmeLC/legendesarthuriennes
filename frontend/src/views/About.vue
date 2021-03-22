@@ -3,13 +3,13 @@
         <h1>À propos</h1>
         <p id="catchPhrase">Ce site est l'annexe arthurienne du site des <a href="http://www.leschevalierspourpres.com/index.php">Chevaliers Pourpres</a>.</p>
         <figure id="groupe">
-            <img src="../../public/groupe.jpg" alt="">
+            <img src="../assets/images/groupe.jpg" alt="">
             <figcaption>Photo des Chevaliers pourpres (2020), prise par Jean-Christophe Chaudron.</figcaption>
         </figure>
         <div class="container">
             <figure>
-                <img src="../../public/defile.jpg" alt="">
-                <figcaption>Photo des Chevaliers Pourpres lors du défilé de la fête multi-époque de Brouage (2017), prise par MACHIN.</figcaption>
+                <img src="../assets/images/defile.jpg" alt="">
+                <figcaption>Photo des Chevaliers Pourpres lors du défilé de la fête multi-époque de Brouage (2017), prise par Laura Stalin.</figcaption>
             </figure>
             <div class="test2">
                 <p>Créée en 2002 par Benjamin Vincent, notre association s'attache à l'évocation médiévale de la légende arthurienne. Il s'agit pour nous d'évoquer la vie des chevaliers de la Table Ronde, ce à quoi pourrait ressembler leur univers. Malgré ce cadre issu du merveilleux, notre association s'attache à une certaine crédibilité historique. Si nos armures et équipements sont parfois très différents les uns des autres, de par les époques représentées et leur lieu de provenance, chaque membre de notre association attache une grande importance à la constitution d'un équipement civil et militaire cohérent.</p>
@@ -21,6 +21,10 @@
 </template>
 
 <style scoped>
+    section{
+        padding-top: 50px;
+    }
+
     #groupe{
         width: 100%;
     }

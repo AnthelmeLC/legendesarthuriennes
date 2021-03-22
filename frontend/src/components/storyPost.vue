@@ -94,7 +94,7 @@
                 .then(response => {
                     if(response.ok){
                         //message à l'utilisateur et vidage des données
-                        this.$refs.message.setAttribute("class", "validMessage")
+                        this.$refs.message.setAttribute("class", "validMessage");
                         this.message = "Histoire créée.";
                         this.story.title = "";
                         this.story.story = "";
@@ -104,13 +104,13 @@
                         this.file = "";
                     }
                     else{
-                        this.$refs.message.setAttribute("class", "invalidMessage")
+                        this.$refs.message.setAttribute("class", "invalidMessage");
                         this.message = "L'histoire n'a pas pu être créée.";
                     }
                 })
                 .catch(error => {
                     console.log("Il y a eu un problème avec l'opération fetch :" + error.message);
-                    this.$refs.message.setAttribute("class", "invalidMessage")
+                    this.$refs.message.setAttribute("class", "invalidMessage");
                     this.message = "Il y a eu un problème avec l'opération fetch";
                 });
             },
@@ -121,7 +121,7 @@
                     headers : {
                         authorization : localStorage.userId + " " + localStorage.token
                     }
-                }
+                };
                 //récupération des types d'histoire
                 fetch(secrets.fetchPath + "api/storyTypes/", options)
                 .then(response => {

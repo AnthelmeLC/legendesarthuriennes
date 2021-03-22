@@ -24,7 +24,7 @@
             <div id="messageDiv">
                 <p ref="message">{{message}}</p>
                 <p>N'hésitez pas à me contacter pour tout problème d'accessibilité ou pour toute réclamation.</p>
-                <img src="../../public/big-logo.png" alt="" class="logo">
+                <img src="../assets/images/big-logo.png" alt="" class="logo">
             </div>
         </div>
     </section>
@@ -98,7 +98,7 @@
             },
 
             onSubmit(){
-                this.message = "Envoi en cours, veuillez patienter..."
+                this.message = "Envoi en cours, veuillez patienter...";
                 //récupération des données entrées par l'utilisateur
                 const mail = {
                     captcha : this.captcha,
@@ -124,7 +124,7 @@
                 .then(response => {
                     if(response.ok){
                         //message à l'utilisateur et vidage des données
-                        this.$refs.message.setAttribute("class", "validMessage")
+                        this.$refs.message.setAttribute("class", "validMessage");
                         this.message = "Email envoyé. Ne tenez pas compte des bordures rouges.";
                         this.email.pseudo = "";
                         this.email.topic = "";
@@ -132,13 +132,13 @@
                         this.expiredCaptcha();
                     }
                     else{
-                        this.$refs.message.setAttribute("class", "invalidMessage")
+                        this.$refs.message.setAttribute("class", "invalidMessage");
                         this.message = "email non envoyé";
                     }
                 })
                 .catch(error => {
                     console.log("Il y a eu un problème avec l'opération fetch : " + error);
-                    this.$refs.message.setAttribute("class", "invalidMessage")
+                    this.$refs.message.setAttribute("class", "invalidMessage");
                     this.message = "Il y a eu un problème avec l'opération fetch";
                 });
             }

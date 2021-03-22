@@ -44,12 +44,12 @@
             disconnect(){
                 //suppression des données d'authentification
                 localStorage.clear();
-                this.token = ""
+                this.token = "";
                 //si l'utilisateur est dans l'espace auteur, redirection vers la page principale
                 if(window.location.href.split("/#/")[1] == "user"){
                     window.location = window.location.origin;
                 }
             }
         }
-    }
+    };
 </script>

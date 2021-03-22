@@ -89,7 +89,7 @@
                 .then(response => {
                     if(response.ok){
                         //message à l'utilisateur et vidage des données
-                        this.$refs.message.setAttribute("class", "validMessage")
+                        this.$refs.message.setAttribute("class", "validMessage");
                         this.message = "Bibliographie créée.";
                         this.bibliography.title = "";
                         this.bibliography.auther = "";
@@ -99,13 +99,13 @@
                         this.file = "";
                     }
                     else{
-                        this.$refs.message.setAttribute("class", "invalidMessage")
+                        this.$refs.message.setAttribute("class", "invalidMessage");
                         this.message = "La bibliographie n'a pas pu être créée.";
                     }
                 })
                 .catch(error => {
                     console.log("Il y a eu un problème avec l'opération fetch :" + error.message);
-                    this.$refs.message.setAttribute("class", "invalidMessage")
+                    this.$refs.message.setAttribute("class", "invalidMessage");
                     this.message = "Il y a eu un problème avec l'opération fetch";
                 });
             }

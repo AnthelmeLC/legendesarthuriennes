@@ -6,7 +6,7 @@
                 <li><p>{{message}}</p></li>
                 <li v-for="(title) of titles" :key="title.id"><router-link :to="'/story?id='+title.id">{{title.title}}</router-link></li>
             </ul>
-            <img src="../../public/big-logo.png" alt="" class="logo">
+            <img src="../assets/images/big-logo.png" alt="" class="logo">
         </div>
     </section>
 </template>

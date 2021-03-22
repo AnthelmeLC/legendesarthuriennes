@@ -1,8 +1,8 @@
 <template>
     <nav id="nav">
-        <a @click="navDeployement" id="navDeployer" ref="navDeployer" class="hidden"><img src="../../public/menu.png" alt="trois traits horizontaux parallèles blanc"></a>
+        <a @click="navDeployement" id="navDeployer" ref="navDeployer" class="hidden"><img src="../assets/images/menu.png" alt="trois traits horizontaux parallèles blanc"></a>
         <div ref="nav" id="menu">
-            <router-link to="/"><img src="../../public/logo-white.png" alt="Un livre ouvert blanc." title="Accueil"></router-link>
+            <router-link to="/"><img src="../assets/images/logo-white.png" alt="Un livre ouvert blanc." title="Accueil"></router-link>
             <router-link v-for="(storyType) of storyTypes" :key="storyType.id" :to="'/storytype?id=' + storyType.id" class="expand">{{storyType.name}}
                 <div class="hidden unfold">
                     <router-link v-for="title of titles[storyType.name]" :key="title.id" :to="'/story?id=' + title.id">{{title.title}}</router-link>
@@ -11,7 +11,7 @@
             <router-link to="/bibliography">Bibliographie</router-link> 
             <router-link to="/contact">Contact</router-link>
             <a class="expand" @click="deploy">
-                <img src="../../public/settings.png" alt="Un engrange blanc" title="paramètres">
+                <img src="../assets/images/settings.png" alt="Un engrange blanc" title="paramètres">
                 <div class="unfold" :class="{'hidden' : hidden}" ref="settings">
                     <a>Police :<br><div @click="changeFontMode()" class="back" title="police d'écriture"><div :class="{'right' : unstyled}" class="front"></div><div class="stylized">A</div><div class="unstyled">A</div></div></a>
                     <a>Thème :<br><div @click="changeColorMode()" class="back" title="thème de couleurs"><div :class="{'right' : dark}" class="front"></div><div>off</div><div>on</div></div></a>
@@ -177,7 +177,7 @@
                                 const storyType = title.storytype.name;
                                 if(!this.titles.includes(storyType)){
                                     this.titles.push(storyType);
-                                    this.storyTypes.push({"id" : title.storytype.id, "name" : title.storytype.name})
+                                    this.storyTypes.push({"id" : title.storytype.id, "name" : title.storytype.name});
                                     this.titles[storyType] = [];
                                     this.titles[storyType].push(title);
                                 }
@@ -187,7 +187,7 @@
                             }
                         })
                         .catch(error => {
-                            console.log("Il y a eu un problème avec l'opération fetch : " + error.message)
+                            console.log("Il y a eu un problème avec l'opération fetch : " + error.message);
                         });
                     }
                     else{
@@ -195,7 +195,7 @@
                     }
                 })
                 .catch(error => {
-                    console.log("Il y a eu un problème avec l'opération fetch : " + error.message)
+                    console.log("Il y a eu un problème avec l'opération fetch : " + error.message);
                 });
             },
 
@@ -207,7 +207,7 @@
                 }
                 else{
                     document.getElementById("app").className = document.getElementById("app").className.replace("stylized", "unstyled");
-                    localStorage.setItem("unstyled", true)
+                    localStorage.setItem("unstyled", true);
                     this.unstyled = true;
                 }
             },
@@ -220,7 +220,7 @@
                 }
                 else{
                     document.getElementById("app").className = document.getElementById("app").className.replace("light", "dark");
-                    localStorage.setItem("dark", true)
+                    localStorage.setItem("dark", true);
                     this.dark = true;
                 }
             },

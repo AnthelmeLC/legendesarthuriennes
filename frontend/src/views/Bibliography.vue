@@ -14,9 +14,9 @@
                         <p>Date de réédition : {{bibliography.yearOfReissue}}</p>
                     </div>
                     <div class="moderation" v-if="bibliography.userId == userId || admin == 'true'">
-                        <img src="../../public/modify.png" alt="Crayon noir" title="Modifier" @click.prevent="modify(bibliography)" v-show="!dark">
-                        <img src="../../public/modify-white.png" alt="Crayon blanc" title="Modifier" @click.prevent="modify(bibliography)" v-show="dark">
-                        <img src="../../public/delete.png" alt="Croix rouge" title="Supprimer" @click.prevent="remove(bibliography.id, index)">
+                        <img src="../assets/images/modify.png" alt="Crayon noir" title="Modifier" @click.prevent="modify(bibliography)" v-show="!dark">
+                        <img src="../assets/images/modify-white.png" alt="Crayon blanc" title="Modifier" @click.prevent="modify(bibliography)" v-show="dark">
+                        <img src="../assets/images/delete.png" alt="Croix rouge" title="Supprimer" @click.prevent="remove(bibliography.id, index)">
                     </div>
                 </div>
             </article>
@@ -185,18 +185,18 @@
                 .then(response => {
                     if(response.ok){
                         //message à l'utilisateur et suppression de la bibliographie dans les données
-                        this.$refs.message.setAttribute("class", "validMessage")
+                        this.$refs.message.setAttribute("class", "validMessage");
                         this.message = "Bibliography supprimée.";
                         this.bibliographyList.splice(index, 1);
                     }
                     else{
-                        this.$refs.message.setAttribute("class", "invalidMessage")
+                        this.$refs.message.setAttribute("class", "invalidMessage");
                         this.message = "La bibliographie n'a pas pu être supprimée.";
                     }
                 })
                 .catch(error => {
                     console.log("Il y a eu un problème avec l'opération fetch :" + error.message);
-                    this.$refs.message.setAttribute("class", "invalidMessage")
+                    this.$refs.message.setAttribute("class", "invalidMessage");
                     this.message = "Il y a eu un problème avec l'opération fetch" + error;
                 });
             },
@@ -243,7 +243,7 @@
                     console.log("Il y a eu un problème avec l'opération fetch : " + error);
                     this.$refs.message.setAttribute("class", "validMessage");
                     this.message = "Il y a eu un problème avec l'opération fetch";
-                })
+                });
             }
         },
 

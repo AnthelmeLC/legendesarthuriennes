@@ -33,6 +33,6 @@ app.use("/api/auth", userRoutes);
 app.use("/api/storyTypes", storyTypeRoutes);
 app.use("/api/stories", storyRoutes);
 app.use("/api/bibliography", bibliographyRoutes);
-app.use("/api/mail", mailRoutes)
+app.use("/api/mail", mailRoutes);
 
 module.exports = app;

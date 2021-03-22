@@ -83,20 +83,20 @@
                     .then(response => {
                         if(response.ok){
                             //message à l'utilisateur et vidage des données
-                            this.$refs.message.setAttribute("class", "validMessage")
+                            this.$refs.message.setAttribute("class", "validMessage");
                             this.message = "Mot de passe modifié.";
                             this.oldPassword = "";
                             this.newPassword = "";
                             this.confirmationPassword = "";
                         }
                         else{
-                            this.$refs.message.setAttribute("class", "invalidMessage")
+                            this.$refs.message.setAttribute("class", "invalidMessage");
                             this.message = "Erreur de mot de passe.";
                         }
                     })
                     .catch(error => {
                         console.log("Il y a eu un problème avec l'opération fetch :" + error.message);
-                        this.$refs.message.setAttribute("class", "invalidMessage")
+                        this.$refs.message.setAttribute("class", "invalidMessage");
                         this.message = "Il y a eu un problème avec l'opération fetch";
                     });
                 }

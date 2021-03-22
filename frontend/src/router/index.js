@@ -10,7 +10,7 @@ import Login from '../views/Login.vue';
 import User from '../views/User.vue';
 import StoryType from '../views/StoryType.vue';
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
 const routes = [
     {
@@ -85,13 +85,13 @@ const routes = [
             title : "Espace auteur.e - La bibliothèque de Merlin"
         }
     }
-]
+];
 
 const router = new VueRouter({
     //mode : 'history',
     base : process.env.BASE_URL,
     routes
-})
+});
 
 // This callback runs before every route change, including on page load.
 router.beforeEach((to, from, next) => {
@@ -131,4 +131,4 @@ router.beforeEach((to, from, next) => {
     next();
   });
 
-export default router
+export default router;

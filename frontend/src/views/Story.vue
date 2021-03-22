@@ -2,9 +2,9 @@
     <section class="container" v-if="id" ref="storyFound">
         <h1>
             <div class="moderation" v-if="userId == storageUserId || admin == 'true'">
-                <img src="../../public/modify.png" alt="Crayon noir" title="Modifier" @click.prevent="modify()" v-show="!dark">
-                <img src="../../public/modify-white.png" alt="Crayon blanc" title="Modifier" @click.prevent="modify()" v-show="dark">
-                <img src="../../public/delete.png" alt="Croix rouge" title="Supprimer" @click.prevent="remove()">
+                <img src="../assets/images/modify.png" alt="Crayon noir" title="Modifier" @click.prevent="modify()" v-show="!dark">
+                <img src="../assets/images/modify-white.png" alt="Crayon blanc" title="Modifier" @click.prevent="modify()" v-show="dark">
+                <img src="../assets/images/delete.png" alt="Croix rouge" title="Supprimer" @click.prevent="remove()">
             </div>
             {{title}}
         </h1>
@@ -207,16 +207,16 @@
                         })
                         .catch(error => {
                             console.log("Il y a eu un problème avec l'opération fetch :" + error.message);
-                        })
+                        });
                     }
                     else{
-                        this.$refs.message.setAttribute("class", "invalidMessage")
+                        this.$refs.message.setAttribute("class", "invalidMessage");
                         this.message = "L'histoire n'a pas pu être chargée.";
                     }
                 })
                 .catch(error => {
                     console.log("Il y a eu un problème avec l'opération fetch :" + error.message);
-                })
+                });
             },
 
             modify(){
@@ -243,13 +243,13 @@
                         window.location = window.location.origin;
                     }
                     else{
-                        this.$refs.message.setAttribute("class", "invalidMessage")
+                        this.$refs.message.setAttribute("class", "invalidMessage");
                         this.message = "L'histoire n'a pas pu être supprimée.";
                     }
                 })
                 .catch(error => {
                     console.log("Il y a eu un problème avec l'opération fetch :" + error.message);
-                    this.$refs.message.setAttribute("class", "invalidMessage")
+                    this.$refs.message.setAttribute("class", "invalidMessage");
                     this.message = "Il y a eu un problème avec l'opération fetch" + error;
                 });
             },
@@ -260,7 +260,7 @@
                     headers : {
                         authorization : localStorage.userId + " " + localStorage.token
                     }
-                }
+                };
                 //récupération des types d'histoire
                 fetch(secrets.fetchPath + "api/storyTypes/", options)
                 .then(response => {
@@ -324,17 +324,17 @@
                         //masquage du formulaire de modification et message à l'utilisateur
                         this.$refs.modifyStoryForm.setAttribute("class", "hidden");
                         this.getStory();
-                        this.$refs.message.setAttribute("class", "validMessage")
+                        this.$refs.message.setAttribute("class", "validMessage");
                         this.message = "Histoire mise à jour.";
                     }
                     else{
-                        this.$refs.message.setAttribute("class", "invalidMessage")
+                        this.$refs.message.setAttribute("class", "invalidMessage");
                         this.message = "L'histoire n'a pas pu être mise à jour.";
                     }
                 })
                 .catch(error => {
                     console.log("Il y a eu un problème avec l'opération fetch :" + error.message);
-                    this.$refs.message.setAttribute("class", "invalidMessage")
+                    this.$refs.message.setAttribute("class", "invalidMessage");
                     this.message = "Il y a eu un problème avec l'opération fetch";
                 });
             }
