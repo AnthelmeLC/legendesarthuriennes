@@ -7,6 +7,8 @@ const storyCtrl = require("../controllers/story");
 
 router.get("/titles", storyCtrl.getAllTitles);
 router.get("/:id", storyCtrl.getOneStory);
+router.get("/", storyCtrl.getFourRandom);
+router.get("/getAllByStoryType/:typeId", storyCtrl.getAllByStoryType);
 router.post("/", auth, multer, storyCtrl.createStory);
 router.put("/:id", auth, multer, storyCtrl.modifyStory);
 router.delete("/:id", auth, storyCtrl.deleteStory);

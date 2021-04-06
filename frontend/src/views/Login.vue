@@ -1,7 +1,7 @@
 <template>
     <section class="container">
-        <h1>Connectez vous!</h1>
-        <form id="login-form" name="login-form">
+        <h1>Connexion</h1>
+        <form id="login-form" name="login-form"  @submit.prevent="onSubmit">
             <div>
                 <label for="pseudo">Pseudo :</label>
                 <input type="text" id="pseudo" name="pseudo" ref="pseudo" v-model="pseudo">
@@ -10,17 +10,17 @@
                 <label for="password">Mot de passe :</label>
                 <input type="password" id="password" name="password" ref="pseudo" v-model="password">
             </div>
-            <p>{{message}}</p>
-            <vue-programmatic-invisible-google-recaptcha ref="recaptcha" sitekey="6Le-m0gaAAAAAC9Zh8QMFf5NxUjDOY6OOWUe0s_e" elementId="recaptcha" @recaptcha-callback="recaptchaCallback"></vue-programmatic-invisible-google-recaptcha>
-            <button @click.prevent="onSubmit">Connexion</button>
+            <p class="invalidMessage">{{message}}</p>
+            <vue-programmatic-invisible-google-recaptcha ref="recaptcha" sitekey="6LcU-0gaAAAAAFnEAhQSL0m1adF1X2FlnharB2HJ" elementId="recaptcha" @recaptcha-callback="recaptchaCallback"></vue-programmatic-invisible-google-recaptcha>
+            <div class="btn-div">
+                <button class="biggerBtn">Connexion</button>
+            </div>
         </form>
     </section>
 </template>
 
 <style scoped>
-    p{
-        color: red;
-    }
+
 </style>
 
 <script>
@@ -78,19 +78,20 @@
                             localStorage.setItem("userId", myJson.userId);
                             localStorage.setItem("token", myJson.token);
                             localStorage.setItem("admin", myJson.admin);
-                            window.location = window.location.origin;
+                            window.location = window.location.origin +"/#/user";
+                            window.location.reload();
                         })
                         .catch(error => {
-                            console.log("Il y a eu un problème avec l'opération fetch : " + error.message)
-                        })
+                            console.log("Il y a eu un problème avec l'opération fetch : " + error.message);
+                        });
                     }
                     else{
                         this.message = "Identifiants incorrects.";
                     }
                 })
                 .catch(error => {
-                    console.log("Il y a eu un problème avec l'opération fetch : " + error.message)
-                })
+                    console.log("Il y a eu un problème avec l'opération fetch : " + error.message);
+                });
             }
         }
     };

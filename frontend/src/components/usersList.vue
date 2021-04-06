@@ -1,30 +1,30 @@
 <template>
     <div>
         <article>
-            <h2>Créer un nouvel utilisateur :</h2>
+            <h2>Les auteur.es :</h2>
+            <div id="users" ref="users">
+                <p v-for="(user, index) of usersList" :key="user.id">{{user.pseudo}}<img src="../assets/images/delete.png" alt="croix rouge" v-show="!user.deleted" v-on:click.prevent="remove(user.id, index)"></p>
+                <p ref="removeMessage">{{removeMessage}}</p>
+            </div>
             <form id="newUserForm" @submit.prevent="onSubmit">
                 <div>
-                    <label for="pseudo">Pseudo* :</label>
+                    <label for="pseudo">Pseudo <span class="invalidMessage">*</span> :</label>
                     <input type="text" id="pseudo" name="pseudo" required ref="pseudo" v-model="pseudo">
                 </div>
                 <div>
-                    <label for="password">Mot de passe* : </label>
+                    <label for="password">Mot de passe <span class="invalidMessage">*</span> : </label>
                     <input type="password" id="password" name="password" required ref="password" v-model="password" @keyup="onSelect">
                 </div>
                 <div>
-                    <label for="confirmationPassword">Confirmation* :</label>
+                    <label for="confirmationPassword">Confirmation <span class="invalidMessage">*</span> :</label>
                     <input type="password" id="confirmationPassword" name="confirmationPassword" required ref="confirmationPassword" v-model="confirmationPassword" @keyup="onSelect">
                 </div>
                 <p ref="postMessage">{{postMessage}}</p>
-                <button class="biggerBtn">Créer l'utilisateur</button>
+                <p class="requiredFields"><span class="invalidMessage">*</span> Champs obligatoires</p>
+                <div class="btn-div">
+                    <button class="biggerBtn">Créer l'auteur.e</button>
+                </div>
             </form>
-        </article>
-        <article>
-            <h2>Les auteurs du site :</h2>
-            <div id="users" ref="users">
-                <p v-for="(user, index) of usersList" :key="user.id">{{user.pseudo}}<img src="../../public/delete.png" alt="croix rouge" v-show="!user.deleted" v-on:click.prevent="remove(user.id, index)"></p>
-                <p ref="removeMessage">{{removeMessage}}</p>
-            </div>
         </article>
     </div>
 </template>
@@ -70,7 +70,7 @@
             onSubmit(){
                 //si le formulaire n'est pas correctement rempli
                 if(document.getElementsByClassName("invalid").length > 0){
-                    alert("Veuillez remplir correctement le formulaire pour ajouter un utilisateur.");
+                    alert("Veuillez remplir correctement le formulaire pour ajouter un.e auteur.e.");
                 }
                 //si le formulaire est correctement rempli
                 else{
@@ -96,8 +96,8 @@
                     .then(response => {
                         if(response.ok){
                             //message à l'utilisateur, vidage des données et récupération de tous les utilisateurs
-                            this.$refs.postMessage.setAttribute("class", "validMessage")
-                            this.postMessage = "Utilisateur créé.";
+                            this.$refs.postMessage.setAttribute("class", "validMessage");
+                            this.postMessage = "Auteur.e créé.";
                             this.removeMessage = "";
                             this.pseudo = "";
                             this.password = "";
@@ -105,14 +105,14 @@
                             this.getUsers();
                         }
                         else{
-                            this.$refs.postMessage.setAttribute("class", "invalidMessage")
+                            this.$refs.postMessage.setAttribute("class", "invalidMessage");
                             this.postMessage = "Pseudo indisponible.";
                             this.removeMessage = "";
                         }
                     })
                     .catch(error => {
                         console.log("Il y a eu un problème avec l'opération fetch :" + error.message);
-                        this.$refs.postMessage.setAttribute("class", "invalidMessage")
+                        this.$refs.postMessage.setAttribute("class", "invalidMessage");
                         this.postMessage = "Il y a eu un problème avec l'opération fetch";
                         this.removeMessage = "";
                     });
@@ -132,20 +132,20 @@
                 .then(response => {
                     if(response.ok){
                         //message à l'utilisateur et suppression de l'utilisateur dans les données
-                        this.$refs.removeMessage.setAttribute("class", "validMessage")
-                        this.removeMessage = "Utilisateur supprimé.";
+                        this.$refs.removeMessage.setAttribute("class", "validMessage");
+                        this.removeMessage = "Auteur.e supprimé.";
                         this.postMessage = "";
                         this.usersList[index].deleted = true;
                     }
                     else{
-                        this.$refs.removeMessage.setAttribute("class", "invalidMessage")
-                        this.removeMessage = "Impossible de supprimer cet utilisateur.";
+                        this.$refs.removeMessage.setAttribute("class", "invalidMessage");
+                        this.removeMessage = "Impossible de supprimer cet auteur.e.";
                         this.postMessage = "";
                     }
                 })
                 .catch(error => {
                     console.log("Il y a eu un problème avec l'opération fetch :" + error.message);
-                    this.$refs.removeMessage.setAttribute("class", "invalidMessage")
+                    this.$refs.removeMessage.setAttribute("class", "invalidMessage");
                     this.removeMessage = "Il y a eu un problème avec l'opération fetch";
                     this.postMessage = "";
                 });

@@ -1,11 +1,14 @@
 <template>
     <form class="profilForm" id="newPseudoForm" @submit.prevent="onSubmit">
         <div>
-            <label for="newPseudo">Nouveau pseudo* :</label>
+            <label for="newPseudo">Nouveau pseudo <span class="invalidMessage">*</span> :</label>
             <input type="text" id="newPseudo" name="newPseudo" required ref="newPseudo" v-model="newPseudo">
         </div>
         <p ref="message">{{message}}</p>
-        <button class="biggerBtn">Modifier mon pseudo :</button>
+        <p class="requiredFields"><span class="invalidMessage">*</span> Champs obligatoires</p>
+        <div class="btn-div">
+            <button class="biggerBtn">Modifier mon pseudo</button>
+        </div>
     </form>
 </template>
 
@@ -50,18 +53,18 @@
                 .then(response => {
                     if(response.ok){
                         //message à l'utilisateur et vidage des données
-                        this.$refs.message.setAttribute("class", "validMessage")
+                        this.$refs.message.setAttribute("class", "validMessage");
                         this.message = "Pseudo modifié.";
                         this.newPseudo = "";
                     }
                     else{
-                        this.$refs.message.setAttribute("class", "invalidMessage")
+                        this.$refs.message.setAttribute("class", "invalidMessage");
                         this.message = "Pseudo indisponible.";
                     }
                 })
                 .catch(error => {
                     console.log("Il y a eu un problème avec l'opération fetch : " + error.message);
-                    this.$refs.message.setAttribute("class", "invalidMessage")
+                    this.$refs.message.setAttribute("class", "invalidMessage");
                     this.message = "Il y a eu un problème avec l'opération fetch";
                 });
             }

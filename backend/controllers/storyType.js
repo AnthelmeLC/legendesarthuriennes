@@ -16,13 +16,14 @@ exports.createStoryType = (req, res, next) => {
     })
     .then(() => res.status(201).json({message : "Type d'histoires créé."}))
     .catch(error => res.status(400).json({error}));
-}
+};
 
 //MODIFY ONE
 exports.modifyStoryType = (req, res, next) => {
     //modification du nom du type d'histoires
-    StoryType.update({name : req.body.name}, {
-        where : {id : req.params.id}
+    StoryType.update({
+        name : req.body.name}, 
+        {where : {id : req.params.id}
     })
     .then(() => res.status(200).json({message : "Type d'histoires modifié."}))
     .catch(error => res.status(400).json({error}));

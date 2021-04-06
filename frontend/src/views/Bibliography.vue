@@ -14,8 +14,9 @@
                         <p>Date de réédition : {{bibliography.yearOfReissue}}</p>
                     </div>
                     <div class="moderation" v-if="bibliography.userId == userId || admin == 'true'">
-                        <img src="../../public/modify.png" alt="" @click.prevent="modify(bibliography)">
-                        <img src="../../public/delete.png" alt="" @click.prevent="remove(bibliography.id, index)">
+                        <img src="../assets/images/modify.png" alt="Crayon noir" title="Modifier" @click.prevent="modify(bibliography)" v-show="!dark">
+                        <img src="../assets/images/modify-white.png" alt="Crayon blanc" title="Modifier" @click.prevent="modify(bibliography)" v-show="dark">
+                        <img src="../assets/images/delete.png" alt="Croix rouge" title="Supprimer" @click.prevent="remove(bibliography.id, index)">
                     </div>
                 </div>
             </article>
@@ -24,11 +25,11 @@
             <h2>Modifiez votre bibliographie :</h2>
             <form id="modifyBibliographyForm" @submit.prevent="onSubmit" name="modify">
                 <div>
-                    <label for="title">Titre de l'oeuvre* :</label>
+                    <label for="title">Titre de l'oeuvre <span class="invalidMessage">*</span> :</label>
                     <input type="text" id="title" name="title" required ref="title" v-model="bibliography.title">
                 </div>
                 <div>
-                    <label for="auther">Auteur* :</label>
+                    <label for="auther">Auteur <span class="invalidMessage">*</span> :</label>
                     <input type="text" id="auther" name="auther" required ref="auther" v-model="bibliography.auther">
                 </div>
                 <div>
@@ -36,7 +37,7 @@
                     <input type="text" id="translater" name="translater" ref="translater" v-model="bibliography.translater">
                 </div>
                 <div>
-                    <label for="yearOfPublication">Date de publication* :</label>
+                    <label for="yearOfPublication">Date de publication <span class="invalidMessage">*</span> :</label>
                     <input type="text" id="yearOfPublication" name="yearOfPublication" required ref="yearOfPublication" v-model="bibliography.yearOfPublication">
                 </div>
                 <div>
@@ -47,24 +48,18 @@
                     <label for="bibliographyPicture">Aperçu de l'oeuvre :</label>
                     <input type="file" id="bibliographyPicture" name="bibliographyPicture" accept="image/*" ref="bibliographyPicture" @change="onSelect">
                 </div>
-                <button class="biggerBtn">Publier ma bibliographie</button>
+                <p class="requiredFields"><span class="invalidMessage">*</span> Champs obligatoires</p>
+                <div class="btn-div">
+                    <button class="biggerBtn">Modififer ma bibliographie</button>
+                </div>
             </form>
         </article>
     </section>
 </template>
 
 <style scoped>
-    #bibliographyDiv article{
-        margin-right: 5%;
-        margin-left: 5%;
-        margin-bottom: 5%;
-        border-bottom: solid black 1px;
-    }
-
-    #bibliographyDiv h2{
-        margin-left: 2%;
-        background-color: #efefef;
-        color: black;
+    h2{
+        padding-left: 2%;
         text-align: left;
     }
 
@@ -99,6 +94,24 @@
     .moderation img{
         width: 32px;
     }
+
+    @media all and (max-width : 900px){
+        .content{
+            flex-direction: column;
+        }
+
+        .moderation{
+            flex-direction: row;
+            justify-content: space-around;
+            width: 100%;
+            margin-left: 0;
+        }
+
+        .content img{
+            margin-right: auto;
+            margin-left: auto;
+        }
+    }
 </style>
 
 <script>
@@ -118,7 +131,8 @@
                 message : "",
 
                 userId : localStorage.userId,
-                admin : localStorage.admin
+                admin : localStorage.admin,
+                dark : localStorage.dark
             }
         },
 
@@ -171,18 +185,18 @@
                 .then(response => {
                     if(response.ok){
                         //message à l'utilisateur et suppression de la bibliographie dans les données
-                        this.$refs.message.setAttribute("class", "validMessage")
+                        this.$refs.message.setAttribute("class", "validMessage");
                         this.message = "Bibliography supprimée.";
                         this.bibliographyList.splice(index, 1);
                     }
                     else{
-                        this.$refs.message.setAttribute("class", "invalidMessage")
+                        this.$refs.message.setAttribute("class", "invalidMessage");
                         this.message = "La bibliographie n'a pas pu être supprimée.";
                     }
                 })
                 .catch(error => {
                     console.log("Il y a eu un problème avec l'opération fetch :" + error.message);
-                    this.$refs.message.setAttribute("class", "invalidMessage")
+                    this.$refs.message.setAttribute("class", "invalidMessage");
                     this.message = "Il y a eu un problème avec l'opération fetch" + error;
                 });
             },
@@ -212,8 +226,8 @@
                 .then(response => {
                     if(response.ok){
                         //message à l'utilisateur, vidage des données et masquage du formulaire de modification
-                        this.$refs.message.setAttribute("class", "validMessage")
-                        this.message = "Bibliographie mise à jour."
+                        this.$refs.message.setAttribute("class", "validMessage");
+                        this.message = "Bibliographie mise à jour.";
                         this.bibliography = "";
                         this.file = "";
                         this.getBibliography();
@@ -221,15 +235,15 @@
                         window.location.hash = "";
                     }
                     else{
-                        this.$refs.message.setAttribute("class", "invalidMessage")
+                        this.$refs.message.setAttribute("class", "invalidMessage");
                         this.message = "La bibliographie n'a pas pu être modifiée.";
                     }
                 })
                 .catch(error => {
                     console.log("Il y a eu un problème avec l'opération fetch : " + error);
-                    this.$refs.message.setAttribute("class", "validMessage")
-                    this.message = "Il y a eu un problème avec l'opération fetch"
-                })
+                    this.$refs.message.setAttribute("class", "validMessage");
+                    this.message = "Il y a eu un problème avec l'opération fetch";
+                });
             }
         },
 
